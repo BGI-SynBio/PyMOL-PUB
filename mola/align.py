@@ -62,11 +62,35 @@ def kabsch(candidate_structure: ndarray, reference_structure: ndarray, use_cente
 
 class Score(object):
 
-    def __init__(self, distance_type: str = "RMSD", model_type: str = "CA"):
-        self.distance_type = distance_type
+    def __init__(self, similar_type: str = "RMSD", model_type: str = "CA"):
+        """
+        Initialize the score.
+
+        :param similar_type: method to calculate the similarity between two molecule structures.
+        :type similar_type: str
+
+        :param model_type: model used by structures.
+        :type model_type: str
+        """
+        self.distance_type = similar_type
         self.model_type = model_type
 
     def __call__(self, structure_1: ndarray, structure_2: ndarray, use_center: bool = True) -> tuple:
+        """
+        Calculate the score.
+
+        :param structure_1: molecule structure 1.
+        :type structure_1: numpy.ndarray
+
+        :param structure_2: molecule structure 2.
+        :type structure_2: numpy.ndarray
+
+        :param use_center: use the structure center as the rotation center.
+        :type use_center: bool
+
+        :return: score, rotated candidate structure, original reference structure, start location.
+        :rtype: tuple[float, numpy.ndarray, numpy.ndarray, int]
+        """
         if structure_1.shape != structure_2.shape:
             use_center = False
             if len(structure_1) > len(structure_2):
@@ -86,7 +110,7 @@ class Score(object):
 
             saved_candidate, saved_start = saved_candidates[argmin(scores)]
 
-            return min(scores), saved_candidate, saved_start
+            return min(scores), saved_candidate, original_reference, saved_start
 
         elif self.distance_type == "TM":
             if self.model_type == "N-CA-C-O":  # protein consists of skeleton comprised of N, C-alpha, C, and O atoms.
@@ -197,7 +221,7 @@ class Score(object):
             else:
                 raise ValueError("No such model type!")
 
-            return max(scores), saved_candidate, start
+            return max(scores), saved_candidate, original_reference, start
 
         elif self.distance_type == "GDT-HA":
             if self.model_type == "N-CA-C-O":
@@ -235,7 +259,7 @@ class Score(object):
             else:
                 raise ValueError("No such model type!")
 
-            return max(scores), saved_candidate, start
+            return max(scores), saved_candidate, original_reference, start
 
         elif self.distance_type == "GDT-TS":
             if self.model_type == "N-CA-C-O":
@@ -273,7 +297,7 @@ class Score(object):
             else:
                 raise ValueError("No such model type!")
 
-            return max(scores), saved_candidate, start
+            return max(scores), saved_candidate, original_reference, start
 
         else:
             raise ValueError("No such distance type!")
