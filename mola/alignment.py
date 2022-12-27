@@ -3,63 +3,6 @@ from numpy import argmin, argmax, min, max, mean, sum, sqrt
 from typing import Iterator
 
 
-def kabsch(candidate_structure: ndarray, reference_structure: ndarray, use_center: bool = True) -> Iterator[tuple]:
-    """
-    Rotate candidate structure unto reference structure using Kabsch algorithm based on each position.
-
-    :param candidate_structure: candidate structure represented by three-dimension position list.
-    :type candidate_structure: numpy.ndarray
-
-    :param reference_structure: reference structure represented by three-dimension position list.
-    :type reference_structure: numpy.ndarray
-
-    :param use_center: use center location.
-    :type use_center: bool
-
-    :returns current index, total index, final candidate structure and reference structure.
-    :rtype int, int, numpy.ndarray, numpy.ndarray
-
-    .. note::
-        reference [1]: Yang Zhang and Jeffrey Skolnick (2004) Proteins
-        reference [2]: Wolfgang Kabsch (1976) Acta Crystallogr. D.
-    """
-
-    def calculate(candidate, reference, addition):
-        # unify the center point.
-        center = dot(transpose(candidate), reference)
-
-        # decompose the singular value for rotation matrix.
-        translation, _, unitary = linalg.svd(center)
-        if (linalg.det(translation) * linalg.det(unitary)) < 0.0:
-            translation[:, -1] = -translation[:, -1]
-
-        # create rotation matrix and rotate candidate structure.
-        rotation = dot(translation, unitary)
-        candidate = dot(candidate, rotation)
-
-        # recover the original state of reference structure.
-        candidate += addition
-        reference += addition
-
-        return candidate, reference
-
-    align_number = len(reference_structure) - len(candidate_structure) + 1
-    for align_location in range(align_number):
-        c = candidate_structure.copy()
-        r = reference_structure[align_location: len(candidate_structure) + align_location]
-        if use_center:
-            used_c = c - mean(c, axis=0)
-            used_r = r - mean(r, axis=0)
-            final_c, final_r = calculate(used_c, used_r, mean(r, axis=0))
-            yield 0, 1, final_c, final_r, align_location
-        else:
-            for center_location in range(len(candidate_structure)):
-                used_c = c - c[center_location]
-                used_r = r - r[center_location]
-                final_c, final_r = calculate(used_c, used_r, r[center_location])
-                yield center_location, len(candidate_structure), final_c, final_r, align_location
-
-
 class Score(object):
 
     def __init__(self, similar_type: str = "RMSD", model_type: str = "CA"):
@@ -102,7 +45,7 @@ class Score(object):
 
         scores, saved_candidates = [], []
         if self.distance_type == "RMSD":
-            for _, _, candidate, reference, start in kabsch(original_candidate, original_reference, use_center):
+            for _, _, candidate, reference, start in self.kabsch(original_candidate, original_reference, use_center):
                 # calculate the value of root-mean-square deviation.
                 value = linalg.norm((candidate - reference).reshape(-1), ord=2) / len(original_candidate)
                 saved_candidates.append((candidate, start))
@@ -128,7 +71,7 @@ class Score(object):
                 samples = arange(0, len(original_candidate), 4)
                 for bias in range(4):
                     c, r = original_candidate[samples + bias], original_reference[samples + bias]
-                    for _, _, candidate, reference, start in kabsch(c, r, use_center):
+                    for _, _, candidate, reference, start in self.kabsch(c, r, use_center):
                         value = linalg.norm((candidate - reference).reshape(-1), ord=2)
                         value = sum(1.0 / (1.0 + (value / factor) ** 2)) / len(original_candidate[samples + bias])
                         saved_candidates.append((candidate, start))
@@ -149,7 +92,8 @@ class Score(object):
                 else:
                     factor = 0.50
 
-                for _, _, candidate, reference, start in kabsch(original_candidate, original_reference, use_center):
+                for _, _, candidate, reference, start in self.kabsch(original_candidate, original_reference,
+                                                                     use_center):
                     value = linalg.norm((candidate - reference).reshape(-1), ord=2)
                     value = sum(1.0 / (1.0 + (value / factor) ** 2)) / len(original_candidate)
                     saved_candidates.append((candidate, start))
@@ -181,7 +125,7 @@ class Score(object):
                 samples = arange(0, len(original_candidate), 3)
                 for bias in range(3):
                     c, r = original_candidate[samples + bias], original_reference[samples + bias]
-                    for _, _, candidate, reference, start in kabsch(c, r, use_center):
+                    for _, _, candidate, reference, start in self.kabsch(c, r, use_center):
                         value = linalg.norm((candidate - reference).reshape(-1), ord=2)
                         value = sum(1.0 / (1.0 + (value / factor) ** 2)) / len(original_candidate[samples + bias])
                         saved_candidates.append((candidate, start))
@@ -210,7 +154,8 @@ class Score(object):
                 else:
                     factor = 0.3
 
-                for _, _, candidate, reference, start in kabsch(original_candidate, original_reference, use_center):
+                for _, _, candidate, reference, start in self.kabsch(original_candidate, original_reference,
+                                                                     use_center):
                     value = linalg.norm((candidate - reference).reshape(-1), ord=2)
                     value = sum(1.0 / (1.0 + (value / factor) ** 2)) / len(original_candidate)
                     saved_candidates.append(candidate)
@@ -228,7 +173,7 @@ class Score(object):
                 samples = arange(0, len(original_candidate), 4)
                 for bias in range(4):
                     c, r = original_candidate[samples + bias], original_reference[samples + bias]
-                    for _, _, candidate, reference, start in kabsch(c, r, use_center):
+                    for _, _, candidate, reference, start in self.kabsch(c, r, use_center):
                         cutoffs = {0.5: 0, 1.0: 0, 2.0: 0, 4.0: 0}
                         values = linalg.norm(candidate - reference, ord=2, axis=1)
                         for cutoff, threshold in cutoffs.items():
@@ -246,7 +191,8 @@ class Score(object):
                     location += screen * number
 
             elif self.model_type == "CA":
-                for _, _, candidate, reference, start in kabsch(original_candidate, original_reference, use_center):
+                for _, _, candidate, reference, start in self.kabsch(original_candidate, original_reference,
+                                                                     use_center):
                     cutoffs = {0.5: 0, 1.0: 0, 2.0: 0, 4.0: 0}
                     values = linalg.norm(candidate - reference, ord=2, axis=1)
                     for cutoff, threshold in cutoffs.items():
@@ -266,7 +212,7 @@ class Score(object):
                 samples = arange(0, len(original_candidate), 4)
                 for bias in range(4):
                     c, r = original_candidate[samples + bias], original_reference[samples + bias]
-                    for _, _, candidate, reference, start in kabsch(c, r, use_center):
+                    for _, _, candidate, reference, start in self.kabsch(c, r, use_center):
                         cutoffs = {1.0: 0, 2.0: 0, 4.0: 0, 8.0: 0}
                         values = linalg.norm(candidate - reference, ord=2, axis=1)
                         for cutoff, threshold in cutoffs.items():
@@ -284,7 +230,7 @@ class Score(object):
                     location += screen * number
 
             elif self.model_type == "CA":
-                for _, _, candidate, reference in kabsch(original_candidate, original_reference, use_center):
+                for _, _, candidate, reference in self.kabsch(original_candidate, original_reference, use_center):
                     cutoffs = {1.0: 0, 2.0: 0, 4.0: 0, 8.0: 0}
                     values = linalg.norm(candidate - reference, ord=2, axis=1)
                     for cutoff, threshold in cutoffs.items():
@@ -301,3 +247,65 @@ class Score(object):
 
         else:
             raise ValueError("No such distance type!")
+
+    @staticmethod
+    def kabsch(candidate_structure: ndarray, reference_structure: ndarray, use_center: bool = True) -> Iterator[tuple]:
+        """
+        Rotate candidate structure unto reference structure using Kabsch algorithm based on each position.
+
+        :param candidate_structure: candidate structure represented by three-dimension position list.
+        :type candidate_structure: numpy.ndarray
+
+        :param reference_structure: reference structure represented by three-dimension position list.
+        :type reference_structure: numpy.ndarray
+
+        :param use_center: use center location.
+        :type use_center: bool
+
+        :returns current index, total index, final candidate structure and reference structure.
+        :rtype int, int, numpy.ndarray, numpy.ndarray
+
+        .. note::
+            reference [1]: Yang Zhang and Jeffrey Skolnick (2004) Proteins
+            reference [2]: Wolfgang Kabsch (1976) Acta Crystallogr. D.
+        """
+
+        def calculate(candidate, reference, addition):
+            # unify the center point.
+            center = dot(transpose(candidate), reference)
+
+            # decompose the singular value for rotation matrix.
+            translation, _, unitary = linalg.svd(center)
+            if (linalg.det(translation) * linalg.det(unitary)) < 0.0:
+                translation[:, -1] = -translation[:, -1]
+
+            # create rotation matrix and rotate candidate structure.
+            rotation = dot(translation, unitary)
+            candidate = dot(candidate, rotation)
+
+            # recover the original state of reference structure.
+            candidate += addition
+            reference += addition
+
+            return candidate, reference
+
+        align_number = len(reference_structure) - len(candidate_structure) + 1
+        for align_location in range(align_number):
+            c = candidate_structure.copy()
+            r = reference_structure[align_location: len(candidate_structure) + align_location]
+            if use_center:
+                used_c = c - mean(c, axis=0)
+                used_r = r - mean(r, axis=0)
+                final_c, final_r = calculate(used_c, used_r, mean(r, axis=0))
+                yield 0, 1, final_c, final_r, align_location
+            else:
+                for center_location in range(len(candidate_structure)):
+                    used_c = c - c[center_location]
+                    used_r = r - r[center_location]
+                    final_c, final_r = calculate(used_c, used_r, r[center_location])
+                    yield center_location, len(candidate_structure), final_c, final_r, align_location
+
+
+def cluster(structures):
+    structure_cluster = {}
+    return structure_cluster
