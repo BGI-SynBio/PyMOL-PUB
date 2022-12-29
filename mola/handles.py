@@ -15,7 +15,7 @@ class Score(object):
         :param model_type: model used by structures.
         :type model_type: str
         """
-        self.distance_type = similar_type
+        self.similar_type = similar_type
         self.model_type = model_type
 
     def __call__(self, structure_1: ndarray, structure_2: ndarray, use_center: bool = True) -> tuple:
@@ -38,13 +38,16 @@ class Score(object):
             use_center = False
             if len(structure_1) > len(structure_2):
                 original_candidate, original_reference = structure_2, structure_1
+                reverse = True
             else:
                 original_candidate, original_reference = structure_1, structure_2
+                reverse = False
         else:
             original_candidate, original_reference = structure_1, structure_2
+            reverse = False
 
         scores, saved_candidates = [], []
-        if self.distance_type == "RMSD":
+        if self.similar_type == "RMSD":
             for _, _, candidate, reference, start in self.kabsch(original_candidate, original_reference, use_center):
                 # calculate the value of root-mean-square deviation.
                 value = linalg.norm((candidate - reference).reshape(-1), ord=2) / len(original_candidate)
@@ -53,9 +56,9 @@ class Score(object):
 
             saved_candidate, saved_start = saved_candidates[argmin(scores)]
 
-            return min(scores), saved_candidate, original_reference, saved_start
+            return min(scores), saved_candidate, original_reference, saved_start, reverse
 
-        elif self.distance_type == "TM":
+        elif self.similar_type == "TM":
             if self.model_type == "N-CA-C-O":  # protein consists of skeleton comprised of N, C-alpha, C, and O atoms.
                 if len(structure_1) % 4 != 0:
                     raise ValueError("The structure 1 of length (" + str(len(structure_1))
@@ -166,9 +169,9 @@ class Score(object):
             else:
                 raise ValueError("No such model type!")
 
-            return max(scores), saved_candidate, original_reference, start
+            return max(scores), saved_candidate, original_reference, start, reverse
 
-        elif self.distance_type == "GDT-HA":
+        elif self.similar_type == "GDT-HA":
             if self.model_type == "N-CA-C-O":
                 samples = arange(0, len(original_candidate), 4)
                 for bias in range(4):
@@ -205,9 +208,9 @@ class Score(object):
             else:
                 raise ValueError("No such model type!")
 
-            return max(scores), saved_candidate, original_reference, start
+            return max(scores), saved_candidate, original_reference, start, reverse
 
-        elif self.distance_type == "GDT-TS":
+        elif self.similar_type == "GDT-TS":
             if self.model_type == "N-CA-C-O":
                 samples = arange(0, len(original_candidate), 4)
                 for bias in range(4):
@@ -243,10 +246,19 @@ class Score(object):
             else:
                 raise ValueError("No such model type!")
 
-            return max(scores), saved_candidate, original_reference, start
+            return max(scores), saved_candidate, original_reference, start, reverse
 
         else:
             raise ValueError("No such distance type!")
+
+    def get_params(self):
+        """
+        Get the distance type and model type.
+
+        :return: distance type and model type.
+        :rtype: str, str
+        """
+        return self.similar_type, self.model_type
 
     @staticmethod
     def kabsch(candidate_structure: ndarray, reference_structure: ndarray, use_center: bool = True) -> Iterator[tuple]:
@@ -264,12 +276,10 @@ class Score(object):
 
         :returns current index, total index, final candidate structure and reference structure.
         :rtype int, int, numpy.ndarray, numpy.ndarray
-
-        .. note::
-            reference [1]: Yang Zhang and Jeffrey Skolnick (2004) Proteins
-            reference [2]: Wolfgang Kabsch (1976) Acta Crystallogr. D.
         """
 
+        # Yang Zhang and Jeffrey Skolnick (2004) Proteins
+        # Wolfgang Kabsch (1976) Acta Crystallogr. D.
         def calculate(candidate, reference, addition):
             # unify the center point.
             center = dot(transpose(candidate), reference)
@@ -306,6 +316,188 @@ class Score(object):
                     yield center_location, len(candidate_structure), final_c, final_r, align_location
 
 
-def cluster(structures):
-    structure_cluster = {}
-    return structure_cluster
+def similar(structure_1, structure_2, score_method, use_center: bool = True, metrics: float = None) -> tuple:
+    """
+    Judge whether two structures are similar.
+
+    :param structure_1: molecule structure 1.
+    :type structure_1: numpy.ndarray
+
+    :param structure_2: molecule structure 2.
+    :type structure_2: numpy.ndarray
+
+    :param score_method: method to calculate the similarity score.
+    :type score_method: mola.handles.Score
+
+    :param use_center: use center location.
+    :type use_center: bool
+
+    :param metrics: score metrics to determine whether any two structures are similarity.
+    :type metrics: float or None
+
+    :return: flag, rotated candidate structure, original reference structure, start location, structure is reversed.
+    :rtype: tuple[bool, numpy.ndarray, numpy.ndarray, int, bool]
+    """
+    score_value, candidate, reference, start_location, reverse = score_method(structure_1, structure_2, use_center)
+    distance_type, model_type = score_method.get_params()
+
+    if distance_type == "RMSD":
+        if metrics is None:
+            raise ValueError("The metrics for RMSD method should be declared!")
+
+        return score_value <= metrics, candidate, reference, start_location, reverse
+
+    elif distance_type == "TM":
+        # Based on the extensive statistics of protein and RNA structure families2, 3, it was found that
+        # TM-score ≥ 0.5 or TM-scoreRNA ≥ 0.45 corresponds to a protein or RNA pair
+        # with similar global structural topology.
+
+        if model_type == "N-CA-C-O":  # protein consists of skeleton comprised of N, C-alpha, C, and O atoms.
+            if metrics is None:
+                metrics = 0.50 * 4
+
+        elif model_type == "CA":  # protein consists of skeleton comprised of C-alpha.
+            if metrics is None:
+                metrics = 0.50
+
+        elif model_type == "3SPN":  # 3SPN model (three sites per nucleotide).
+            if metrics is None:
+                metrics = 0.45 * 3
+
+        elif model_type == "C3":  # single atom in nucleic acid structures (e.g. C3').
+            if metrics is None:
+                metrics = 0.45
+        else:
+            raise ValueError("No such model type!")
+
+        return score_value >= metrics, candidate, reference, start_location, reverse
+
+    elif distance_type == "GDT-HA":
+        if model_type == "N-CA-C-O":
+            if metrics is None:
+                metrics = 90.0 * 4
+
+        elif model_type == "CA":
+            if metrics is None:
+                metrics = 90.0
+
+        else:
+            raise ValueError("No such model type!")
+
+        return score_value >= metrics, candidate, reference, start_location, reverse
+
+    elif distance_type == "GDT-TS":
+        # AlphaFold was the top-ranked method, with a median GDT score of 92.4 across all targets.
+        # https://alphafold.ebi.ac.uk/faq
+        if model_type == "N-CA-C-O":
+            if metrics is None:
+                metrics = 92.4 * 4
+
+        elif model_type == "CA":
+            if metrics is None:
+                metrics = 92.4
+
+        else:
+            raise ValueError("No such model type!")
+
+        return score_value >= metrics, candidate, reference, start_location, reverse
+
+    else:
+        raise ValueError("No such distance type!")
+
+
+def cluster(structures, score_method, use_center: bool = True, metrics: float = None, merge_type: str = "all") -> list:
+    """
+    Cluster the molecule structures.
+
+    :param structures: structures (with the same size).
+    :type structures: numpy.ndarray
+
+    :param score_method: method to calculate the similarity score.
+    :type score_method: mola.handles.Score
+
+    :param use_center: use center location.
+    :type use_center: bool
+
+    :param metrics: score metrics to determine whether any two structures are similarity.
+    :type metrics: float or None
+
+    :param merge_type: the type to determine one structure can merge into a structure group.
+    :type merge_type: str
+
+    :return: structure index cluster flags.
+    :rtype: list
+    """
+    cluster_flags = {}
+    for structure_index, candidate in enumerate(structures):
+        selected_indices = []
+        if merge_type == "all":
+            for cluster_index, reference_indices in cluster_flags.items():
+                count = 0
+                for reference_index in reference_indices:
+                    if similar(candidate, structures[reference_index], score_method, use_center, metrics)[0]:
+                        count += 1
+                if count == len(reference_indices):
+                    selected_indices.append(cluster_index)
+                    break  # there is no need to merge two clusters, break directly.
+
+        elif merge_type == "any":
+            for cluster_index, reference_indices in cluster_flags.items():
+                for reference_index in reference_indices:
+                    if similar(candidate, structures[reference_index], score_method, use_center, metrics)[0]:
+                        selected_indices.append(cluster_index)
+                        break
+
+        else:
+            raise ValueError("No such merge type!")
+
+        if len(selected_indices) == 0:
+            cluster_flags[len(cluster_flags) + 1] = [structure_index]
+
+        elif len(selected_indices) == 1:
+            cluster_flags[selected_indices[0]].append(structure_index)
+
+        else:
+            for index in selected_indices[1:]:  # merge several clusters before.
+                cluster_flags[selected_indices[0]] += cluster_flags[selected_indices[index]]
+                del cluster_flags[selected_indices[index]]
+
+            cluster_flags[selected_indices[0]] = [structure_index]
+
+    return list(cluster_flags.values())
+
+
+def align(structures, score_method, use_center: bool = True, metrics: float = None, merge_type: str = "all") -> dict:
+    """
+    Align the molecule structures.
+
+    :param structures: structures (with the same size).
+    :type structures: numpy.ndarray
+
+    :param score_method: method to calculate the similarity score.
+    :type score_method: mola.handles.Score
+
+    :param use_center: use center location.
+    :type use_center: bool
+
+    :param metrics: score metrics to determine whether any two structures are similarity.
+    :type metrics: float or None
+
+    :param merge_type: the type to determine one structure can merge into a structure group.
+    :type merge_type: str
+
+    :return: alignment structure results.
+    :rtype: dict
+    """
+    cluster_flags = cluster(structures, score_method, use_center, metrics, merge_type)
+    indices, alignment_results = zeros(shape=(len(structures, )), dtype=int), {}
+    for cluster_index, structure_indices in enumerate(cluster_flags):
+        indices[structure_indices] = cluster_index
+        alignment_results[cluster_index] = []
+
+    alignment_results[indices[0]].append(structures[0])
+    for cluster_index, structure in zip(indices[1:], structures[1:]):
+        _, candidate, _, _, _ = score_method(structure, structures[0], use_center)
+        alignment_results[cluster_index].append(candidate)
+
+    return alignment_results

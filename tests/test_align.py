@@ -1,7 +1,7 @@
 from numpy import random, linalg
 from unittest import TestCase
 
-from mola.alignment import Score
+from mola.handles import Score
 
 
 class TestSame(TestCase):
