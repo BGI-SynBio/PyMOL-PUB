@@ -1,3 +1,4 @@
+from Bio.PDB import PDBParser, MMCIFParser
 from numpy import ndarray, array, arange, zeros, dot, transpose, linalg, where
 from numpy import argmin, argmax, min, max, mean, sum, sqrt
 from typing import Iterator
@@ -143,7 +144,7 @@ class Score(object):
                     saved_candidate[samples + bias], start = saved_candidates[location]
                     location += screen * number
 
-            elif self.model_type == "C3":  # single atom in nucleic acid structures (e.g. C3').
+            elif self.model_type == "C3'":  # single atom in nucleic acid structures (e.g. C3').
                 if len(original_candidate) > 30:
                     factor = 0.6 * sqrt(len(original_candidate) - 0.5) - 2.5
                 elif 24 <= len(original_candidate) <= 30:
@@ -364,7 +365,7 @@ def similar(structure_1, structure_2, score_method, use_center: bool = True, met
             if metrics is None:
                 metrics = 0.45 * 3
 
-        elif model_type == "C3":  # single atom in nucleic acid structures (e.g. C3').
+        elif model_type == "C3'":  # single atom in nucleic acid structures (e.g. C3').
             if metrics is None:
                 metrics = 0.45
         else:
@@ -501,3 +502,73 @@ def align(structures, score_method, use_center: bool = True, metrics: float = No
         alignment_results[cluster_index].append(candidate)
 
     return alignment_results
+
+
+def load_structure_from_file(file_path: str, entity_type: str = "protein") -> tuple:
+    """
+    Load structure data from file.
+
+    :param file_path: path to load file.
+    :type file_path: str
+
+    :param entity_type: type of entity data, which could be protein, DNA, or RNA.
+    :type entity_type: str
+
+    :return: chains and their structures.
+    :rtype: dict, dict
+    """
+    protein_letters = {"ALA": "A", "CYS": "C", "ASP": "D", "GLU": "E", "PHE": "F", "GLY": "G", "HIS": "H", "ILE": "I",
+                       "LYS": "K", "LEU": "L", "MET": "M", "ASN": "N", "PRO": "P", "GLN": "Q", "ARG": "R", "SER": "S",
+                       "THR": "T", "VAL": "V", "TRP": "W", "TYR": "Y"}
+
+    if file_path[-4:].lower() == ".pdb":
+        data = PDBParser(PERMISSIVE=1).get_structure("temp", file_path)
+    elif file_path[-4:].lower() == ".cif":
+        data = MMCIFParser().get_structure("temp", file_path)
+    else:
+        raise ValueError("No such load type! Only structure file with \"pdb\" or \"cif\" format can be loaded!")
+
+    chains, structure_data = {}, {}
+    if entity_type == "protein":
+        rotation = ["N", "CA", "C", "O"]
+        for model in data:
+            for chain in model:
+                sequence, core_positions, skeleton_positions, location = "", [], [], 0
+                for residue in chain:
+                    for atom in residue:
+                        if atom.id == "CA":
+                            core_positions.append(atom.coord.tolist())
+                        if atom.id == rotation[location]:
+                            skeleton_positions.append(atom.coord.tolist())
+                            location = (location + 1) % 4
+                    sequence += protein_letters[residue.get_resname()]
+                chains[chain.id] = sequence
+                structure_data[chain.id] = {"CA": array(core_positions), "N-CA-C-O": array(skeleton_positions)}
+
+    elif entity_type in ["DNA", "RNA"]:
+        for model in data:
+            for chain in model:
+                sequence, core_positions, skeleton_positions = "", [], []
+                for residue in chain:
+                    temp = [[], [], []]
+                    for atom in residue:
+                        if atom.id == "C3'":
+                            core_positions.append(atom.coord.tolist())
+                        # TODO need double check
+                        if atom.id in ["P", "O5", "O3'"] or (atom.id[:2] == "OP" and atom.id[2] in "1234567890"):
+                            temp[2].append(atom.coord.tolist())
+                        elif atom.id in ["C5'", "C4'", "C3'", "C2'", "C1'", "O4'", "O2'"]:
+                            temp[0].append(atom.coord.tolist())
+                        else:
+                            temp[1].append(atom.coord.tolist())
+                    for value in temp:
+                        skeleton_positions.append(mean(array(value), axis=0))
+                    sequence += residue.get_resname()[1:]
+                chains[chain.id] = sequence
+                structure_data[chain.id] = {"C3'": array(core_positions), "3SPN": array(skeleton_positions)}
+
+    else:
+        raise ValueError("This structure type is not supported!")
+
+    return chains, structure_data
+

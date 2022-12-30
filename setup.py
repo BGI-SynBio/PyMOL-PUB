@@ -8,7 +8,7 @@ setup(
     author_email="zhanghaoling@genomics.cn",
     url="https://github.com/BGI-SynBio/PyMOL-advance",
     packages=["PyMOL-advance.mola", "PyMOL-advance.tests", "PyMOL-advance.cases"],
-    install_requires=["numpy"],
+    install_requires=["numpy", "pymol", "biopython"],
     license="GPL",
     classifiers=["License :: OSI Approved :: GNU General Public License (GPL)",
                  "Programming Language :: Python :: 3",
