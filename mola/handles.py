@@ -571,4 +571,3 @@ def load_structure_from_file(file_path: str, entity_type: str = "protein") -> tu
         raise ValueError("This structure type is not supported!")
 
     return chains, structure_data
-
