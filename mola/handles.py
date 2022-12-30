@@ -1,4 +1,5 @@
-from Bio.PDB import PDBParser, MMCIFParser
+# noinspection PyPackageRequirements
+from Bio.PDB import PDBParser, MMCIFParser, PDBIO, MMCIFIO, Structure, Chain, Residue, Atom
 from numpy import ndarray, array, arange, zeros, dot, transpose, linalg, where
 from numpy import argmin, argmax, min, max, mean, sum, sqrt
 from typing import Iterator
@@ -350,7 +351,7 @@ def similar(structure_1, structure_2, score_method, use_center: bool = True, met
 
     elif distance_type == "TM":
         # Based on the extensive statistics of protein and RNA structure families2, 3, it was found that
-        # TM-score ≥ 0.5 or TM-scoreRNA ≥ 0.45 corresponds to a protein or RNA pair
+        # TM-score ≥ 0.5 or TM-score(RNA) ≥ 0.45 corresponds to a protein or RNA pair
         # with similar global structural topology.
 
         if model_type == "N-CA-C-O":  # protein consists of skeleton comprised of N, C-alpha, C, and O atoms.
@@ -374,13 +375,15 @@ def similar(structure_1, structure_2, score_method, use_center: bool = True, met
         return score_value >= metrics, candidate, reference, start_location, reverse
 
     elif distance_type == "GDT-HA":
+        # AlphaFold was the top-ranked method, with a median GDT score of 92.4 across all targets.
+        # https://alphafold.ebi.ac.uk/faq
         if model_type == "N-CA-C-O":
             if metrics is None:
-                metrics = 90.0 * 4
+                metrics = 92.4 * 4
 
         elif model_type == "CA":
             if metrics is None:
-                metrics = 90.0
+                metrics = 92.4
 
         else:
             raise ValueError("No such model type!")
@@ -514,7 +517,7 @@ def load_structure_from_file(file_path: str, entity_type: str = "protein") -> tu
     :param entity_type: type of entity data, which could be protein, DNA, or RNA.
     :type entity_type: str
 
-    :return: chains and their structures.
+    :return: chains and their corresponding structures.
     :rtype: dict, dict
     """
     protein_letters = {"ALA": "A", "CYS": "C", "ASP": "D", "GLU": "E", "PHE": "F", "GLY": "G", "HIS": "H", "ILE": "I",
@@ -554,7 +557,6 @@ def load_structure_from_file(file_path: str, entity_type: str = "protein") -> tu
                     for atom in residue:
                         if atom.id == "C3'":
                             core_positions.append(atom.coord.tolist())
-                        # TODO need double check
                         if atom.id in ["P", "O5", "O3'"] or (atom.id[:2] == "OP" and atom.id[2] in "1234567890"):
                             temp[2].append(atom.coord.tolist())
                         elif atom.id in ["C5'", "C4'", "C3'", "C2'", "C1'", "O4'", "O2'"]:
@@ -571,3 +573,72 @@ def load_structure_from_file(file_path: str, entity_type: str = "protein") -> tu
         raise ValueError("This structure type is not supported!")
 
     return chains, structure_data
+
+
+def save_structure_to_file(chains: list, structures: ndarray, file_path: str, model_type: str = "CA") -> bool:
+    """
+    Save temp structure file.
+
+    :param chains: chains.
+    :type chains: list
+
+    :param structures: corresponding structures of chains.
+    :type structures: numpy.ndarray
+
+    :param file_path: path to save temp file.
+    :type file_path: str
+
+    :param model_type: model used by structures.
+    :type model_type: str
+
+    :return: complete flag.
+    :rtype: bool
+    """
+    if model_type == "N-CA-C-O":
+        form = ["N", "CA", "C", "O"]
+        letters = {"A": "ALA", "C": "CYS", "D": "ASP", "E": "GLU", "F": "PHE", "G": "GLY", "H": "HIS", "I": "ILE",
+                   "K": "LYS", "L": "LEU", "M": "MET", "N": "ASN", "P": "PRO", "Q": "GLN", "R": "ARG", "S": "SER",
+                   "T": "THR", "V": "VAL", "W": "TRP", "Y": "TYR"}
+    elif model_type == "CA":
+        form = ["CA"]
+        letters = {"A": "ALA", "C": "CYS", "D": "ASP", "E": "GLU", "F": "PHE", "G": "GLY", "H": "HIS", "I": "ILE",
+                   "K": "LYS", "L": "LEU", "M": "MET", "N": "ASN", "P": "PRO", "Q": "GLN", "R": "ARG", "S": "SER",
+                   "T": "THR", "V": "VAL", "W": "TRP", "Y": "TYR"}
+    elif model_type == "3SPN":
+        form = ["DS", "DB", "DP"]
+        letters = {"A": "DA", "C": "DC", "G": "DG", "T": "DT", "U": "DU"}
+    elif model_type == "C3'":
+        form = ["C3'"]
+        letters = {"A": "DA", "C": "DC", "G": "DG", "T": "DT", "U": "DU"}
+    else:
+        raise ValueError("No such model type!")
+
+    residue_number, atom_number, structure_data = 1, 1, Structure.Structure(id="temp")
+    for chain_index, (chain, structure) in enumerate(zip(chains, structures)):
+        structure = structure.reshape(len(structure) // len(form), len(form), 3)
+        chain_data = Chain.Chain(id=chr(chain_index + 65))
+        for residue_index, (entity, coordinates) in enumerate(zip(chain, structure)):
+            residue = Residue.Residue(id=(" ", residue_number, " "), resname=letters[entity], segid="    ")
+            for coordinate in coordinates:
+                atom = Atom.Atom(name=form[0], serial_number=atom_number,
+                                 fullname=" " + form[residue_index % len(form)].ljust(3), altloc=" ",
+                                 bfactor=0.0, coord=coordinate, occupancy=1.0)
+                residue.add(atom=atom)
+                atom_number += 1
+
+            chain_data.add(residue)
+            residue_number += 1
+
+        structure_data.add(chain_data)
+
+    if file_path[-4:].lower() == ".pdb":
+        io = PDBIO()
+    elif file_path[-4:].lower() == ".cif":
+        io = MMCIFIO()
+    else:
+        raise ValueError("No such file type!")
+
+    io.set_structure(structure_data)
+    io.save(file_path)
+
+    return True
