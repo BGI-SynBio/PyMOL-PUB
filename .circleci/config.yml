@@ -17,6 +17,8 @@ jobs:
             pip install --upgrade pip
             pip install numpy==1.21.2
             pip install biopython==1.78
+            pip install matplotlib==3.1.1
+            pip install Pillow==8.2.0
 
       - run:
           name: temp style
