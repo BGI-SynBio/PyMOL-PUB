@@ -1,11 +1,79 @@
 # noinspection PyPackageRequirements
 from Bio.PDB import PDBParser, MMCIFParser, PDBIO, MMCIFIO, Structure, Chain, Residue, Atom
+from datetime import datetime
 from numpy import ndarray, array, arange, zeros, dot, transpose, linalg, where
 from numpy import argmin, argmax, min, max, mean, sum, sqrt
 from typing import Iterator
 
 
-class Score(object):
+class Monitor:
+
+    def __init__(self):
+        """
+        Initialize the monitor to identify the task progress.
+        """
+        self.last_time = None
+
+    def output(self, current_state: int, total_state: int, extra: dict = None):
+        """
+        Output the current state of process.
+
+        :param current_state: current state of process.
+        :type current_state: int
+
+        :param total_state: total state of process.
+        :type total_state: int
+
+        :param extra: extra vision information if required.
+        :type extra: dict
+        """
+        if self.last_time is None:
+            self.last_time = datetime.now()
+
+        if current_state == 0:
+            return
+
+        position = int(current_state / total_state * 100)
+
+        string = "|"
+
+        for index in range(0, 100, 5):
+            if position >= index:
+                string += "█"
+            else:
+                string += " "
+
+        string += "|"
+
+        pass_time = (datetime.now() - self.last_time).total_seconds()
+        wait_time = int(pass_time * (total_state - current_state) / current_state)
+
+        string += " " * (3 - len(str(position))) + str(position) + "% ("
+
+        string += " " * (len(str(total_state)) - len(str(current_state))) + str(current_state) + "/" + str(total_state)
+
+        if current_state < total_state:
+            minute, second = divmod(wait_time, 60)
+            hour, minute = divmod(minute, 60)
+            string += ") wait " + "%04d:%02d:%02d" % (hour, minute, second)
+        else:
+            minute, second = divmod(pass_time, 60)
+            hour, minute = divmod(minute, 60)
+            string += ") used " + "%04d:%02d:%02d" % (hour, minute, second)
+
+        if extra is not None:
+            string += " " + str(extra).replace("\'", "").replace("{", "(").replace("}", ")") + "."
+        else:
+            string += "."
+
+        print("\r" + string, end="", flush=True)
+
+        if current_state >= total_state:
+            self.last_time = None
+            print()
+
+
+class Score:
 
     def __init__(self, similar_type: str = "RMSD", model_type: str = "CA"):
         """
@@ -14,7 +82,7 @@ class Score(object):
         :param similar_type: method to calculate the similarity between two molecule structures.
         :type similar_type: str
 
-        :param model_type: model used by structures.
+        :param model_type: model used by structures (N-CA-C-O / CA for proteins, 3SPN / C3' for DNA and RNA sequences).
         :type model_type: str
         """
         self.similar_type = similar_type
@@ -377,6 +445,7 @@ def similar(structure_1, structure_2, score_method, use_center: bool = True, met
     elif distance_type == "GDT-HA":
         # AlphaFold was the top-ranked method, with a median GDT score of 92.4 across all targets.
         # https://alphafold.ebi.ac.uk/faq
+
         if model_type == "N-CA-C-O":
             if metrics is None:
                 metrics = 92.4 * 4
@@ -393,6 +462,7 @@ def similar(structure_1, structure_2, score_method, use_center: bool = True, met
     elif distance_type == "GDT-TS":
         # AlphaFold was the top-ranked method, with a median GDT score of 92.4 across all targets.
         # https://alphafold.ebi.ac.uk/faq
+
         if model_type == "N-CA-C-O":
             if metrics is None:
                 metrics = 92.4 * 4
@@ -494,6 +564,7 @@ def align(structures, score_method, use_center: bool = True, metrics: float = No
     :rtype: dict
     """
     cluster_flags = cluster(structures, score_method, use_center, metrics, merge_type)
+
     indices, alignment_results = zeros(shape=(len(structures, )), dtype=int), {}
     for cluster_index, structure_indices in enumerate(cluster_flags):
         indices[structure_indices] = cluster_index
@@ -507,22 +578,212 @@ def align(structures, score_method, use_center: bool = True, metrics: float = No
     return alignment_results
 
 
-def load_structure_from_file(file_path: str, entity_type: str = "protein") -> tuple:
+def set_attributes(chain: str, molecule_type: str, attribute_type: str = None, unit_values: dict = None) -> ndarray:
+    """
+    Set attributes for a known chain.
+
+    :param chain: chain information.
+    :type chain: str
+
+    :param molecule_type: type of molecule, including DNA, RNA or AA (amino acid).
+    :type molecule_type: str
+
+    :param attribute_type: physicochemical type to emphasis, like polarity, electronegativity, hydrophobicity, etc.
+    :type attribute_type: str or None
+
+    :param unit_values: values of unit, provided by users or the given attribute type.
+    :type unit_values: dict or None
+
+    :return: attribute values.
+    :rtype: numpy.ndarray
+    """
+    if molecule_type == "AA":
+        if unit_values is None:
+            if attribute_type == "polarity":
+                # Geoffrey M. Cooper and Robert E. Hausman (2007) ASM Press, Washington DC.
+                # also see https://en.wikipedia.org/wiki/Amino_acid.
+                # non-polar = 0 (False) and polar = 1 (True).
+                unit_values = {"A": 0, "C": 1, "D": 1, "E": 1, "F": 0, "G": 0, "H": 1, "I": 0, "K": 1, "L": 0,
+                               "M": 0, "N": 1, "P": 0, "Q": 1, "R": 1, "S": 1, "T": 1, "V": 0, "W": 0, "Y": 1}
+
+            elif attribute_type == "electronegativity":  # net charge at pH = 7.4.
+                # Geoffrey M. Cooper and Robert E. Hausman (2007) ASM Press, Washington DC.
+                # also see https://en.wikipedia.org/wiki/Amino_acid.
+                # negative = -1, neutral = 0, positive = 1; Histidine is 10% positive and 90% neutral, we set as 0.1.
+                unit_values = {"A": +0, "C": +0, "D": -1, "E": -1, "F": +0, "G": +0, "H": +0.1, "I": +0,
+                               "K": +1, "L": +0, "M": +0, "N": +0, "P": +0, "Q": +0, "R": +1, "S": +0,
+                               "T": +0, "V": +0, "W": +0, "Y": +0}
+
+            elif attribute_type == "hydrophobicity":  # pH = 7.0.
+                # Gian Gaetano Tartaglia and Michele Vendruscolo (2010) Journal of molecular biology.
+                # The scale of hydrophobicity index is between 0.00 and 1.00.
+                unit_values = {"A": 0.69, "C": 0.80, "D": 0.17, "E": 0.43, "F": 0.75, "G": 0.55, "H": 0.48, "I": 0.97,
+                               "K": 0.00, "L": 1.00, "M": 0.95, "N": 0.35, "P": 0.88, "Q": 0.47, "R": 0.34, "S": 0.39,
+                               "T": 0.49, "V": 0.95, "W": 0.49, "Y": 0.43}
+
+            elif attribute_type == "flexibility":
+                # Fang Huang and Werner M. Nau (2003) Angewandte Chemie International Edition.
+                # Tryptophan, Tyrosine, Cysteine and Methionine are themselves quenchers
+                # and they could consequently not be included in the study,
+                # so their conformational flexibility scales are unknown (represented by -1).
+                unit_values = {"A": 18, "C": -1, "D": 21, "E": 8.8, "F": 7.6, "G": 39, "H": 4.8, "I": 2.3, "K": 4.0,
+                               "L": 10, "M": -1, "N": 20, "P": 0.1, "Q": 7.2, "R": 4.6, "S": 25, "T": 11, "V": 3.0,
+                               "W": -1, "Y": -1}
+
+            elif attribute_type == "folding-propensity":  # i.e. folding propensity
+                # Gian Gaetano Tartaglia and Michele Vendruscolo (2010) Journal of molecular biology.
+                # The scale of folding propensity is between 0.00 and 1.00.
+                unit_values = {"A": 0.34, "C": 0.97, "D": 0.61, "E": 0.73, "F": 0.31, "G": 0.58, "H": 0.47, "I": 0.55,
+                               "K": 0.50, "L": 0.65, "M": 0.55, "N": 0.48, "P": 1.00, "Q": 0.35, "R": 0.63, "S": 0.73,
+                               "T": 0.44, "V": 0.55, "W": 0.00, "Y": 0.21}
+
+            elif attribute_type == "turn-propensity":
+                # Gian Gaetano Tartaglia and Michele Vendruscolo (2010) Journal of molecular biology.
+                # The scale of turn propensity is between 0.00 and 1.00.
+                unit_values = {"A": 0.22, "C": 0.70, "D": 0.74, "E": 0.32, "F": 0.20, "G": 0.95, "H": 0.56, "I": 0.00,
+                               "K": 0.60, "L": 0.21, "M": 0.21, "N": 1.00, "P": 0.66, "Q": 0.47, "R": 0.46, "S": 0.79,
+                               "T": 0.34, "V": 0.09, "W": 0.40, "Y": 0.50}
+
+            elif attribute_type == "helix-propensity":
+                # Gian Gaetano Tartaglia and Michele Vendruscolo (2010) Journal of molecular biology.
+                # The scale of alpha-helix propensity is between 0.00 and 1.00.
+                unit_values = {"A": 0.57, "C": 0.62, "D": 0.67, "E": 0.63, "F": 0.56, "G": 0.00, "H": 0.48, "I": 0.45,
+                               "K": 0.87, "L": 0.48, "M": 0.32, "N": 0.32, "P": 0.44, "Q": 0.51, "R": 1.00, "S": 0.45,
+                               "T": 0.30, "V": 0.45, "W": 0.00, "Y": 0.54}
+
+            elif attribute_type == "sheet-propensity":
+                # Gian Gaetano Tartaglia and Michele Vendruscolo (2010) Journal of molecular biology.
+                # The scale of beta-sheet propensity is between 0.00 and 1.00.
+                unit_values = {"A": 0.34, "C": 0.23, "D": 0.35, "E": 0.14, "F": 0.92, "G": 0.13, "H": 0.14, "I": 0.99,
+                               "K": 0.07, "L": 0.87, "M": 0.40, "N": 0.90, "P": 0.00, "Q": 0.72, "R": 0.22, "S": 0.06,
+                               "T": 0.14, "V": 0.78, "W": 0.62, "Y": 1.00}
+
+            else:
+                raise ValueError("No such attribute type!")
+
+    elif molecule_type == "DNA":
+        if unit_values is None:
+            pass  # TODO
+
+    elif molecule_type == "RNA":
+        if unit_values is None:
+            pass  # TODO
+
+    else:
+        raise ValueError("No such molecule type!")
+
+    attribute_values = zeros(shape=(len(chain),))
+
+    for unit_index, entity in enumerate(chain):
+        attribute_values[unit_index] = unit_values[entity]
+
+    return attribute_values
+
+
+def set_difference(alignment_data: ndarray, model_type: str, calculation_type: str = "average") -> ndarray:
+    """
+    Set difference information for a known chain.
+
+    :param alignment_data: alignment structure data, format of which could be (chain number, chain length, 3).
+    :type alignment_data: numpy.ndarray
+
+    :param model_type: model used by structures (N-CA-C-O / CA for proteins, 3SPN / C3' for DNA and RNA sequences).
+    :type model_type: str
+
+    :param calculation_type: difference calculation, including average and maximum.
+    :type calculation_type: str
+
+    :return: difference values.
+    :rtype: numpy.ndarray
+
+    .. note::
+        If chain number is 2, the parameter 'calculation_type' is invalid.
+        We provide the root mean squared error of each unit.
+        Otherwise, we provide the average and maximum value of the root mean squared error of each unit.
+    """
+    assert len(alignment_data.shape) == 3 and alignment_data.shape[2] == 3
+
+    merge_number = 1
+    if model_type == "N-CA-C-O":
+        merge_number = 4
+
+    elif model_type == "3SPN":
+        merge_number = 3
+
+    elif model_type in ["CA", "C3'"]:
+        pass  # no further merge calculation is required.
+
+    else:
+        raise ValueError("No such model type!")
+
+    differences = []
+    if merge_number == 1:
+        for index_1 in range(alignment_data.shape[0] - 1):
+            for index_2 in range(index_1 + 1, alignment_data.shape[0]):
+                case_1, case_2 = alignment_data[index_1], alignment_data[index_2]
+                normalized_values = linalg.norm((case_1 - case_2), ord=2, axis=1)
+                differences.append(normalized_values)
+
+    else:
+        for index_1 in range(alignment_data.shape[0] - 1):
+            for index_2 in range(index_1 + 1, alignment_data.shape[0]):
+                case_1, case_2 = alignment_data[index_1], alignment_data[index_2]
+                normalized_values = linalg.norm((case_1 - case_2), ord=2, axis=1)
+                normalized_values = normalized_values.reshape(len(normalized_values) // merge_number, merge_number)
+                normalized_values = linalg.norm(normalized_values, ord=2, axis=1)
+                differences.append(normalized_values)
+
+    differences = array(differences)
+
+    if calculation_type == "average":
+        differences = mean(differences, axis=0)
+
+    elif calculation_type == "maximum":
+        differences = sum(differences, axis=0)
+
+    else:
+        raise ValueError("No such calculate type!")
+
+    return differences
+
+
+def kmer(chain: str, structure: ndarray, sub_length: int) -> Iterator[tuple]:
+    """
+    Disassemble the entire chain into sub segments of the given length.
+
+    :param chain: molecule chain.
+    :type chain: str
+
+    :param structure: molecule structure.
+    :type structure: numpy.ndarray
+
+    :param sub_length: length of sub segment.
+    :type sub_length: int
+
+    :returns sub chain and the corresponding sub structure.
+    :rtype str, numpy.ndarray
+    """
+    number = len(structure) // len(chain)
+    for index in range(len(chain) - sub_length + 1):
+        yield chain[index: index + sub_length], structure[index * number: (index + sub_length) * number]
+
+
+def load_structure_from_file(file_path: str, molecule_type: str = "AA") -> tuple:
     """
     Load structure data from file.
 
     :param file_path: path to load file.
     :type file_path: str
 
-    :param entity_type: type of entity data, which could be protein, DNA, or RNA.
-    :type entity_type: str
+    :param molecule_type: type of molecule data, which could be DNA, RNA or AA (amino acid).
+    :type molecule_type: str
 
     :return: chains and their corresponding structures.
     :rtype: dict, dict
     """
-    protein_letters = {"ALA": "A", "CYS": "C", "ASP": "D", "GLU": "E", "PHE": "F", "GLY": "G", "HIS": "H", "ILE": "I",
-                       "LYS": "K", "LEU": "L", "MET": "M", "ASN": "N", "PRO": "P", "GLN": "Q", "ARG": "R", "SER": "S",
-                       "THR": "T", "VAL": "V", "TRP": "W", "TYR": "Y"}
+    letters = {"ALA": "A", "CYS": "C", "ASP": "D", "GLU": "E", "PHE": "F", "GLY": "G", "HIS": "H", "ILE": "I",
+               "LYS": "K", "LEU": "L", "MET": "M", "ASN": "N", "PRO": "P", "GLN": "Q", "ARG": "R", "SER": "S",
+               "THR": "T", "VAL": "V", "TRP": "W", "TYR": "Y"}
 
     if file_path[-4:].lower() == ".pdb":
         data = PDBParser(PERMISSIVE=1).get_structure("temp", file_path)
@@ -532,7 +793,7 @@ def load_structure_from_file(file_path: str, entity_type: str = "protein") -> tu
         raise ValueError("No such load type! Only structure file with \"pdb\" or \"cif\" format can be loaded!")
 
     chains, structure_data = {}, {}
-    if entity_type == "protein":
+    if molecule_type == "AA":
         rotation = ["N", "CA", "C", "O"]
         for model in data:
             for chain in model:
@@ -544,11 +805,11 @@ def load_structure_from_file(file_path: str, entity_type: str = "protein") -> tu
                         if atom.id == rotation[location]:
                             skeleton_positions.append(atom.coord.tolist())
                             location = (location + 1) % 4
-                    sequence += protein_letters[residue.get_resname()]
+                    sequence += letters[residue.get_resname()]
                 chains[chain.id] = sequence
                 structure_data[chain.id] = {"CA": array(core_positions), "N-CA-C-O": array(skeleton_positions)}
 
-    elif entity_type in ["DNA", "RNA"]:
+    elif molecule_type in ["DNA", "RNA"]:
         for model in data:
             for chain in model:
                 sequence, core_positions, skeleton_positions = "", [], []
@@ -575,7 +836,7 @@ def load_structure_from_file(file_path: str, entity_type: str = "protein") -> tu
     return chains, structure_data
 
 
-def save_structure_to_file(chains: list, structures: ndarray, file_path: str, model_type: str = "CA") -> bool:
+def save_structure_to_file(chains: list, structures: ndarray, file_path: str, model_type: str = "CA"):
     """
     Save temp structure file.
 
@@ -588,11 +849,8 @@ def save_structure_to_file(chains: list, structures: ndarray, file_path: str, mo
     :param file_path: path to save temp file.
     :type file_path: str
 
-    :param model_type: model used by structures.
+    :param model_type: model used by structures (N-CA-C-O / CA for proteins, 3SPN / C3' for DNA and RNA sequences).
     :type model_type: str
-
-    :return: complete flag.
-    :rtype: bool
     """
     if model_type == "N-CA-C-O":
         form = ["N", "CA", "C", "O"]
@@ -640,5 +898,3 @@ def save_structure_to_file(chains: list, structures: ndarray, file_path: str, mo
 
     io.set_structure(structure_data)
     io.save(file_path)
-
-    return True
