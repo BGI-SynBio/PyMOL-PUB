@@ -578,9 +578,9 @@ def align(structures, score_method, use_center: bool = True, metrics: float = No
     return alignment_results
 
 
-def set_attributes(chain: str, molecule_type: str, attribute_type: str = None, unit_values: dict = None) -> ndarray:
+def set_properties(chain: str, molecule_type: str, property_type: str = None, unit_values: dict = None) -> ndarray:
     """
-    Set attributes for a known chain.
+    Set physicochemical properties for a known chain.
 
     :param chain: chain information.
     :type chain: str
@@ -588,40 +588,55 @@ def set_attributes(chain: str, molecule_type: str, attribute_type: str = None, u
     :param molecule_type: type of molecule, including DNA, RNA or AA (amino acid).
     :type molecule_type: str
 
-    :param attribute_type: physicochemical type to emphasis, like polarity, electronegativity, hydrophobicity, etc.
-    :type attribute_type: str or None
+    :param property_type: physicochemical type to emphasis, like polarity, electronegativity, hydrophobicity, etc.
+    :type property_type: str or None
 
-    :param unit_values: values of unit, provided by users or the given attribute type.
+    :param unit_values: values of unit, provided by users or the given property type.
     :type unit_values: dict or None
 
-    :return: attribute values.
+    :return: property values.
     :rtype: numpy.ndarray
     """
-    if molecule_type == "AA":
-        if unit_values is None:
-            if attribute_type == "polarity":
+    if unit_values is None:
+        if molecule_type == "AA":
+            if property_type == "polarity":
                 # Geoffrey M. Cooper and Robert E. Hausman (2007) ASM Press, Washington DC.
                 # also see https://en.wikipedia.org/wiki/Amino_acid.
                 # non-polar = 0 (False) and polar = 1 (True).
                 unit_values = {"A": 0, "C": 1, "D": 1, "E": 1, "F": 0, "G": 0, "H": 1, "I": 0, "K": 1, "L": 0,
                                "M": 0, "N": 1, "P": 0, "Q": 1, "R": 1, "S": 1, "T": 1, "V": 0, "W": 0, "Y": 1}
+                property_values = zeros(shape=(len(chain),))
+                for unit_index, entity in enumerate(chain):
+                    property_values[unit_index] = unit_values[entity]
 
-            elif attribute_type == "electronegativity":  # net charge at pH = 7.4.
+                return property_values
+
+            elif property_type == "electronegativity":  # net charge at pH = 7.4.
                 # Geoffrey M. Cooper and Robert E. Hausman (2007) ASM Press, Washington DC.
                 # also see https://en.wikipedia.org/wiki/Amino_acid.
                 # negative = -1, neutral = 0, positive = 1; Histidine is 10% positive and 90% neutral, we set as 0.1.
                 unit_values = {"A": +0, "C": +0, "D": -1, "E": -1, "F": +0, "G": +0, "H": +0.1, "I": +0,
                                "K": +1, "L": +0, "M": +0, "N": +0, "P": +0, "Q": +0, "R": +1, "S": +0,
                                "T": +0, "V": +0, "W": +0, "Y": +0}
+                property_values = zeros(shape=(len(chain),))
+                for unit_index, entity in enumerate(chain):
+                    property_values[unit_index] = unit_values[entity]
 
-            elif attribute_type == "hydrophobicity":  # pH = 7.0.
+                return property_values
+
+            elif property_type == "hydrophobicity":
                 # Gian Gaetano Tartaglia and Michele Vendruscolo (2010) Journal of molecular biology.
-                # The scale of hydrophobicity index is between 0.00 and 1.00.
+                # The scale of hydrophobicity index is between 0.00 and 1.00 under pH = 7.0.
                 unit_values = {"A": 0.69, "C": 0.80, "D": 0.17, "E": 0.43, "F": 0.75, "G": 0.55, "H": 0.48, "I": 0.97,
                                "K": 0.00, "L": 1.00, "M": 0.95, "N": 0.35, "P": 0.88, "Q": 0.47, "R": 0.34, "S": 0.39,
                                "T": 0.49, "V": 0.95, "W": 0.49, "Y": 0.43}
+                property_values = zeros(shape=(len(chain),))
+                for unit_index, entity in enumerate(chain):
+                    property_values[unit_index] = unit_values[entity]
 
-            elif attribute_type == "flexibility":
+                return property_values
+
+            elif property_type == "flexibility":
                 # Fang Huang and Werner M. Nau (2003) Angewandte Chemie International Edition.
                 # Tryptophan, Tyrosine, Cysteine and Methionine are themselves quenchers
                 # and they could consequently not be included in the study,
@@ -629,55 +644,71 @@ def set_attributes(chain: str, molecule_type: str, attribute_type: str = None, u
                 unit_values = {"A": 18, "C": -1, "D": 21, "E": 8.8, "F": 7.6, "G": 39, "H": 4.8, "I": 2.3, "K": 4.0,
                                "L": 10, "M": -1, "N": 20, "P": 0.1, "Q": 7.2, "R": 4.6, "S": 25, "T": 11, "V": 3.0,
                                "W": -1, "Y": -1}
+                property_values = zeros(shape=(len(chain),))
+                for unit_index, entity in enumerate(chain):
+                    property_values[unit_index] = unit_values[entity]
 
-            elif attribute_type == "folding-propensity":  # i.e. folding propensity
-                # Gian Gaetano Tartaglia and Michele Vendruscolo (2010) Journal of molecular biology.
-                # The scale of folding propensity is between 0.00 and 1.00.
-                unit_values = {"A": 0.34, "C": 0.97, "D": 0.61, "E": 0.73, "F": 0.31, "G": 0.58, "H": 0.47, "I": 0.55,
-                               "K": 0.50, "L": 0.65, "M": 0.55, "N": 0.48, "P": 1.00, "Q": 0.35, "R": 0.63, "S": 0.73,
-                               "T": 0.44, "V": 0.55, "W": 0.00, "Y": 0.21}
+                return property_values
 
-            elif attribute_type == "turn-propensity":
+            elif property_type == "turn-propensity":
                 # Gian Gaetano Tartaglia and Michele Vendruscolo (2010) Journal of molecular biology.
                 # The scale of turn propensity is between 0.00 and 1.00.
                 unit_values = {"A": 0.22, "C": 0.70, "D": 0.74, "E": 0.32, "F": 0.20, "G": 0.95, "H": 0.56, "I": 0.00,
                                "K": 0.60, "L": 0.21, "M": 0.21, "N": 1.00, "P": 0.66, "Q": 0.47, "R": 0.46, "S": 0.79,
                                "T": 0.34, "V": 0.09, "W": 0.40, "Y": 0.50}
+                property_values = zeros(shape=(len(chain),))
+                for unit_index, entity in enumerate(chain):
+                    property_values[unit_index] = unit_values[entity]
 
-            elif attribute_type == "helix-propensity":
+                return property_values
+
+            elif property_type == "helix-propensity":
                 # Gian Gaetano Tartaglia and Michele Vendruscolo (2010) Journal of molecular biology.
                 # The scale of alpha-helix propensity is between 0.00 and 1.00.
                 unit_values = {"A": 0.57, "C": 0.62, "D": 0.67, "E": 0.63, "F": 0.56, "G": 0.00, "H": 0.48, "I": 0.45,
                                "K": 0.87, "L": 0.48, "M": 0.32, "N": 0.32, "P": 0.44, "Q": 0.51, "R": 1.00, "S": 0.45,
                                "T": 0.30, "V": 0.45, "W": 0.00, "Y": 0.54}
+                property_values = zeros(shape=(len(chain),))
+                for unit_index, entity in enumerate(chain):
+                    property_values[unit_index] = unit_values[entity]
 
-            elif attribute_type == "sheet-propensity":
+                return property_values
+
+            elif property_type == "sheet-propensity":
                 # Gian Gaetano Tartaglia and Michele Vendruscolo (2010) Journal of molecular biology.
                 # The scale of beta-sheet propensity is between 0.00 and 1.00.
                 unit_values = {"A": 0.34, "C": 0.23, "D": 0.35, "E": 0.14, "F": 0.92, "G": 0.13, "H": 0.14, "I": 0.99,
                                "K": 0.07, "L": 0.87, "M": 0.40, "N": 0.90, "P": 0.00, "Q": 0.72, "R": 0.22, "S": 0.06,
                                "T": 0.14, "V": 0.78, "W": 0.62, "Y": 1.00}
+                property_values = zeros(shape=(len(chain),))
+                for unit_index, entity in enumerate(chain):
+                    property_values[unit_index] = unit_values[entity]
+
+                return property_values
+
+            elif property_type == "folding-propensity":
+                # Gian Gaetano Tartaglia and Michele Vendruscolo (2010) Journal of molecular biology.
+                # The scale of folding propensity is between 0.00 and 1.00.
+                unit_values = {"A": 0.34, "C": 0.97, "D": 0.61, "E": 0.73, "F": 0.31, "G": 0.58, "H": 0.47, "I": 0.55,
+                               "K": 0.50, "L": 0.65, "M": 0.55, "N": 0.48, "P": 1.00, "Q": 0.35, "R": 0.63, "S": 0.73,
+                               "T": 0.44, "V": 0.55, "W": 0.00, "Y": 0.21}
+                property_values = zeros(shape=(len(chain),))
+                for unit_index, entity in enumerate(chain):
+                    property_values[unit_index] = unit_values[entity]
+
+                return property_values
 
             else:
-                raise ValueError("No such attribute type!")
+                raise ValueError("No such property type!")
 
-    elif molecule_type == "DNA":
-        if unit_values is None:
-            pass  # TODO
+        elif molecule_type == "DNA":
+            raise NotImplementedError  # TODO
 
-    elif molecule_type == "RNA":
-        if unit_values is None:
-            pass  # TODO
+        elif molecule_type == "RNA":
+            raise NotImplementedError  # TODO
 
-    else:
-        raise ValueError("No such molecule type!")
-
-    attribute_values = zeros(shape=(len(chain),))
-
-    for unit_index, entity in enumerate(chain):
-        attribute_values[unit_index] = unit_values[entity]
-
-    return attribute_values
+        else:
+            raise ValueError("No such molecule type!")
 
 
 def set_difference(alignment_data: ndarray, model_type: str, calculation_type: str = "average") -> ndarray:
@@ -703,7 +734,6 @@ def set_difference(alignment_data: ndarray, model_type: str, calculation_type: s
     """
     assert len(alignment_data.shape) == 3 and alignment_data.shape[2] == 3
 
-    merge_number = 1
     if model_type == "N-CA-C-O":
         merge_number = 4
 
@@ -711,7 +741,7 @@ def set_difference(alignment_data: ndarray, model_type: str, calculation_type: s
         merge_number = 3
 
     elif model_type in ["CA", "C3'"]:
-        pass  # no further merge calculation is required.
+        merge_number = 1
 
     else:
         raise ValueError("No such model type!")

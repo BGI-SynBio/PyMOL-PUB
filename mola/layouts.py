@@ -114,13 +114,16 @@ class StructureImage:
 
 class Figure:
 
-    def __init__(self, manuscript_format: str = "Nature", occupied_columns: int = 1, aspect_ratio: tuple = (1, 2),
-                 row_number: int = 1, column_number: int = 1, interval: tuple = (0, 0)):
+    def __init__(self, manuscript_format: str = "Nature", column_format: int = None, occupied_columns: int = 1,
+                 aspect_ratio: tuple = (1, 2), row_number: int = 1, column_number: int = 1, interval: tuple = (0, 0)):
         """
         Initialize a manuscript figure.
 
         :param manuscript_format: format of the manuscript (or the publisher of the manuscript).
         :type manuscript_format: str
+
+        :param column_format: column format of manuscript (only support for Cell format).
+        :type column_format: int or None
 
         :param occupied_columns: occupied column number of the manuscript.
         :type occupied_columns: int
@@ -145,7 +148,7 @@ class Figure:
             else:
                 raise ValueError("Nature's standard figures allow single or double column.")
 
-            rcParams["font.family"] = "Times New Roman"
+            rcParams["font.family"] = "Arial"
 
         elif manuscript_format == "Science":
             if occupied_columns == 1:
@@ -160,15 +163,60 @@ class Figure:
             rcParams["font.family"] = "sans-serif"
             rcParams["font.sans-serif"] = "Helvetica"
 
+        elif manuscript_format == "Cell":
+            if column_format is None:
+                raise ValueError("The column format for Cell's standard figures should be specified!")
+
+            if column_format == 2:
+                if occupied_columns == 1:
+                    pyplot.figure(figsize=(3.35, 3.35 / aspect_ratio[1] * aspect_ratio[0]))
+                elif occupied_columns == 2:
+                    pyplot.figure(figsize=(6.85, 6.85 / aspect_ratio[1] * aspect_ratio[0]))
+                else:
+                    raise ValueError("Cell's standard figures allow 1 and 2 column(s).")
+
+            elif column_format == 3:
+                if occupied_columns == 1:
+                    pyplot.figure(figsize=(2.17, 2.17 / aspect_ratio[1] * aspect_ratio[0]))
+                elif occupied_columns == 2:
+                    pyplot.figure(figsize=(4.49, 4.49 / aspect_ratio[1] * aspect_ratio[0]))
+                elif occupied_columns == 3:
+                    pyplot.figure(figsize=(6.85, 6.85 / aspect_ratio[1] * aspect_ratio[0]))
+                else:
+                    raise ValueError("Cell's standard figures allow 1 ~ 3 column(s).")
+
+            else:
+                raise ValueError("No such column format (allowing 2 and 3)!")
+
+            if occupied_columns == 1:
+                pyplot.figure(figsize=(3.54, 3.54 / aspect_ratio[1] * aspect_ratio[0]))
+            elif occupied_columns == 2:
+                pyplot.figure(figsize=(7.08, 7.08 / aspect_ratio[1] * aspect_ratio[0]))
+            else:
+                raise ValueError("Cell's standard figures allow 1 and 2 column(s).")
+
+            rcParams["font.family"] = "Arial"
+
+        elif manuscript_format == "PNAS":
+            if occupied_columns == 1:
+                pyplot.figure(figsize=(3.43, 3.43 / aspect_ratio[1] * aspect_ratio[0]))
+            elif occupied_columns == 2:
+                pyplot.figure(figsize=(7.08, 7.08 / aspect_ratio[1] * aspect_ratio[0]))
+            else:
+                raise ValueError("PNAS's standard figures allow 1 and 2 column(s).")
+
+            rcParams["font.family"] = "sans-serif"
+            rcParams["font.sans-serif"] = "Helvetica"
+
         elif manuscript_format == "ACS":
             if occupied_columns == 1:
                 pyplot.figure(figsize=(3.30, 3.30 / aspect_ratio[1] * aspect_ratio[0]))
             elif occupied_columns == 2:
                 pyplot.figure(figsize=(7.00, 7.00 / aspect_ratio[1] * aspect_ratio[0]))
             else:
-                raise ValueError("ACS standard figures allow single or double column.")
+                raise ValueError("ACS standard figures allow 1 and 2 column(s).")
 
-            rcParams["font.family"] = "Times New Roman"
+            rcParams["font.family"] = "Arial"
 
         elif manuscript_format == "Oxford":
             if occupied_columns == 1:
@@ -176,7 +224,15 @@ class Figure:
             elif occupied_columns == 2:
                 pyplot.figure(figsize=(6.70, 6.70 / aspect_ratio[1] * aspect_ratio[0]))
             else:
-                raise ValueError("Oxford standard figures allow single or double column.")
+                raise ValueError("Oxford standard figures allow 1 and 2 column(s).")
+
+            rcParams["font.family"] = "Arial"
+
+        elif manuscript_format == "PLOS":
+            if occupied_columns == 1:
+                pyplot.figure(figsize=(5.20, 5.20 / aspect_ratio[1] * aspect_ratio[0]))
+            else:
+                raise ValueError("PLOS standard figures allow single column.")
 
             rcParams["font.family"] = "Arial"
 
@@ -186,7 +242,7 @@ class Figure:
             elif occupied_columns == 2:
                 pyplot.figure(figsize=(7.16, 7.16 / aspect_ratio[1] * aspect_ratio[0]))
             else:
-                raise ValueError("IEEE standard figures allow single or double column.")
+                raise ValueError("IEEE standard figures allow 1 and 2 column(s).")
 
             rcParams["font.family"] = "Times New Roman"
 
@@ -196,7 +252,7 @@ class Figure:
             elif occupied_columns == 2:
                 pyplot.figure(figsize=(6.02, 6.02 / aspect_ratio[1] * aspect_ratio[0]))
             else:
-                raise ValueError("ACM standard figures allow single or double column.")
+                raise ValueError("ACM standard figures allow 1 and 2 column(s).")
 
             rcParams["font.family"] = "Linux Libertine"
 
