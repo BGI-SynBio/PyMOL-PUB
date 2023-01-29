@@ -1,8 +1,10 @@
+from itertools import permutations
 from logging import getLogger, CRITICAL
-from PIL import Image
-from pymol2 import PyMOL
 from matplotlib import pyplot, rcParams
 from numpy import zeros, sum
+from os import path
+from PIL import Image, PngImagePlugin
+from pymol2 import PyMOL
 from types import FunctionType
 from warnings import filterwarnings
 
@@ -315,7 +317,6 @@ class Figure:
         else:
             raise ValueError("We need to input \'function\' or \'image_path\'!")
 
-    # noinspection PyMethodMayBeStatic
     def set_structure_image(self, image_path: str, locations: tuple, size: tuple, zorder: int = None):
         """
         Put the structure image with a specific size in a specific position of a panel.
@@ -332,18 +333,28 @@ class Figure:
         :param zorder: order in which components are superimposed on each other.
         :type zorder: int or None
         """
-        image_data = Image.open(fp=image_path)
-        if zorder is not None:
-            pyplot.imshow(X=image_data, extent=[locations[0], size[0], locations[1], size[1]], zorder=zorder)
-        else:
-            pyplot.imshow(X=image_data, extent=[locations[0], size[0], locations[1], size[1]])
+        image_format = image_path[image_path.rfind("."):].lower()
 
-    def set_widget_image(self, widget_info: tuple, locations: tuple, size: tuple, zorder: int = None):
+        if image_format == ".png":
+            image_data = Image.open(fp=image_path)
+            self.paste_bitmap(image=image_data, locations=locations, size=size, zorder=zorder)
+
+        elif image_format == ".svg":
+            pass  # TODO waiting for 'paste_vector' interface.
+
+        else:
+            raise ValueError(".png and .svg are support!")
+
+    def set_widget_image(self, widget_type: str, widget_attributes: tuple,
+                         locations: tuple, size: tuple, zorder: int = None):
         """
         Put the widget with a specific size in a specific position of a panel.
 
-        :param widget_info: the painting information of the widget.
-        :type widget_info: tuple
+        :param widget_type: widget type for painting.
+        :type widget_type: str
+
+        :param widget_attributes: attributes of the selected widget.
+        :type widget_attributes: tuple
 
         :param locations: location in the panel (x and y).
         :type locations: tuple
@@ -354,4 +365,42 @@ class Figure:
         :param zorder: order in which components are superimposed on each other.
         :type zorder: int or None
         """
-        pass  # TODO
+        root_path, image_path = path.abspath(__file__).replace("\\", "/")[:-10] + "widgets/", None
+        for sorted_attributes in permutations(widget_attributes):
+            sorted_path = root_path + widget_type + str(sorted_attributes)[1:-1].replace(", ", ".") + ".svg"
+            if path.exists(path=sorted_path):
+                image_path = sorted_path
+                break
+
+        if image_path is None:
+            raise ValueError("PyMOL-advance does not include this widget!")
+
+        # TODO we need to find a suitable svg loader.
+
+        self.paste_vector(image=image_path, locations=locations, size=size, zorder=zorder)
+
+    @staticmethod
+    def paste_bitmap(image: PngImagePlugin.PngImageFile, locations: tuple, size: tuple, zorder: int = None):
+        """
+        Paste a bitmap in the figure or the panel in figure.
+
+        :param image: bitmap image.
+        :type image: PIL.PngImagePlugin.PngImageFile
+
+        :param locations: location in the panel (x and y).
+        :type locations: tuple
+
+        :param size: display size of the widget.
+        :type size: tuple
+
+        :param zorder: order in which components are superimposed on each other.
+        :type zorder: int or None
+        """
+        if zorder is not None:
+            pyplot.imshow(X=image, extent=[locations[0], size[0], locations[1], size[1]], zorder=zorder)
+        else:
+            pyplot.imshow(X=image, extent=[locations[0], size[0], locations[1], size[1]])
+
+    @staticmethod
+    def paste_vector(image, locations: tuple, size: tuple, zorder: int = None):
+        pass  # TODO no suitable pasting rules found temporarily.

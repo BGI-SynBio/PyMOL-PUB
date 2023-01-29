@@ -1,10 +1,7 @@
-from matplotlib.font_manager import fontManager
+from matplotlib import font_manager
+from os import path
 
-existing_fonts = []
-for font_info in fontManager.ttflist:
-    existing_fonts.append(font_info.name)
-
-needed_fonts = ["Times New Roman", "Helvetica", "Arial", "Linux Libertine", "Lucida Calligraphy"]
-for needed_font in needed_fonts:
-    if needed_font not in existing_fonts:
-        pass  # TODO install fonts
+# load required font formats.
+font_files = font_manager.findSystemFonts(path.abspath(__file__).replace("\\", "/")[:-11] + "fonts/")
+font_list = font_manager.createFontList(font_files)
+font_manager.fontManager.ttflist.extend(font_list)
