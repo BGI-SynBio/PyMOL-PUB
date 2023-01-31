@@ -1,4 +1,3 @@
-from itertools import permutations
 from logging import getLogger, CRITICAL
 from matplotlib import pyplot, rcParams
 from numpy import zeros, sum
@@ -17,15 +16,6 @@ class StructureImage:
     def __init__(self):
         self.__mol = PyMOL()
         self.__mol.cmd.ray(quiet=1)  # make PyMOL run silently.
-
-    def set_title(self, title: str):
-        """
-        Set title of structure image.
-
-        :param title: title of structure.
-        :type title: str
-        """
-        self.__mol.set_title(object="structure", state=1, text=title)
 
     def set_state(self, representation: str = "cartoon", hides: list = None):
         """
@@ -100,7 +90,7 @@ class StructureImage:
         """
         self.set_color(shading_type="all", colors={"all": neglect_color})
 
-    def save(self, save_path: str, dpi: int = 600):
+    def save(self, save_path: str, dpi: int = 1200):
         """
         Save the structure image.
 
@@ -110,7 +100,7 @@ class StructureImage:
         :param dpi: dots per inch.
         :type dpi: int
         """
-        assert save_path[-4:] == ".png"
+        assert save_path[-4:] == ".png"  # TODO consider the SVG output.
         self.__mol.cmd.png(filename=save_path, dpi=dpi, quiet=1)
 
 
@@ -150,6 +140,7 @@ class Figure:
             else:
                 raise ValueError("Nature's standard figures allow single or double column.")
 
+            self.minimum_dpi = 300
             rcParams["font.family"] = "Arial"
 
         elif manuscript_format == "Science":
@@ -162,6 +153,7 @@ class Figure:
             else:
                 raise ValueError("Science's standard figures allow 1 ~ 3 column(s).")
 
+            self.minimum_dpi = 300
             rcParams["font.family"] = "sans-serif"
             rcParams["font.sans-serif"] = "Helvetica"
 
@@ -197,6 +189,7 @@ class Figure:
             else:
                 raise ValueError("Cell's standard figures allow 1 and 2 column(s).")
 
+            self.minimum_dpi = 300
             rcParams["font.family"] = "Arial"
 
         elif manuscript_format == "PNAS":
@@ -207,6 +200,7 @@ class Figure:
             else:
                 raise ValueError("PNAS's standard figures allow 1 and 2 column(s).")
 
+            self.minimum_dpi = 600
             rcParams["font.family"] = "sans-serif"
             rcParams["font.sans-serif"] = "Helvetica"
 
@@ -218,6 +212,7 @@ class Figure:
             else:
                 raise ValueError("ACS standard figures allow 1 and 2 column(s).")
 
+            self.minimum_dpi = 600
             rcParams["font.family"] = "Arial"
 
         elif manuscript_format == "Oxford":
@@ -228,6 +223,7 @@ class Figure:
             else:
                 raise ValueError("Oxford standard figures allow 1 and 2 column(s).")
 
+            self.minimum_dpi = 350
             rcParams["font.family"] = "Arial"
 
         elif manuscript_format == "PLOS":
@@ -236,6 +232,7 @@ class Figure:
             else:
                 raise ValueError("PLOS standard figures allow single column.")
 
+            self.minimum_dpi = 300
             rcParams["font.family"] = "Arial"
 
         elif manuscript_format == "IEEE":
@@ -246,6 +243,7 @@ class Figure:
             else:
                 raise ValueError("IEEE standard figures allow 1 and 2 column(s).")
 
+            self.minimum_dpi = 300
             rcParams["font.family"] = "Times New Roman"
 
         elif manuscript_format == "ACM":
@@ -256,13 +254,14 @@ class Figure:
             else:
                 raise ValueError("ACM standard figures allow 1 and 2 column(s).")
 
+            self.minimum_dpi = 300
             rcParams["font.family"] = "Linux Libertine"
 
         rcParams["mathtext.fontset"] = "custom"
         rcParams["mathtext.rm"] = "Linux Libertine"
         rcParams["mathtext.cal"] = "Lucida Calligraphy"
-        rcParams["mathtext.it"] = "Linux Libertine:italic"
         rcParams["mathtext.bf"] = "Linux Libertine:bold"
+        rcParams["mathtext.it"] = "Linux Libertine:italic"
 
         if row_number > 1 or column_number > 1:
             self.grid = pyplot.GridSpec(row_number, column_number)
@@ -290,7 +289,7 @@ class Figure:
     # noinspection PyMethodMayBeStatic
     def set_panel(self, function: FunctionType = None, function_params: dict = None, image_path: str = None):
         """
-        Draw a panel in a specific location.
+        paint a panel in a specific location.
 
         :param function: painting function.
         :type function: types.FunctionType or None
@@ -340,10 +339,11 @@ class Figure:
             self.paste_bitmap(image=image_data, locations=locations, size=size, zorder=zorder)
 
         elif image_format == ".svg":
-            pass  # TODO waiting for 'paste_vector' interface.
+            # TODO we need to find a suitable svg loader.
 
+            self.paste_vector(image=image_path, locations=locations, size=size, zorder=zorder)
         else:
-            raise ValueError(".png and .svg are support!")
+            raise ValueError("Only PNG files and SVG files are support!")
 
     def set_widget_image(self, widget_type: str, widget_attributes: tuple,
                          locations: tuple, size: tuple, zorder: int = None):
@@ -366,11 +366,7 @@ class Figure:
         :type zorder: int or None
         """
         root_path, image_path = path.abspath(__file__).replace("\\", "/")[:-10] + "widgets/", None
-        for sorted_attributes in permutations(widget_attributes):
-            sorted_path = root_path + widget_type + str(sorted_attributes)[1:-1].replace(", ", ".") + ".svg"
-            if path.exists(path=sorted_path):
-                image_path = sorted_path
-                break
+        image_path = root_path + widget_type + " [" + str(widget_attributes)[1:-1].replace(", ", ".") + "].svg"
 
         if image_path is None:
             raise ValueError("PyMOL-advance does not include this widget!")
@@ -379,8 +375,7 @@ class Figure:
 
         self.paste_vector(image=image_path, locations=locations, size=size, zorder=zorder)
 
-    @staticmethod
-    def paste_bitmap(image: PngImagePlugin.PngImageFile, locations: tuple, size: tuple, zorder: int = None):
+    def paste_bitmap(self, image: PngImagePlugin.PngImageFile, locations: tuple, size: tuple, zorder: int = None):
         """
         Paste a bitmap in the figure or the panel in figure.
 
@@ -396,6 +391,9 @@ class Figure:
         :param zorder: order in which components are superimposed on each other.
         :type zorder: int or None
         """
+        if image.info["dpi"] < self.minimum_dpi:
+            raise ValueError("The dpi of image is less than the minimum dpi requirement!")
+
         if zorder is not None:
             pyplot.imshow(X=image, extent=[locations[0], size[0], locations[1], size[1]], zorder=zorder)
         else:
@@ -403,4 +401,5 @@ class Figure:
 
     @staticmethod
     def paste_vector(image, locations: tuple, size: tuple, zorder: int = None):
-        pass  # TODO no suitable pasting rules found temporarily.
+        # TODO no suitable pasting (or painting) rules found temporarily.
+        pass

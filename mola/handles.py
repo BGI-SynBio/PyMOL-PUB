@@ -14,7 +14,7 @@ class Monitor:
         """
         self.last_time = None
 
-    def output(self, current_state: int, total_state: int, extra: dict = None):
+    def __call__(self, current_state: int, total_state: int, extra: dict = None):
         """
         Output the current state of process.
 
@@ -868,7 +868,7 @@ def load_structure_from_file(file_path: str, molecule_type: str = "AA") -> tuple
 
 def save_structure_to_file(chains: list, structures: ndarray, file_path: str, model_type: str = "CA"):
     """
-    Save temp structure file.
+    Save temporary structure file.
 
     :param chains: chains.
     :type chains: list
