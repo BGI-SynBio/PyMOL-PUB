@@ -136,8 +136,10 @@ class Score:
                 if len(structure_2) % 4 != 0:
                     raise ValueError("The structure 2 of length (" + str(len(structure_2))
                                      + ") does not conform to N-CA-C-O protein model!")
-                if len(original_candidate) > 21:
-                    factor = 1.24 * (len(original_candidate) - 15) ** (1.0 / 3.0) - 1.8
+
+                chain_length = len(original_candidate) / 4
+                if chain_length > 21:
+                    factor = 1.24 * (chain_length - 15) ** (1.0 / 3.0) - 1.8
                 else:
                     factor = 0.50
 
@@ -145,15 +147,15 @@ class Score:
                 for bias in range(4):
                     c, r = original_candidate[samples + bias], original_reference[samples + bias]
                     for _, _, candidate, reference, start in self.kabsch(c, r, use_center):
-                        value = linalg.norm((candidate - reference).reshape(-1), ord=2)
+                        value = linalg.norm((candidate - reference), ord=2, axis=1)
                         value = sum(1.0 / (1.0 + (value / factor) ** 2)) / len(original_candidate[samples + bias])
                         saved_candidates.append((candidate, start))
                         scores.append(value)
 
-                scores = array(scores)
                 screen = len(original_reference) - len(original_candidate) + 1
                 number = 1 if use_center else len(original_candidate)
-                location = argmax(sum(scores.reshape(4, screen, number), axis=0).reshape(-1))
+                scores = sum(array(scores).reshape(4, screen, number), axis=0).reshape(-1)
+                location = argmax(scores)
                 saved_candidate, start = zeros(shape=(len(original_candidate), 3)), None
                 for bias in range(4):
                     saved_candidate[samples + bias], start = saved_candidates[location]
@@ -167,7 +169,7 @@ class Score:
 
                 for _, _, candidate, reference, start in self.kabsch(original_candidate, original_reference,
                                                                      use_center):
-                    value = linalg.norm((candidate - reference).reshape(-1), ord=2)
+                    value = linalg.norm((candidate - reference), ord=2, axis=1)
                     value = sum(1.0 / (1.0 + (value / factor) ** 2)) / len(original_candidate)
                     saved_candidates.append((candidate, start))
                     scores.append(value)
@@ -182,15 +184,16 @@ class Score:
                     raise ValueError("The structure 2 of length (" + str(len(structure_2))
                                      + ") does not conform to 3SPN nucleotide sequence model!")
 
-                if len(original_candidate) > 30:
+                chain_length = len(original_candidate) / 3
+                if chain_length > 30:
                     factor = 0.6 * sqrt(len(original_candidate) - 0.5) - 2.5
-                elif 24 <= len(original_candidate) <= 30:
+                elif 24 <= chain_length <= 30:
                     factor = 0.7
-                elif 20 <= len(original_candidate) <= 23:
+                elif 20 <= chain_length <= 23:
                     factor = 0.6
-                elif 16 <= len(original_candidate) <= 19:
+                elif 16 <= chain_length <= 19:
                     factor = 0.5
-                elif 12 <= len(original_candidate) <= 15:
+                elif 12 <= chain_length <= 15:
                     factor = 0.4
                 else:
                     factor = 0.3
@@ -199,15 +202,15 @@ class Score:
                 for bias in range(3):
                     c, r = original_candidate[samples + bias], original_reference[samples + bias]
                     for _, _, candidate, reference, start in self.kabsch(c, r, use_center):
-                        value = linalg.norm((candidate - reference).reshape(-1), ord=2)
+                        value = linalg.norm((candidate - reference), ord=2, axis=1)
                         value = sum(1.0 / (1.0 + (value / factor) ** 2)) / len(original_candidate[samples + bias])
                         saved_candidates.append((candidate, start))
                         scores.append(value)
 
-                scores = array(scores)
                 screen = len(original_reference) - len(original_candidate) + 1
                 number = 1 if use_center else len(original_candidate)
-                location = argmax(sum(scores.reshape(3, screen, number), axis=0).reshape(-1))
+                scores = sum(array(scores).reshape(3, screen, number), axis=0).reshape(-1)
+                location = argmax(scores)
                 saved_candidate, start = zeros(shape=(len(original_candidate), 3)), None
                 for bias in range(3):
                     saved_candidate[samples + bias], start = saved_candidates[location]
@@ -229,9 +232,9 @@ class Score:
 
                 for _, _, candidate, reference, start in self.kabsch(original_candidate, original_reference,
                                                                      use_center):
-                    value = linalg.norm((candidate - reference).reshape(-1), ord=2)
+                    value = linalg.norm((candidate - reference), ord=2, axis=1)
                     value = sum(1.0 / (1.0 + (value / factor) ** 2)) / len(original_candidate)
-                    saved_candidates.append(candidate)
+                    saved_candidates.append((candidate, start))
                     scores.append(value)
 
                 saved_candidate, start = saved_candidates[argmax(scores)]
@@ -252,12 +255,12 @@ class Score:
                         for cutoff, threshold in cutoffs.items():
                             cutoffs[cutoff] = len(where(values < cutoff)[0])
                         saved_candidates.append((candidate, start))
-                        scores.append(sum(cutoffs.values()) / (4.0 * len(original_candidate)) * 100.0)
+                        scores.append(sum(list(cutoffs.values())) / (4.0 * len(original_candidate) / 4) * 100.0)
 
-                scores = array(scores)
                 screen = len(original_reference) - len(original_candidate) + 1
                 number = 1 if use_center else len(original_candidate)
-                location = argmax(sum(scores.reshape(4, screen, number), axis=0).reshape(-1))
+                scores = sum(array(scores).reshape(4, screen, number), axis=0).reshape(-1)
+                location = argmax(scores)
                 saved_candidate, start = zeros(shape=(len(original_candidate), 3)), None
                 for bias in range(4):
                     saved_candidate[samples + bias], start = saved_candidates[location]
@@ -271,7 +274,7 @@ class Score:
                     for cutoff, threshold in cutoffs.items():
                         cutoffs[cutoff] = len(where(values < cutoff)[0])
                     saved_candidates.append((candidate, start))
-                    scores.append(sum(cutoffs.values()) / (4.0 * len(original_candidate)) * 100.0)
+                    scores.append(sum(list(cutoffs.values())) / (4.0 * len(original_candidate)) * 100.0)
 
                 saved_candidate, start = saved_candidates[argmax(scores)]
 
@@ -291,25 +294,25 @@ class Score:
                         for cutoff, threshold in cutoffs.items():
                             cutoffs[cutoff] = len(where(values < cutoff)[0])
                         saved_candidates.append((candidate, start))
-                        scores.append(sum(cutoffs.values()) / (4.0 * len(original_candidate)) * 100.0)
+                        scores.append(sum(list(cutoffs.values())) / (4.0 * len(original_candidate) / 4) * 100.0)
 
-                scores = array(scores)
                 screen = len(original_reference) - len(original_candidate) + 1
                 number = 1 if use_center else len(original_candidate)
-                location = argmax(sum(scores.reshape(4, screen, number), axis=0).reshape(-1))
+                scores = sum(array(scores).reshape(4, screen, number), axis=0).reshape(-1)
+                location = argmax(scores)
                 saved_candidate, start = zeros(shape=(len(original_candidate), 3)), None
                 for bias in range(4):
                     saved_candidate[samples + bias], start = saved_candidates[location]
                     location += screen * number
 
             elif self.model_type == "CA":
-                for _, _, candidate, reference in self.kabsch(original_candidate, original_reference, use_center):
+                for _, _, candidate, reference, start in self.kabsch(original_candidate, original_reference, use_center):
                     cutoffs = {1.0: 0, 2.0: 0, 4.0: 0, 8.0: 0}
                     values = linalg.norm(candidate - reference, ord=2, axis=1)
                     for cutoff, threshold in cutoffs.items():
                         cutoffs[cutoff] = len(where(values < cutoff)[0])
-                    saved_candidates.append(candidate)
-                    scores.append(sum(cutoffs.values()) / (4.0 * len(original_candidate)) * 100.0)
+                    saved_candidates.append((candidate, start))
+                    scores.append(sum(list(cutoffs.values())) / (4.0 * len(original_candidate)) * 100.0)
 
                 saved_candidate, start = saved_candidates[argmax(scores)]
 
@@ -829,6 +832,8 @@ def load_structure_from_file(file_path: str, molecule_type: str = "AA") -> tuple
             for chain in model:
                 sequence, core_positions, skeleton_positions, location = "", [], [], 0
                 for residue in chain:
+                    if residue.get_resname() == 'HOH':
+                        continue
                     for atom in residue:
                         if atom.id == "CA":
                             core_positions.append(atom.coord.tolist())
