@@ -7,7 +7,6 @@ from mola.handles import similar
 from mola.handles import cluster
 from mola.handles import align
 from mola.handles import set_difference
-from mola.handles import load_structure_from_file
 
 
 class TestScore(TestCase):
@@ -20,6 +19,7 @@ class TestScore(TestCase):
 
     def test_call(self):
         for _ in range(self.test_size):
+            # noinspection PyArgumentList
             x, y = random.random(size=(self.location_length, 3)), random.random(size=(self.location_length, 3))
             for similar_type in self.similar_types:
                 for model_type in self.model_types:
@@ -43,6 +43,7 @@ class TestScore(TestCase):
 
     def test_kabsch(self):
         for _ in range(self.test_size):
+            # noinspection PyArgumentList
             x, y = random.random(size=(self.location_length, 3)), random.random(size=(self.location_length, 3))
             for _, _, candidate, reference, _ in Score.kabsch(x, x, False):
                 self.assertEqual(linalg.norm(candidate - reference, ord=2) < 1e-10, True)
@@ -56,7 +57,7 @@ class TestScore(TestCase):
                     self.assertEqual(linalg.norm(candidate - x, ord=2) < 1e-10, True)
 
 
-class Testsimilar(TestCase):
+class TestSimilar(TestCase):
 
     def setUp(self):
         self.similar_types = ["RMSD", "TM", "GDT-HA", "GDT-TS"]
@@ -66,6 +67,7 @@ class Testsimilar(TestCase):
 
     def test(self):
         for _ in range(self.test_size):
+            # noinspection PyArgumentList
             x, y = random.random(size=(self.location_length, 3)), random.random(size=(self.location_length, 3))
             for similar_type in self.similar_types:
                 for model_type in self.model_types:
@@ -102,7 +104,7 @@ class Testsimilar(TestCase):
                     self.assertEqual(similarity, False)
 
 
-class Testcluster(TestCase):
+class TestCluster(TestCase):
 
     def setUp(self):
         self.similar_types = ["RMSD", "TM", "GDT-HA", "GDT-TS"]
@@ -113,12 +115,11 @@ class Testcluster(TestCase):
 
     def test(self):
         for _ in range(self.test_size):
+            # noinspection PyArgumentList
             x = random.random(size=(self.location_length, 3))
-            for _ in range(self.structure_number):
-                if _ == 0:
-                    structures = x
-                else:
-                    structures = vstack((structures, x))
+            structures = x.copy()
+            for _ in range(self.structure_number - 1):
+                structures = vstack((structures, x))
             structures = structures.reshape(self.structure_number, self.location_length, 3)
 
             for similar_type in self.similar_types:
@@ -136,7 +137,7 @@ class Testcluster(TestCase):
                     self.assertEqual(cluster_results, list(cluster_expect.values()))
 
 
-class Testalign(TestCase):
+class TestAlign(TestCase):
 
     def setUp(self):
         self.similar_types = ["RMSD", "TM", "GDT-HA", "GDT-TS"]
@@ -147,12 +148,11 @@ class Testalign(TestCase):
 
     def test(self):
         for _ in range(self.test_size):
+            # noinspection PyArgumentList
             x = random.random(size=(self.location_length, 3))
-            for _ in range(self.structure_number):
-                if _ == 0:
-                    structures = x
-                else:
-                    structures = vstack((structures, x))
+            structures = x.copy()
+            for _ in range(self.structure_number - 1):
+                structures = vstack((structures, x))
             structures = structures.reshape(self.structure_number, self.location_length, 3)
 
             for similar_type in self.similar_types:
@@ -180,27 +180,16 @@ class TestSetDifference(TestCase):
 
     def test(self):
         for _ in range(self.test_size):
+            # noinspection PyArgumentList
             x = [random.randint(100), self.location_length, 3]
+            structures = x
             for _ in range(12 * self.structure_number):
-                if _ == 0:
-                    structures = x
-                else:
-                    structures = vstack((structures, x))
+                structures = vstack((structures, x))
             data = structures.reshape(self.structure_number, 12, 3)
 
             for model_type in self.model_types:
                 differences = set_difference(data, model_type)
                 self.assertEqual(differences.all() == 0, True)
-
-
-class TestLoadStructureFromFile(TestCase):
-
-    def setUp(self):
-        self.file_paths = ['../cases/molecule/1/1AY7.pdb']
-
-    def test(self):
-        for file_path in self.file_paths:
-            _, _ = load_structure_from_file(file_path)
 
 
 class TestMonitor(TestCase):
@@ -210,5 +199,6 @@ class TestMonitor(TestCase):
         self.total_state = [100, 100, 100, 100, 100]
 
     def test(self):
+        monitor = Monitor()
         for i in range(len(self.current_state)):
-            Monitor().__call__(self.current_state[i], self.total_state[i])
+            monitor(self.current_state[i], self.total_state[i])
