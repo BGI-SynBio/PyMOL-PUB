@@ -183,7 +183,7 @@ class TestSetDifference(TestCase):
             # noinspection PyArgumentList
             x = [random.randint(100), self.location_length, 3]
             structures = x
-            for _ in range(12 * self.structure_number):
+            for _ in range(12 * self.structure_number - 1):
                 structures = vstack((structures, x))
             data = structures.reshape(self.structure_number, 12, 3)
 
