@@ -47,7 +47,7 @@ if __name__ == "__main__":
             optimize_format(image_path=save_path)
 
     # style 2.
-    major_axis, minor_axis = 1.8, 1.8 / sqrt(3)
+    major_axis, minor_axis = 1.2, 1.2 / sqrt(3)
     x_values_1 = cos(deg2rad(linspace(0, 360, 361))) * major_axis / 2.0
     y_values_1 = sin(deg2rad(linspace(0, 360, 361))) * minor_axis / 2.0
     x_values_2 = cos(deg2rad(linspace(-90, 270, 361))) * minor_axis / 2.0
@@ -200,7 +200,7 @@ if __name__ == "__main__":
 
     for elevation in [-180, -120, -90, -60, -30, 0, 30, 60, 90, 120, 180]:
         for azimuth in [-180, -120, -90, -60, -30, 0, 30, 60, 90, 120, 180]:
-            if (elevation == 0 and azimuth == 0) or (abs(elevation) == 180 and abs(azimuth) == 180):
+            if elevation == 0 and azimuth == 0:
                 continue
 
             pyplot.figure(figsize=(2, 2))
@@ -209,10 +209,7 @@ if __name__ == "__main__":
             pyplot.plot(x_values_2[:180], y_values_2[:180], color="grey", lw=1, ls=":", zorder=0)
             pyplot.plot(x_values_2[180:], y_values_2[180:], color="grey", lw=1, zorder=0)
             pyplot.plot(x_values_3, y_values_3, color="grey", lw=1, zorder=0)
-            pyplot.plot([0, azimuth_x_values[179]], [0, azimuth_y_values[179]], color="grey", lw=1, ls=":", zorder=0)
-            pyplot.vlines(0, -major_axis / 2.0, +major_axis / 2.0, color="grey", lw=1, ls=":", zorder=0)
-            pyplot.hlines(0, -major_axis / 2.0, +major_axis / 2.0, color="grey", lw=1, ls=":", zorder=0)
-            pyplot.plot([azimuth_x_values[0], 0], [azimuth_y_values[0], 0], color="k", lw=1, ls=":", zorder=1)
+            pyplot.plot([azimuth_x_values[0], 0], [azimuth_y_values[0], 0], color="k", lw=3, ls=":", zorder=1)
 
             if elevation in elevation_data:
                 line_info, area_info, last_x, last_y = elevation_data[elevation]
@@ -224,8 +221,14 @@ if __name__ == "__main__":
                         pyplot.fill_between(area_info[0], area_info[1], area_info[2],
                                             fc="royalblue", lw=0, alpha=0.5, zorder=4)
                 for x, y, style in line_info:
-                    pyplot.plot(x, y, color="k", lw=1, ls=style, zorder=5)
-                pyplot.plot([0, last_x], [0, last_y], color="k", lw=1, ls=":", zorder=5)
+                    pyplot.plot(x, y, color="k", lw=3, ls=style, zorder=5)
+                pyplot.plot([0, last_x], [0, last_y], color="k", lw=3, ls=":", zorder=5)
+                if elevation > 0:
+                    pyplot.fill_between([-0.15, 0, +0.15],
+                                        [-1, -1, -1], [-1, -0.7, -1], color="k", lw=0, zorder=6)
+                elif elevation < 0:
+                    pyplot.fill_between([-0.15, 0, +0.15],
+                                        [+1, +1, +1], [+1, 0.7, +1], color="k", lw=0, zorder=6)
 
             if azimuth in azimuth_data:
                 line_info, area_info, last_x, last_y = azimuth_data[azimuth]
@@ -233,8 +236,12 @@ if __name__ == "__main__":
                     pyplot.fill_between(area_info[0], area_info[1], area_info[2],
                                         fc="chocolate", lw=0, alpha=0.5, zorder=3)
                 for x, y, style in line_info:
-                    pyplot.plot(x, y, color="k", lw=1, ls=style, zorder=5)
-                pyplot.plot([0, last_x], [0, last_y], color="k", lw=1, ls=":", zorder=5)
+                    pyplot.plot(x, y, color="k", lw=3, ls=style, zorder=5)
+                pyplot.plot([0, last_x], [0, last_y], color="k", lw=3, ls=":", zorder=5)
+                if azimuth > 0:
+                    pyplot.fill_between([0.7, 1.0], [0, -0.15], [0, +0.15], color="k", lw=0, zorder=6)
+                elif azimuth < 0:
+                    pyplot.fill_between([-1, -0.7], [-0.15, 0], [+0.15, 0], color="k", lw=0, zorder=6)
 
             pyplot.xlim(-1, +1)
             pyplot.ylim(-1, +1)
