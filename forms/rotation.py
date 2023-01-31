@@ -209,7 +209,7 @@ if __name__ == "__main__":
             pyplot.plot(x_values_2[:180], y_values_2[:180], color="grey", lw=1, ls=":", zorder=0)
             pyplot.plot(x_values_2[180:], y_values_2[180:], color="grey", lw=1, zorder=0)
             pyplot.plot(x_values_3, y_values_3, color="grey", lw=1, zorder=0)
-            pyplot.plot([azimuth_x_values[0], 0], [azimuth_y_values[0], 0], color="k", lw=3, ls=":", zorder=1)
+            # pyplot.plot([azimuth_x_values[0], 0], [azimuth_y_values[0], 0], color="k", lw=3, ls=":", zorder=1)
 
             if elevation in elevation_data:
                 line_info, area_info, last_x, last_y = elevation_data[elevation]
@@ -222,7 +222,7 @@ if __name__ == "__main__":
                                             fc="royalblue", lw=0, alpha=0.5, zorder=4)
                 for x, y, style in line_info:
                     pyplot.plot(x, y, color="k", lw=3, ls=style, zorder=5)
-                pyplot.plot([0, last_x], [0, last_y], color="k", lw=3, ls=":", zorder=5)
+                # pyplot.plot([0, last_x], [0, last_y], color="k", lw=3, ls=":", zorder=5)
                 if elevation > 0:
                     pyplot.fill_between([-0.15, 0, +0.15],
                                         [-1, -1, -1], [-1, -0.7, -1], color="k", lw=0, zorder=6)
@@ -237,7 +237,7 @@ if __name__ == "__main__":
                                         fc="chocolate", lw=0, alpha=0.5, zorder=3)
                 for x, y, style in line_info:
                     pyplot.plot(x, y, color="k", lw=3, ls=style, zorder=5)
-                pyplot.plot([0, last_x], [0, last_y], color="k", lw=3, ls=":", zorder=5)
+                # pyplot.plot([0, last_x], [0, last_y], color="k", lw=3, ls=":", zorder=5)
                 if azimuth > 0:
                     pyplot.fill_between([0.7, 1.0], [0, -0.15], [0, +0.15], color="k", lw=0, zorder=6)
                 elif azimuth < 0:
