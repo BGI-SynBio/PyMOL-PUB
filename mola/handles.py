@@ -705,10 +705,90 @@ def set_properties(chain: str, molecule_type: str, property_type: str = None, un
                 raise ValueError("No such property type!")
 
         elif molecule_type == "DNA":
-            raise NotImplementedError  # TODO
+            if property_type == "hydrophobicity":
+                # Kevin M. Guckian and Barbara A. Schweitzer (2000) Journal of the American Chemical Society.
+                # The hydrophobicity coefficient.
+                unit_values = {"A": -1.07, "T": -0.36, "C": -0.76, "G": -1.36}
+                property_values = zeros(shape=(len(chain),))
+                for unit_index, entity in enumerate(chain):
+                    property_values[unit_index] = unit_values[entity]
+
+                return property_values
+
+            elif property_type == "electronegativity":  # net charge at pH = 7.4.
+                # Cameselle J.C. and Ribeiro J.M. (1986) Biochemical Education.
+                unit_values = {"A": -2, "T": -2, "C": -2, "G": -2}
+                property_values = zeros(shape=(len(chain),))
+                for unit_index, entity in enumerate(chain):
+                    property_values[unit_index] = unit_values[entity]
+
+                return property_values
+
+            elif property_type == "ionizationpotentials":
+                # Stacey D. Wetmore and Russell J. Boyd. (2000) Chemical Physics Letters.
+                # The ionization potentials of the nucleotide bases.(eV)
+                unit_values = {"A": 8.09, "T": 8.74, "C": 8.57, "G": 7.64}
+                property_values = zeros(shape=(len(chain),))
+                for unit_index, entity in enumerate(chain):
+                    property_values[unit_index] = unit_values[entity]
+
+                return property_values
+
+            elif property_type == "electronaffinities":
+                # Stacey D. Wetmore and Russell J. Boyd. (2000) Chemical Physics Letters.
+                # The electron affinities of the nucleotide bases.(eV)
+                unit_values = {"A": -0.40, "T": 0.14, "C": -0.06, "G": -0.27}
+                property_values = zeros(shape=(len(chain),))
+                for unit_index, entity in enumerate(chain):
+                    property_values[unit_index] = unit_values[entity]
+
+                return property_values
+
+            else:
+                raise ValueError("No such property type!")
 
         elif molecule_type == "RNA":
-            raise NotImplementedError  # TODO
+            if property_type == "hydrophobicity":
+                # Boldina G and Ivashchenko A (2009) Int J Biol Sci.
+                # The hydrophobicity coefficient.
+                unit_values = {"A": -1.07, "U": -0.76, "C": -0.76, "G": -1.36}
+                property_values = zeros(shape=(len(chain),))
+                for unit_index, entity in enumerate(chain):
+                    property_values[unit_index] = unit_values[entity]
+
+                return property_values
+
+            elif property_type == "electronegativity":  # net charge at pH = 7.4.
+                # Cameselle J.C. and Ribeiro J.M. (1986) Biochemical Education.
+                unit_values = {"A": -2, "U": -2, "C": -2, "G": -2}
+                property_values = zeros(shape=(len(chain),))
+                for unit_index, entity in enumerate(chain):
+                    property_values[unit_index] = unit_values[entity]
+
+                return property_values
+
+            elif property_type == "ionizationpotentials":
+                # Stacey D. Wetmore and Russell J. Boyd. (2000) Chemical Physics Letters.
+                # The ionization potentials of the nucleotide bases.(eV)
+                unit_values = {"A": 8.09, "U": 9.21, "C": 8.57, "G": 7.64}
+                property_values = zeros(shape=(len(chain),))
+                for unit_index, entity in enumerate(chain):
+                    property_values[unit_index] = unit_values[entity]
+
+                return property_values
+
+            elif property_type == "electronaffinities":
+                # Stacey D. Wetmore and Russell J. Boyd. (2000) Chemical Physics Letters.
+                # The electron affinities of the nucleotide bases.(eV)
+                unit_values = {"A": -0.40, "U": 0.18, "C": -0.06, "G": -0.27}
+                property_values = zeros(shape=(len(chain),))
+                for unit_index, entity in enumerate(chain):
+                    property_values[unit_index] = unit_values[entity]
+
+                return property_values
+
+            else:
+                raise ValueError("No such property type!")
 
         else:
             raise ValueError("No such molecule type!")
