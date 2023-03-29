@@ -352,7 +352,7 @@ class Figure:
         pyplot.subplot(self.grid[grid_params["l"]: grid_params["l"] + grid_params["w"],
                        grid_params["t"]: grid_params["t"] + grid_params["h"]])
         self.occupy_locations[grid_params["l"]: (grid_params["l"] + grid_params["w"]),
-        grid_params["t"]: (grid_params["t"] + grid_params["h"])] = 1
+                              grid_params["t"]: (grid_params["t"] + grid_params["h"])] = 1
 
     # noinspection PyMethodMayBeStatic
     def set_panel(self, function: FunctionType = None, function_params: dict = None, image_path: str = None):
@@ -415,8 +415,8 @@ class Figure:
 
         if image_path is None and (widget_type is not None and widget_attributes is not None):
             root_path, image_path = path.abspath(__file__).replace("\\", "/")[:-10] + "supp/widgets/", None
-            image_path = root_path \
-                         + widget_type + " [" + widget_attributes.replace(", ", ".") + "]" + image_format
+            image_path = root_path + widget_type + " [" + widget_attributes.replace(", ", ".") + "]"
+            image_path += image_format
 
         if image_path is None:
             raise ValueError("We need to input \'image_path\' or \'widget_type|widget_attributes\'!")

@@ -2,7 +2,7 @@ from matplotlib import pyplot
 from math import cos, sin, pi
 
 if __name__ == "__main__":
-    for degree in[0, 30, 45, 60, 90, 120, 135, 150, 180, 210, 225, 240, 270, 300, 315, 330]:
+    for degree in [0, 30, 45, 60, 90, 120, 135, 150, 180, 210, 225, 240, 270, 300, 315, 330]:
         x = pi * degree / 180
         fig = pyplot.figure(figsize=(2, 2))
         ax = fig.add_axes([0, 0, 1, 1])
