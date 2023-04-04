@@ -21,10 +21,10 @@ The comparable results are:
     </tr>
     <tr>
         <td width="50%" bgcolor="#FFFFFF">
-            <img width="50%" src="https://github.com/BGI-SynBio/PyMOL-advance/blob/main/cases/expected/1.png"/>
+            <img width="100%" src="https://github.com/BGI-SynBio/PyMOL-advance/blob/main/cases/expected/1.png"/>
         </td>
         <td width="50%" bgcolor="#FFFFFF">
-            <img width="50%" src="https://github.com/BGI-SynBio/PyMOL-advance/blob/main/cases/designed/1.png"/>
+            <img width="100%" src="https://github.com/BGI-SynBio/PyMOL-advance/blob/main/cases/designed/1.png"/>
         </td>
     </tr>
 </table>
@@ -39,13 +39,13 @@ And the default outputs are:
     </tr>
     <tr>
         <td bgcolor="#FFFFFF">
-            <img src="https://github.com/BGI-SynBio/PyMOL-advance/blob/main/cases/baseline/1.1AY7.png"/>
+            <img width="100%" src="https://github.com/BGI-SynBio/PyMOL-advance/blob/main/cases/baseline/1.1AY7.png"/>
         </td>
         <td bgcolor="#FFFFFF">
-            <img src="https://github.com/BGI-SynBio/PyMOL-advance/blob/main/cases/baseline/1.1F34.png"/>
+            <img width="100%" src="https://github.com/BGI-SynBio/PyMOL-advance/blob/main/cases/baseline/1.1F34.png"/>
         </td>
         <td bgcolor="#FFFFFF">
-            <img src="https://github.com/BGI-SynBio/PyMOL-advance/blob/main/cases/baseline/1.1YCR.png"/>
+            <img width="100%" src="https://github.com/BGI-SynBio/PyMOL-advance/blob/main/cases/baseline/1.1YCR.png"/>
         </td>
     </tr>
 </table>
