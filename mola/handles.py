@@ -306,7 +306,8 @@ class Score:
                     location += screen * number
 
             elif self.model_type == "CA":
-                for _, _, candidate, reference, start in self.kabsch(original_candidate, original_reference, use_center):
+                for _, _, candidate, reference, start in self.kabsch(original_candidate, original_reference,
+                                                                     use_center):
                     cutoffs = {1.0: 0, 2.0: 0, 4.0: 0, 8.0: 0}
                     values = linalg.norm(candidate - reference, ord=2, axis=1)
                     for cutoff, threshold in cutoffs.items():

@@ -1,9 +1,10 @@
 from logging import getLogger, CRITICAL
 from matplotlib import pyplot, rcParams
-from numpy import zeros, sum
+from numpy import zeros, sum, abs
 from os import path
 from PIL import Image, PngImagePlugin
 from pymol2 import PyMOL
+from re import search
 from types import FunctionType
 from warnings import filterwarnings
 
@@ -14,143 +15,322 @@ getLogger("matplotlib").setLevel(CRITICAL)
 class StructureImage:
 
     def __init__(self, structure_path: str):
-
         self.__mol = PyMOL()
         self.__mol.start()
         self.__mol.cmd.load(structure_path, quiet=1)
         self.__mol.cmd.ray(quiet=1)  # make PyMOL run silently.
 
-    def set_state(self, representation_type: str = None, chain_select: str = None, representations: dict = None,
-                  hides: list = None):
+    def set_hidden(self, hidden_contents: list):
         """
-        Set the initial state of a structure.
+        Set hidden contents of the structure.
 
-        :param representation_type: the type of the visual structure.
-        :type representation_type: str or None
-
-        :param chain_select: if representation_type is index, can optionally operate on the specified chain.
-        :type chain_select: str or None
-
-        :param representations: pair of the class and its corresponding representation.
-        :type representations: dict or None
-
-        :param hides: hided molecules.
-        :type hides: list or None
+        :param hidden_contents: hidden contents.
+        :type hidden_contents: list
         """
-        if representation_type is None and representations is None:
-            representation = "cartoon"
-            self.__mol.cmd.show(representation=representation)
+        for hidden_information in hidden_contents:
+            if ":" in hidden_information:
+                shading_type, target_information = hidden_information.split(":")
+                if shading_type == "position":
+                    for target in target_information.split(","):
+                        if "+" in target:
+                            selected_chain, selected_position = target.split("+")
+                            if search(pattern=r"^[0-9]*[1-9][0-9]*$", string=selected_position):
+                                selection_command = "(c. " + selected_chain + " and i. " + selected_position + ")"
+                            else:
+                                raise ValueError("Position (" + selected_position + ")  should be a positive integer!")
+                        else:
+                            if search(pattern=r"^[0-9]*[1-9][0-9]*$", string=target):
+                                selection_command = "(i. " + target + ")"
+                            else:
+                                raise ValueError("Position (" + target + ") should be a positive integer!")
+                        self.__mol.cmd.hide(selection=selection_command)
 
-        elif representation_type is not None and representations is not None:
-            if representation_type == "residue":
-                for residue, representation in representations.items():
-                    self.__mol.cmd.show(representation=representation, selection="(r. " + residue + ")")
+                elif shading_type == "range":
+                    for target in target_information.split(","):
+                        if "+" in target:
+                            selected_chain, selected_range = target.split("+")
+                            if "-" in selected_range and selected_range.count("-") == 1:
+                                former, latter = selected_range.split("-")
+                                if int(former) < int(latter):
+                                    selection_command = "(c. " + selected_chain + " and i. " + selected_range + ")"
+                                else:
+                                    raise ValueError("The former position needs to be less than the latter position "
+                                                     + "in the Range (" + selected_range + ").")
+                            else:
+                                raise ValueError("Range (" + selected_range + ") needs to "
+                                                 + "meet the \"number-number\" format!")
+                        else:
+                            if "-" in target and target.count("-") == 1:
+                                former, latter = target.split("-")
+                                if int(former) < int(latter):
+                                    selection_command = "(i. " + target + ")"
+                                else:
+                                    raise ValueError("The former position needs to be less than the latter position "
+                                                     + "in the Range (" + target + ").")
+                            else:
+                                raise ValueError("Range (" + target + ") needs to meet the \"number-number\" format!")
+                        self.__mol.cmd.hide(selection=selection_command)
 
-            elif representation_type == "chain":
-                for chain, representation in representations.items():
-                    self.__mol.cmd.show(representation=representation, selection="(c. " + chain + ")")
+                elif shading_type == "residue":
+                    for target in target_information.split(","):
+                        if "+" in target:
+                            selected_chain, selected_residue = target.split("+")
+                            selection_command = "(c. " + selected_chain + " and r. " + selected_residue + ")"
+                        else:
+                            selection_command = "(r. " + target + ")"
+                        self.__mol.cmd.hide(selection=selection_command)
 
-            elif representation_type == "index":
-                for index, representation in representations.items():
-                    if chain_select is not None:
-                        self.__mol.cmd.show(representation=representation,
-                                            selection="(c. " + chain_select + " and i. " + index + ")")
-                    else:
-                        self.__mol.cmd.show(representation=representation, selection="(i. " + index + ")")
+                elif shading_type == "segment":
+                    for target in target_information.split(","):
+                        if "+" in target:
+                            selected_chain, selected_segment = target.split("+")
+                            if search(pattern=r"^[A-Z]+$", string=selected_segment):
+                                selection_command = "(c. " + selected_chain + " and ps. " + selected_segment + ")"
+                            else:
+                                raise ValueError("Segment (" + selected_segment + ") should be a string "
+                                                 + "composed of uppercase letters!")
+                        else:
+                            if search(pattern=r"^[A-Z]+$", string=target):
+                                selection_command = "(ps. " + target + ")"
+                            else:
+                                raise ValueError("Segment (" + target + ") should be a string "
+                                                 + "composed of uppercase letters!")
+                        self.__mol.cmd.hide(selection=selection_command)
 
-            elif representation_type == "segment":
-                for segment, representation in representations.items():
-                    self.__mol.cmd.show(representation=representation, selection="(ps. " + segment + ")")
+                elif shading_type == "chain":
+                    for target in target_information.split(","):
+                        self.__mol.cmd.hide(selection=target)
 
-            elif representation_type == "all":
-                self.__mol.cmd.show(representation=list(representations.values())[0], selection="(all)")
+                else:
+                    raise ValueError("No such shading type! We only support "
+                                     + "\"position\", \"range\", \"residue\", \"segment\" and \"chain\".")
+            else:
+                raise ValueError("No such representing information! We only support one type of information, i.e. "
+                                 + "\"shading type:target,target,...,target\"")
+
+    def set_state(self, representation_plan: list, initial_representation: str = "cartoon",
+                  rotate_x: float = 0, rotate_y: float = 0, rotate_z: float = 0):
+        """
+        Set the state of the structure.
+
+        :param representation_plan: the type of the visual structure.
+        :type representation_plan: list
+
+        :param initial_representation: if representation_type is index, can optionally operate on the specified chain.
+        :type initial_representation: str
+
+        :param rotate_x: rotate degree with x-axis.
+        :type rotate_x: float
+
+        :param rotate_y: rotate degree with y-axis.
+        :type rotate_y: float
+
+        :param rotate_z: rotate degree with z-axis.
+        :type rotate_z: float
+        """
+        self.__mol.cmd.show(representation=initial_representation, selection="(all)")
+
+        for step, (representing_information, representation) in enumerate(representation_plan):
+            if type(representing_information) is not str:
+                raise ValueError("The format of representing information at step " + str(step + 1) + " is illegal! "
+                                 + "We only support \"str\" format!")
+
+            if ":" in representing_information:
+                shading_type, target_information = representing_information.split(":")
+                if shading_type == "position":
+                    for target in target_information.split(","):
+                        if "+" in target:
+                            selected_chain, selected_position = target.split("+")
+                            if search(pattern=r"^[0-9]*[1-9][0-9]*$", string=selected_position):
+                                selection_command = "(c. " + selected_chain + " and i. " + selected_position + ")"
+                            else:
+                                raise ValueError("Position (" + selected_position + ")  should be a positive integer!")
+                        else:
+                            if search(pattern=r"^[0-9]*[1-9][0-9]*$", string=target):
+                                selection_command = "(i. " + target + ")"
+                            else:
+                                raise ValueError("Position (" + target + ") should be a positive integer!")
+                        self.__mol.cmd.show(representation=representation, selection=selection_command)
+
+                elif shading_type == "range":
+                    for target in target_information.split(","):
+                        if "+" in target:
+                            selected_chain, selected_range = target.split("+")
+                            if "-" in selected_range and selected_range.count("-") == 1:
+                                former, latter = selected_range.split("-")
+                                if int(former) < int(latter):
+                                    selection_command = "(c. " + selected_chain + " and i. " + selected_range + ")"
+                                else:
+                                    raise ValueError("The former position needs to be less than the latter position "
+                                                     + "in the Range (" + selected_range + ").")
+                            else:
+                                raise ValueError("Range (" + selected_range + ") needs to "
+                                                 + "meet the \"number-number\" format!")
+                        else:
+                            if "-" in target and target.count("-") == 1:
+                                former, latter = target.split("-")
+                                if int(former) < int(latter):
+                                    selection_command = "(i. " + target + ")"
+                                else:
+                                    raise ValueError("The former position needs to be less than the latter position "
+                                                     + "in the Range (" + target + ").")
+                            else:
+                                raise ValueError("Range (" + target + ") needs to meet the \"number-number\" format!")
+                        self.__mol.cmd.show(representation=representation, selection=selection_command)
+
+                elif shading_type == "residue":
+                    for target in target_information.split(","):
+                        if "+" in target:
+                            selected_chain, selected_residue = target.split("+")
+                            selection_command = "(c. " + selected_chain + " and r. " + selected_residue + ")"
+                        else:
+                            selection_command = "(r. " + target + ")"
+                        self.__mol.cmd.show(representation=representation, selection=selection_command)
+
+                elif shading_type == "segment":
+                    for target in target_information.split(","):
+                        if "+" in target:
+                            selected_chain, selected_segment = target.split("+")
+                            if search(pattern=r"^[A-Z]+$", string=selected_segment):
+                                selection_command = "(c. " + selected_chain + " and ps. " + selected_segment + ")"
+                            else:
+                                raise ValueError("Segment (" + selected_segment + ") should be a string "
+                                                 + "composed of uppercase letters!")
+                        else:
+                            if search(pattern=r"^[A-Z]+$", string=target):
+                                selection_command = "(ps. " + target + ")"
+                            else:
+                                raise ValueError("Segment (" + target + ") should be a string "
+                                                 + "composed of uppercase letters!")
+                        self.__mol.cmd.show(representation=representation, selection=selection_command)
+
+                elif shading_type == "chain":
+                    for target in target_information.split(","):
+                        self.__mol.cmd.show(representation=representation, selection="(c. " + target + ")")
+
+                else:
+                    raise ValueError("No such shading type! We only support "
+                                     + "\"position\", \"range\", \"residue\", \"segment\" and \"chain\".")
+
+            elif representing_information == "all":
+                self.__mol.cmd.show(representation=representation, selection="(all)")
 
             else:
-                raise ValueError("No such representation type!")
-
-        else:
-            raise ValueError("We need \'representation_type\' and \'representations\'!")
-
-        if hides is not None:
-            for hide_selection in hides:
-                self.__mol.cmd.hide(selection=hide_selection)
+                raise ValueError("No such representing information! We only support two types of information: "
+                                 + "(1) \"all\"; and (2) \"shading type:target,target,...,target\"")
 
         self.__mol.cmd.orient()
+
+        if abs(rotate_x - 0) > 1e-3:
+            self.__mol.cmd.rotate(axis="x", angle=rotate_x)
+        if abs(rotate_y - 0) > 1e-3:
+            self.__mol.cmd.rotate(axis="y", angle=rotate_y)
+        if abs(rotate_z - 0) > 1e-3:
+            self.__mol.cmd.rotate(axis="z", angle=rotate_z)
+
         self.__mol.cmd.center()
         self.__mol.cmd.zoom(complete=1)
 
-    def set_color(self, shading_type: str = None, chain_select: str = None, colors: dict = None):
+    def set_color(self, coloring_plan: list, initial_color: str = "0xFFFFCC"):
         """
-        Set color for the structure.
+        Set color(s) for the structure with the plan in order.
 
-        :param shading_type: type of color shading for the structure.
-        :type shading_type: str or None
+        :param coloring_plan: coloring plan for the structure.
+        :type coloring_plan: list
 
-        :param chain_select: if shading_type is index, can optionally operate on the specified chain.
-        :type chain_select: str or None
-
-        :param colors: pair of the class and its corresponding color.
-        :type colors: dict or None
+        :param initial_color: initial color in the structure.
+        :type initial_color: str
         """
-        if shading_type is None and colors is None:
-            residue_colors = {"ALA": "0x8A685C", "ARG": "0x402F42", "ASN": "0x7fA9C2", "ASP": "0x632D3B",
-                              "CYS": "0x7D779D", "GLN": "0x853D2F", "GLU": "0x88191F", "GLY": "0x945A4F",
-                              "HIS": "0xA29DB3", "ILE": "0x645D87", "LEU": "0x82A293", "LYS": "0xA58121",
-                              "MET": "0x6273A1", "PHE": "0xB33C24", "PRO": "0x73584D", "SER": "0x4F698A",
-                              "THR": "0xB9B9BB", "TRP": "0x686C47", "TYR": "0x674E3A", "VAL": "0x9D491B",
-                              "DA": "0xF2521B", "DC": "0x81CC28", "DG": "0x00AEF0", "DT": "0xFABC09", "DU": "0xFABC09",
-                              "A": "0xF2521B", "C": "0x81CC28", "G": "0x00AEF0", "T": "0xFABC09", "U": "0xFABC09"}
+        self.__mol.cmd.color(color=initial_color, selection="(all)")
 
-            for residue, color in residue_colors.items():
-                self.__mol.cmd.color(color=color, selection="(r. " + residue + ")")
+        for step, (coloring_information, color) in enumerate(coloring_plan):
+            if type(coloring_information) is not str:
+                raise ValueError("The format of coloring information at step " + str(step + 1) + " is illegal! "
+                                 + "We only support \"str\" format!")
 
-        elif shading_type is not None and colors is not None:
-            if shading_type == "residue":
-                for residue, color in colors.items():
-                    self.__mol.cmd.color(color=color, selection="(r. " + residue + ")")
+            if ":" in coloring_information:
+                shading_type, target_information = coloring_information.split(":")
+                if shading_type == "position":
+                    for target in target_information.split(","):
+                        if "+" in target:
+                            selected_chain, selected_position = target.split("+")
+                            if search(pattern=r"^[0-9]*[1-9][0-9]*$", string=selected_position):
+                                selection_command = "(c. " + selected_chain + " and i. " + selected_position + ")"
+                            else:
+                                raise ValueError("Position (" + selected_position + ")  should be a positive integer!")
+                        else:
+                            if search(pattern=r"^[0-9]*[1-9][0-9]*$", string=target):
+                                selection_command = "(i. " + target + ")"
+                            else:
+                                raise ValueError("Position (" + target + ") should be a positive integer!")
+                        self.__mol.cmd.color(color=color, selection=selection_command)
 
-            elif shading_type == "chain":
-                for chain, color in colors.items():
-                    self.__mol.cmd.color(color=color, selection="(c. " + chain + ")")
+                elif shading_type == "range":
+                    for target in target_information.split(","):
+                        if "+" in target:
+                            selected_chain, selected_range = target.split("+")
+                            if "-" in selected_range and selected_range.count("-") == 1:
+                                former, latter = selected_range.split("-")
+                                if int(former) < int(latter):
+                                    selection_command = "(c. " + selected_chain + " and i. " + selected_range + ")"
+                                else:
+                                    raise ValueError("The former position needs to be less than the latter position "
+                                                     + "in the Range (" + selected_range + ").")
+                            else:
+                                raise ValueError("Range (" + selected_range + ") needs to "
+                                                 + "meet the \"number-number\" format!")
+                        else:
+                            if "-" in target and target.count("-") == 1:
+                                former, latter = target.split("-")
+                                if int(former) < int(latter):
+                                    selection_command = "(i. " + target + ")"
+                                else:
+                                    raise ValueError("The former position needs to be less than the latter position "
+                                                     + "in the Range (" + target + ").")
+                            else:
+                                raise ValueError("Range (" + target + ") needs to meet the \"number-number\" format!")
+                        self.__mol.cmd.color(color=color, selection=selection_command)
 
-            elif shading_type == "index":
-                for index, color in colors.items():
-                    if chain_select is not None:
-                        self.__mol.cmd.color(color=color, selection="(c. " + chain_select + " and i. " + index + ")")
-                    else:
-                        self.__mol.cmd.color(color=color, selection="(i. " + index + ")")
+                elif shading_type == "residue":
+                    for target in target_information.split(","):
+                        if "+" in target:
+                            selected_chain, selected_residue = target.split("+")
+                            selection_command = "(c. " + selected_chain + " and r. " + selected_residue + ")"
+                        else:
+                            selection_command = "(r. " + target + ")"
+                        self.__mol.cmd.color(color=color, selection=selection_command)
 
-            elif shading_type == "segment":
-                for segment, color in colors.items():
-                    self.__mol.cmd.color(color=color, selection="(ps. " + segment + ")")
+                elif shading_type == "segment":
+                    for target in target_information.split(","):
+                        if "+" in target:
+                            selected_chain, selected_segment = target.split("+")
+                            if search(pattern=r"^[A-Z]+$", string=selected_segment):
+                                selection_command = "(c. " + selected_chain + " and ps. " + selected_segment + ")"
+                            else:
+                                raise ValueError("Segment (" + selected_segment + ") should be a string "
+                                                 + "composed of uppercase letters!")
+                        else:
+                            if search(pattern=r"^[A-Z]+$", string=target):
+                                selection_command = "(ps. " + target + ")"
+                            else:
+                                raise ValueError("Segment (" + target + ") should be a string "
+                                                 + "composed of uppercase letters!")
+                        self.__mol.cmd.color(color=color, selection=selection_command)
 
-            elif shading_type == "all":
-                self.__mol.cmd.color(color=list(colors.values())[0], selection="(all)")
+                elif shading_type == "chain":
+                    for target in target_information.split(","):
+                        self.__mol.cmd.color(color=color, selection="(c. " + target + ")")
+
+                else:
+                    raise ValueError("No such shading type! We only support "
+                                     + "\"position\", \"range\", \"residue\", \"segment\" and \"chain\".")
+
+            elif coloring_information == "all":
+                self.__mol.cmd.color(color=color, selection="(all)")
 
             else:
-                raise ValueError("No such shading type!")
-
-        else:
-            raise ValueError("We need \'shading_type\' and \'colors\'!")
-
-    def clean_color(self, neglect_color: str = "0xFFFFCC"):
-        """
-        Clean color through neglecting.
-
-        :param neglect_color: color to neglect.
-        :type neglect_color: str
-        """
-        self.set_color(shading_type="all", colors={"all": neglect_color})
-
-    def rotate_structure(self, rotate_dict: dict):
-        """
-        Rotate the structure.
-
-        :param rotate_dict: pair of the axis and its corresponding rotation angle.
-        :type rotate_dict: dict
-        """
-        for axis, degree in rotate_dict.items():
-            self.__mol.cmd.rotate(axis=axis, angle=degree)
+                raise ValueError("No such coloring information! We only support two types of information: "
+                                 + "(1) \"all\"; and (2) \"shading type:target,target,...,target\"")
 
     def save(self, save_path: str, width: int = 640, ratio: float = 0.75, dpi: int = 1200):
         """
@@ -168,7 +348,6 @@ class StructureImage:
         :param dpi: dots per inch.
         :type dpi: int
         """
-        assert save_path[-4:] == ".png"  # TODO consider the SVG output.
         self.__mol.cmd.png(filename=save_path, width=width, height=width * ratio, dpi=dpi, quiet=1)
 
 
@@ -426,13 +605,10 @@ class Figure:
         if image_format == ".png":
             image_data = Image.open(fp=image_path)
             self.paste_bitmap(image=image_data, locations=locations, layout=layout, zorder=zorder)
-        elif image_format == ".svg":
-            # TODO we need to find a suitable svg loader.
-            self.paste_vector(image=image_path, locations=locations, layout=layout, zorder=zorder)
         else:
-            raise ValueError("Only PNG files and SVG files are support!")
+            raise ValueError("Only PNG files are support!")
 
-    def set_text(self, annotation: str, fontsize: int = 16, horizontalalignment: str = 'center', locations: list = None,
+    def set_text(self, annotation: str, font_size: int = 16, alignment: str = "center", locations: list = None,
                  layout: tuple = None, zorder: int = None):
         """
         Put the text box with a specific size in a specific position of a panel.
@@ -440,13 +616,13 @@ class Figure:
         :param annotation: text content.
         :type annotation: str
 
-        :param fontsize: font size.
-        :type fontsize: str
+        :param font_size: font size.
+        :type font_size: str
 
-        :param horizontalalignment: horizontal alignment('center' | 'right' | 'left' ).
-        :type horizontalalignment: str
+        :param alignment: horizontal alignment, accepting "center", "right" and "left".
+        :type alignment: str
 
-        :param locations: location in the panel (x,y,dx and dy: the scale of the whole picture).
+        :param locations: location in the panel (x,y, dx and dy: the scale of the whole image).
         :type locations: list or None
 
         :param layout: picture segmentation method and specified location(x,y,order).
@@ -465,11 +641,11 @@ class Figure:
             if zorder is not None:
                 ax = self.fig.add_axes(locations)
                 ax.axis("off")
-                ax.text(0, 0, annotation, fontsize=fontsize, horizontalalignment=horizontalalignment, zorder=zorder)
+                ax.text(0, 0, annotation, fontsize=font_size, horizontalalignment=alignment, zorder=zorder)
             else:
                 ax = self.fig.add_axes(locations)
                 ax.axis("off")
-                ax.text(0, 0, annotation, fontsize=fontsize, horizontalalignment=horizontalalignment)
+                ax.text(0, 0, annotation, fontsize=font_size, horizontalalignment=alignment)
         else:
             raise ValueError("We need to input \'locations\' or \'layout\'!")
 
@@ -512,11 +688,6 @@ class Figure:
             raise ValueError("We need to input \'locations\' or \'layout\'!")
 
     @staticmethod
-    def paste_vector(image, locations: list = None, layout: tuple = None, zorder: int = None):
-        # TODO no suitable pasting (or painting) rules found temporarily.
-        pass
-
-    @staticmethod
     def calculate_locations(layout: tuple):
         """
         Calculate the panel locations from layout.
@@ -536,12 +707,11 @@ class Figure:
 
         return [x, y, dx, dy]
 
-    @staticmethod
-    def save_figure(save_path: str):
+    def save_figure(self, save_path: str):
         """
         Save the whole figure.
 
         :param save_path: the path of save figure.
         :type save_path: str
         """
-        pyplot.savefig(save_path)
+        pyplot.savefig(save_path, dpi=self.minimum_dpi)
