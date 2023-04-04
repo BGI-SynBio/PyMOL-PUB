@@ -14,16 +14,16 @@ Cell Communication and Signaling, 14(1), 1-12.
 
 The comparable results are:
 
-<table align="center", table-layout:fixed>
+<table width="100%" align="center", table-layout:fixed>
     <tr>
         <td bgcolor="#FFFFFF" bgcolor="#FFFFFF" align="center">expected figure</td>
         <td bgcolor="#FFFFFF" bgcolor="#FFFFFF" align="center">designed figure</td>
     </tr>
     <tr>
-        <td bgcolor="#FFFFFF">
+        <td width="50%" bgcolor="#FFFFFF">
             <img src="https://github.com/BGI-SynBio/PyMOL-advance/blob/main/cases/expected/1.png"/>
         </td>
-        <td bgcolor="#FFFFFF">
+        <td width="50%" bgcolor="#FFFFFF">
             <img src="https://github.com/BGI-SynBio/PyMOL-advance/blob/main/cases/designed/1.png"/>
         </td>
     </tr>
@@ -31,7 +31,7 @@ The comparable results are:
 
 And the default outputs are:
 
-<table align="center", table-layout:fixed>
+<table width="100%" align="center", table-layout:fixed>
     <tr>
         <td bgcolor="#FFFFFF" bgcolor="#FFFFFF" align="center">1AY7</td>
         <td bgcolor="#FFFFFF" bgcolor="#FFFFFF" align="center">1F34</td>
