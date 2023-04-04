@@ -24,7 +24,7 @@ The comparable results are:
             <img src="https://github.com/BGI-SynBio/PyMOL-advance/blob/main/cases/expected/1.png"/>
         </td>
         <td bgcolor="#FFFFFF">
-            <img src="https://github.com/BGI-SynBio/PyMOL-advance/blob/main/cases/designec/1.png"/>
+            <img src="https://github.com/BGI-SynBio/PyMOL-advance/blob/main/cases/designed/1.png"/>
         </td>
     </tr>
 </table>
