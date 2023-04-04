@@ -21,10 +21,10 @@ The comparable results are:
     </tr>
     <tr>
         <td width="50%" bgcolor="#FFFFFF">
-            <img src="https://github.com/BGI-SynBio/PyMOL-advance/blob/main/cases/expected/1.png"/>
+            <img width="50%" src="https://github.com/BGI-SynBio/PyMOL-advance/blob/main/cases/expected/1.png"/>
         </td>
         <td width="50%" bgcolor="#FFFFFF">
-            <img src="https://github.com/BGI-SynBio/PyMOL-advance/blob/main/cases/designed/1.png"/>
+            <img width="50%" src="https://github.com/BGI-SynBio/PyMOL-advance/blob/main/cases/designed/1.png"/>
         </td>
     </tr>
 </table>
