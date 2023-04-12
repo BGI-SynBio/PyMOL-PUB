@@ -63,7 +63,7 @@ Based on three structures with default visualization output
 , an ideal manuscript-level figure 
 
 <p align="center">
-    <img src="https://github.com/BGI-SynBio/PyMOL-advance/blob/main/cases/designed/1.png"/>
+    <img width="50%" src="https://github.com/BGI-SynBio/PyMOL-advance/blob/main/cases/designed/1.png"/>
 </p>
 
 can be [created](https://github.com/BGI-SynBio/PyMOL-advance/blob/main/cases/case_1.py) 
