@@ -2,6 +2,7 @@ from logging import getLogger, CRITICAL
 from matplotlib import pyplot, rcParams
 from numpy import zeros, sum, abs
 from os import path
+# noinspection PyPackageRequirements
 from PIL import Image, PngImagePlugin
 from pymol2 import PyMOL
 from re import search
