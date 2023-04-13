@@ -41,6 +41,7 @@ in the [requirements file](https://github.com/BGI-SynBio/PyMOL-advance/blob/main
 
 ## Case presentation
 Based on three structures with default visualization output 
+
 <table width="100%" align="center", table-layout:fixed>
     <tr>
         <td bgcolor="#FFFFFF" bgcolor="#FFFFFF" align="center">1AY7</td>
@@ -60,7 +61,7 @@ Based on three structures with default visualization output
     </tr>
 </table>
 
-, an ideal manuscript-level figure 
+an ideal manuscript-level figure 
 
 <p align="center">
     <img width="50%" src="https://github.com/BGI-SynBio/PyMOL-advance/blob/main/cases/designed/1.png"/>
@@ -71,11 +72,118 @@ using 55 lines of code, which is similar to Figure 1 in
 [Carles Corbi-Verge's work](https://biosignaling.biomedcentral.com/articles/10.1186/s12964-016-0131-4).
 
 ## Customizations and their protocols
-In preparation
+At the figure level, we can customize the target publication format during the 
+[initialization](https://github.com/BGI-SynBio/PyMOL-advance/blob/main/mola/layouts.py#L355) of the figure.
+The supporting figure formats of journal, conference or publisher are:
 
+<table width="100%" align="center", table-layout:fixed>
+    <tr>
+        <th bgcolor="#FFFFFF" align="center" rowspan="2">target</th>
+        <th bgcolor="#FFFFFF" align="center" rowspan="2">font</th>
+        <th bgcolor="#FFFFFF" align="center" rowspan="2">math font</th>
+        <th bgcolor="#FFFFFF" align="center" rowspan="2">dpi</th>
+        <th bgcolor="#FFFFFF" align="center" rowspan="2">columns</th>
+        <th colspan="3">width under column occupy (inches)</th>
+    </tr>
+    <tr>
+        <td bgcolor="#FFFFFF" align="center">1</td>
+        <td bgcolor="#FFFFFF" align="center">2</td>
+        <td bgcolor="#FFFFFF" align="center">3</td>
+    </tr>
+    <tr>
+        <td bgcolor="#FFFFFF" align="center">Nature</td>
+        <td bgcolor="#FFFFFF" align="center">Arial</td>
+        <td bgcolor="#FFFFFF" align="center" rowspan="10">Linux Libertine<br/>Lucida Calligraphy</th>
+        <td bgcolor="#FFFFFF" align="center">300</td>
+        <td bgcolor="#FFFFFF" align="center">2</td>
+        <td bgcolor="#FFFFFF" align="center">3.54</td>
+        <td bgcolor="#FFFFFF" align="center">7.08</td>
+        <td bgcolor="#FFFFFF" align="center">-</td>
+    </tr>
+    <tr>
+        <td bgcolor="#FFFFFF" align="center">Science</td>
+        <td bgcolor="#FFFFFF" align="center">Helvetica</td>
+        <td bgcolor="#FFFFFF" align="center">300</td>
+        <td bgcolor="#FFFFFF" align="center">3</td>
+        <td bgcolor="#FFFFFF" align="center">2.24</td>
+        <td bgcolor="#FFFFFF" align="center">4.76</td>
+        <td bgcolor="#FFFFFF" align="center">7.24</td>
+    </tr>
+    <tr>
+        <td bgcolor="#FFFFFF" align="center" rowspan="2">Cell</th>
+        <td bgcolor="#FFFFFF" align="center" rowspan="2">Arial</th>
+        <td bgcolor="#FFFFFF" align="center" rowspan="2">300</th>
+        <td bgcolor="#FFFFFF" align="center">2</td>
+        <td bgcolor="#FFFFFF" align="center">3.35</td>
+        <td bgcolor="#FFFFFF" align="center">6.85</td>
+        <td bgcolor="#FFFFFF" align="center">-</td>
+    </tr>
+    <tr>
+        <td bgcolor="#FFFFFF" align="center">3</td>
+        <td bgcolor="#FFFFFF" align="center">2.17</td>
+        <td bgcolor="#FFFFFF" align="center">4.49</td>
+        <td bgcolor="#FFFFFF" align="center">6.85</td>
+    </tr>
+    <tr>
+        <td bgcolor="#FFFFFF" align="center">PNAS</td>
+        <td bgcolor="#FFFFFF" align="center">Helvetica</td>
+        <td bgcolor="#FFFFFF" align="center">600</td>
+        <td bgcolor="#FFFFFF" align="center">2</td>
+        <td bgcolor="#FFFFFF" align="center">3.43</td>
+        <td bgcolor="#FFFFFF" align="center">7.08</td>
+        <td bgcolor="#FFFFFF" align="center">-</td>
+    </tr>
+    <tr>
+        <td bgcolor="#FFFFFF" align="center">ACS</td>
+        <td bgcolor="#FFFFFF" align="center">Arial</td>
+        <td bgcolor="#FFFFFF" align="center">600</td>
+        <td bgcolor="#FFFFFF" align="center">2</td>
+        <td bgcolor="#FFFFFF" align="center">3.30</td>
+        <td bgcolor="#FFFFFF" align="center">7.00</td>
+        <td bgcolor="#FFFFFF" align="center">-</td>
+    </tr>
+    <tr>
+        <td bgcolor="#FFFFFF" align="center">Oxford</td>
+        <td bgcolor="#FFFFFF" align="center">Arial</td>
+        <td bgcolor="#FFFFFF" align="center">350</td>
+        <td bgcolor="#FFFFFF" align="center">2</td>
+        <td bgcolor="#FFFFFF" align="center">3.35</td>
+        <td bgcolor="#FFFFFF" align="center">6.70</td>
+        <td bgcolor="#FFFFFF" align="center">-</td>
+    </tr>
+    <tr>
+        <td bgcolor="#FFFFFF" align="center">PLOS</td>
+        <td bgcolor="#FFFFFF" align="center">Arial</td>
+        <td bgcolor="#FFFFFF" align="center">300</td>
+        <td bgcolor="#FFFFFF" align="center">1</td>
+        <td bgcolor="#FFFFFF" align="center">5.20</td>
+        <td bgcolor="#FFFFFF" align="center">-</td>
+        <td bgcolor="#FFFFFF" align="center">-</td>
+    </tr>
+    <tr>
+        <td bgcolor="#FFFFFF" align="center">IEEE</td>
+        <td bgcolor="#FFFFFF" align="center">Times New Roman</td>
+        <td bgcolor="#FFFFFF" align="center">300</td>
+        <td bgcolor="#FFFFFF" align="center">2</td>
+        <td bgcolor="#FFFFFF" align="center">3.50</td>
+        <td bgcolor="#FFFFFF" align="center">7.16</td>
+        <td bgcolor="#FFFFFF" align="center">-</td>
+    </tr>
+    <tr>
+        <td bgcolor="#FFFFFF" align="center">ACM</td>
+        <td bgcolor="#FFFFFF" align="center">Linux Libertine</td>
+        <td bgcolor="#FFFFFF" align="center">300</td>
+        <td bgcolor="#FFFFFF" align="center">2</td>
+        <td bgcolor="#FFFFFF" align="center">2.50</td>
+        <td bgcolor="#FFFFFF" align="center">6.02</td>
+        <td bgcolor="#FFFFFF" align="center">-</td>
+    </tr>
+</table>
+
+## In preparation
 
 ## Acknowledgements
-This work is funded by the 
+This work is funded by 
 [Warren L. DeLano Memorial PyMOL Open-Source Fellowship](http://pymol.org/fellowship). 
 We thank Dr. Jarrett Johnson from Schrödinger, Inc. for constructive discussions 
 on functional design and implementation mode.
