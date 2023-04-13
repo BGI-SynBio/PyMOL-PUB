@@ -1,17 +1,17 @@
-from mola.layouts import StructureImage, Figure
+from mola.layouts import DefaultStructureImage, Figure
 
 
 def baseline(file_parent_path, save_parent_path):
     # Initial visualization of the structures in case.
     for structure_name in ["1F34", "1AY7", "1YCR"]:
-        origin_structure = StructureImage(structure_path=[file_parent_path + structure_name + ".pdb"])
+        origin_structure = DefaultStructureImage(structure_path=[file_parent_path + structure_name + ".pdb"])
         origin_structure.save(save_path=save_parent_path + "1." + structure_name + ".png", width=1280)
 
 
 def designed(file_parent_path, temp_parent_path, save_parent_path):
     # Visualization of the structure 1F34.
-    s1f34 = StructureImage(structure_path=[file_parent_path + "1F34.pdb"])
-    s1f34.set_hidden(hidden_contents=["residue:HOH"])
+    s1f34 = DefaultStructureImage(structure_path=[file_parent_path + "1F34.pdb"])
+    s1f34.set_cache(cache_contents=["residue:HOH"])
     s1f34.set_state(representation_plan=[("chain:A", "surface"), ("chain:B", "cartoon")],
                     rotate_x=240, rotate_y=340, rotate_z=90)
     s1f34.set_color(coloring_plan=[("chain:A", "0xF2F2F2"), ("chain:B", "0x2D2F82"),
@@ -20,15 +20,15 @@ def designed(file_parent_path, temp_parent_path, save_parent_path):
     s1f34.save(save_path=temp_parent_path + "1F34.png", width=1280, ratio=0.8)
 
     # Visualization of the structure 1AY7.
-    s1ay7 = StructureImage(structure_path=[file_parent_path + "1AY7.pdb"])
-    s1ay7.set_hidden(hidden_contents=["residue:HOH"])
+    s1ay7 = DefaultStructureImage(structure_path=[file_parent_path + "1AY7.pdb"])
+    s1ay7.set_cache(cache_contents=["residue:HOH"])
     s1ay7.set_state(representation_plan=[("chain:A", "cartoon"), ("chain:B", "surface")],
                     rotate_x=120, rotate_y=30, rotate_z=325)
     s1ay7.set_color(coloring_plan=[("chain:A", "0x2D2F82"), ("chain:B", "0xF2F2F2"), ("range:B+25-45", "0xF08080")])
     s1ay7.save(save_path=temp_parent_path + "1AY7.png", width=1280, ratio=1.2)
 
     # Visualization of the structure 1YCR.
-    s1ycr = StructureImage(structure_path=[file_parent_path + "1YCR.pdb"])
+    s1ycr = DefaultStructureImage(structure_path=[file_parent_path + "1YCR.pdb"])
     s1ycr.set_state(representation_plan=[("chain:A", "surface"), ("chain:B", "cartoon")],
                     rotate_x=270, rotate_y=330, rotate_z=255)
     s1ycr.set_color(coloring_plan=[("chain:A", "0xF2F2F2"), ("chain:B", "0x2D2F82"), ("position:A+96", "0xF08080"),
