@@ -136,10 +136,10 @@ class DefaultStructureImage:
         :param rotate_z: rotate degree with z-axis.
         :type rotate_z: float
 
-        :param inner_align:
+        :param inner_align: align multiple structures through built-in interfaces (cmd.align).
         :type inner_align: bool
 
-        :param target_name:
+        :param target_name: the target (or template) name can be specified if the inner align is executed.
         :type target_name: str or None
         """
         self.__mol.cmd.orient()

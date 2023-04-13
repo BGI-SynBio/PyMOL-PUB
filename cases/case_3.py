@@ -14,7 +14,7 @@ def designed(file_parent_path, save_parent_path):
     structure.align_structures(structure1="7QQA", structure2="Predict")
     structure.set_state(representation_plan=[("all", "cartoon")], rotate_x=30, rotate_y=0, rotate_z=180)
     structure.set_cache(cache_contents=["residue:HOH", "residue:ADP", "residue:MG", "residue:SF4",
-                                          "chain:7QQA+B", "chain:7QQA+C", "chain:7QQA+D"])
+                                        "chain:7QQA+B", "chain:7QQA+C", "chain:7QQA+D"])
     structure.set_color(coloring_plan=[("model:7QQA", "0xAAAAAA")])
     structure.set_spectrum_color(palette_plan=[("model:Predict", "rmbc")], expression="RMSD",
                                  template_structure="7QQA+A", color_structure="Predict+2-274")
