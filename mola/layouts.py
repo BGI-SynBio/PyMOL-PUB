@@ -3,7 +3,10 @@ from matplotlib import pyplot, rcParams
 from numpy import zeros, sum
 from os import path
 from PIL import Image, PngImagePlugin
-from pymol2 import PyMOL
+try:
+    from pymol2 import PyMOL  # Please refer to https://pymol.org/2/ for download of PyMOL library
+except ModuleNotFoundError:
+    print("PyMOL is not installed!")
 from re import search
 from types import FunctionType
 from warnings import filterwarnings
