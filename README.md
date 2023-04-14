@@ -57,7 +57,7 @@ For example, the following left panel describes the difference
 between the expected structure and the predicted structure, 
 reported in Figure 1 of [Zeming Lin et al. work](https://www.science.org/doi/abs/10.1126/science.ade2574).
 Here, to avoid a cluttered information in the structure overlapping parts, 
-we depict solely the predicted structure, and illustrate the difference 
+we depict solely the predicted structure (center panel), and illustrate the difference 
 between the predicted and anticipated structures by 
 varying the thickness and gradient color of the cartoon representation (see the following right panel).
 
@@ -65,14 +65,18 @@ varying the thickness and gradient color of the cartoon representation (see the 
 <table width="100%" align="center", table-layout:fixed>
     <tr>
         <td bgcolor="#FFFFFF" bgcolor="#FFFFFF" align="center">expected</td>
-        <td bgcolor="#FFFFFF" bgcolor="#FFFFFF" align="center">designed</td>
+        <td bgcolor="#FFFFFF" bgcolor="#FFFFFF" align="center">designed (equal)</td>
+        <td bgcolor="#FFFFFF" bgcolor="#FFFFFF" align="center">designed (improve)</td>
     </tr>
     <tr>
         <td bgcolor="#FFFFFF">
             <img width="100%" src="https://github.com/BGI-SynBio/PyMOL-advance/blob/main/cases/expected/3.png"/>
         </td>
         <td bgcolor="#FFFFFF">
-            <img width="100%" src="https://github.com/BGI-SynBio/PyMOL-advance/blob/main/cases/expected/3.png"/>
+            <img width="100%" src="https://github.com/BGI-SynBio/PyMOL-advance/blob/main/cases/designed/3.png"/>
+        </td>
+        <td bgcolor="#FFFFFF">
+            <img width="100%" src="https://github.com/BGI-SynBio/PyMOL-advance/blob/main/cases/designed/3(clearer).png"/>
         </td>
     </tr>
 </table>
@@ -147,26 +151,26 @@ For the structure image, two types of rendering objectives have been offered:
 the first aims to accentuate specific region(s), 
 and the second intends to showcase element (deoxyribonucleic acid, ribonucleic acid and amino acid) 
 property information in the structure.
-The [HighlightStructureImage](https://github.com/BGI-SynBio/PyMOL-advance/blob/main/mola/layouts.py#L294) class 
+The [HighlightStructureImage](https://github.com/BGI-SynBio/PyMOL-advance/blob/main/mola/layouts.py#L303) class 
 can offer adequate services for the former, 
 whereas the 
-[PropertyStructureImage](https://github.com/BGI-SynBio/PyMOL-advance/blob/main/mola/layouts.py#L409) class 
+[PropertyStructureImage](https://github.com/BGI-SynBio/PyMOL-advance/blob/main/mola/layouts.py#L418) class 
 is developed for the latter.
 
 Irrespective of the structure visualisation method, 
 as applicable in all cases, 
 the recommended function calling order (not mandatory) is to 
 (1) omit unnecessary parts by 
-["set_cache"](https://github.com/BGI-SynBio/PyMOL-advance/blob/main/mola/layouts.py#L27) function, 
+["set_cache"](https://github.com/BGI-SynBio/PyMOL-advance/blob/main/mola/layouts.py#L29) function, 
 (2) adjust the structure's spatial orientation by
-["set_state"](https://github.com/BGI-SynBio/PyMOL-advance/blob/main/mola/layouts.py#L125) function, 
+["set_state"](https://github.com/BGI-SynBio/PyMOL-advance/blob/main/mola/layouts.py#L127) function, 
 (3) modify the structure or its parts representation by
-["set_shape"](https://github.com/BGI-SynBio/PyMOL-advance/blob/main/mola/layouts.py#L165) function, 
+["set_shape"](https://github.com/BGI-SynBio/PyMOL-advance/blob/main/mola/layouts.py#L174) function, 
 (4) complete coloring of the structure or its parts 
-by highlight [coloring](https://github.com/BGI-SynBio/PyMOL-advance/blob/main/mola/layouts.py#L296) 
-or property driven [coloring]((https://github.com/BGI-SynBio/PyMOL-advance/blob/main/mola/layouts.py#L411),
+by highlight [coloring](https://github.com/BGI-SynBio/PyMOL-advance/blob/main/mola/layouts.py#L305) 
+or property driven [coloring](https://github.com/BGI-SynBio/PyMOL-advance/blob/main/mola/layouts.py#L420),
 both called "set_color" function in the corresponding class,
-and (5) save the image by ["save"](https://github.com/BGI-SynBio/PyMOL-advance/blob/main/mola/layouts.py#L274) function.
+and (5) save the image by ["save"](https://github.com/BGI-SynBio/PyMOL-advance/blob/main/mola/layouts.py#L283) function.
 
 A highlight structure image example can be:
 ```python
@@ -209,7 +213,7 @@ More comparable cases are attached in the [cases](https://github.com/BGI-SynBio/
 
 ### Publication-standard figure creation
 At the figure level, we can customize the target publication format during the 
-[initialization](https://github.com/BGI-SynBio/PyMOL-advance/blob/main/mola/layouts.py#L355) of the figure.
+[initialization](https://github.com/BGI-SynBio/PyMOL-advance/blob/main/mola/layouts.py#L493) of the figure.
 The supporting figure formats of journal, conference or publisher are:
 
 <table width="100%" align="center", table-layout:fixed>
@@ -316,13 +320,13 @@ figure = Figure(manuscript_format="Science", occupied_columns=3)
 
 Once the figure has been created, 
 it is possible to insert the generated structure image(s) into it 
-by utilizing the ["set_image"](https://github.com/BGI-SynBio/PyMOL-advance/blob/main/mola/layouts.py#L694) function 
+by utilizing the ["set_image"](https://github.com/BGI-SynBio/PyMOL-advance/blob/main/mola/layouts.py#L692) function 
 or paint various outcomes, 
 like [line chart, bar chart, violin chart, and so on](https://matplotlib.org/stable/gallery/index), 
-through the ["set_panel"](https://github.com/BGI-SynBio/PyMOL-advance/blob/main/mola/layouts.py#L665) function.
-The [Figure](https://github.com/BGI-SynBio/PyMOL-advance/blob/main/mola/layouts.py#L482) class 
+through the ["set_panel"](https://github.com/BGI-SynBio/PyMOL-advance/blob/main/mola/layouts.py#L663) function.
+The [Figure](https://github.com/BGI-SynBio/PyMOL-advance/blob/main/mola/layouts.py#L491) class 
 also provides a 
-[grid selection](https://github.com/BGI-SynBio/PyMOL-advance/blob/main/mola/layouts.py#L646) function
+[grid selection](https://github.com/BGI-SynBio/PyMOL-advance/blob/main/mola/layouts.py#L644) function
 since publications usually have varying information to display in one figure.
 
 ## Configuration-driven figure creation

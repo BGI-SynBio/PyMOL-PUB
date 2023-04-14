@@ -3,7 +3,7 @@ from setuptools import setup
 setup(
     name="PyMOL-advance",
     version="0.0",
-    description="PyMOL-advance: high-level interfaces from structure data to manuscript-level expected_figures",
+    description="PyMOL-advance: high-level interfaces from structure data to publication-standard figures",
     author="Haoling Zhang",
     author_email="zhanghaoling@genomics.cn",
     url="https://github.com/BGI-SynBio/PyMOL-advance",
