@@ -70,13 +70,13 @@ varying the thickness and gradient color of the cartoon representation (see the 
     </tr>
     <tr>
         <td bgcolor="#FFFFFF">
-            <img width="33%" src="https://github.com/BGI-SynBio/PyMOL-advance/blob/main/cases/expected/3.png"/>
+            <img width="240px" src="https://github.com/BGI-SynBio/PyMOL-advance/blob/main/cases/expected/3.png"/>
         </td>
         <td bgcolor="#FFFFFF">
-            <img width="33%" src="https://github.com/BGI-SynBio/PyMOL-advance/blob/main/cases/designed/3.png"/>
+            <img width="240px" src="https://github.com/BGI-SynBio/PyMOL-advance/blob/main/cases/designed/3.png"/>
         </td>
         <td bgcolor="#FFFFFF">
-            <img width="33%" src="https://github.com/BGI-SynBio/PyMOL-advance/blob/main/cases/designed/3(clearer).png"/>
+            <img width="240px" src="https://github.com/BGI-SynBio/PyMOL-advance/blob/main/cases/designed/3(clearer).png"/>
         </td>
     </tr>
 </table>
