@@ -6,7 +6,7 @@ from numpy import argmin, argmax, min, max, mean, sum, sqrt
 from scipy.spatial.transform import Rotation
 from typing import Iterator
 from warnings import filterwarnings
-from pymol2 import PyMOL  #noqa
+from pymol2 import PyMOL  # noqa
 
 filterwarnings("ignore")
 getLogger("matplotlib").setLevel(CRITICAL)
