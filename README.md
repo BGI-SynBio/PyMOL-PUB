@@ -190,7 +190,7 @@ The supporting figure formats of journal, conference or publisher are:
         <th bgcolor="#FFFFFF" align="center">3</th>
     </tr>
     <tr>
-        <td bgcolor="#FFFFFF" align="center">[Nature](https://www.nature.com/nature/for-authors/formatting-guide)</td>
+        <td bgcolor="#FFFFFF" align="center"><a href="https://www.nature.com/nature/for-authors/formatting-guide">Nature</a></td>
         <td bgcolor="#FFFFFF" align="center">Arial</td>
         <td bgcolor="#FFFFFF" align="center" rowspan="9">Linux Libertine<br/>&<br/>Lucida Calligraphy</th>
         <td bgcolor="#FFFFFF" align="center">300</td>
@@ -200,7 +200,7 @@ The supporting figure formats of journal, conference or publisher are:
         <td bgcolor="#FFFFFF" align="center">-</td>
     </tr>
     <tr>
-        <td bgcolor="#FFFFFF" align="center">[Science](https://www.science.org/content/page/instructions-preparing-initial-manuscript#preparation-of-figures)</td>
+        <td bgcolor="#FFFFFF" align="center"><a href="https://www.science.org/content/page/instructions-preparing-initial-manuscript#preparation-of-figures">Science</a></td>
         <td bgcolor="#FFFFFF" align="center">Helvetica</td>
         <td bgcolor="#FFFFFF" align="center">300</td>
         <td bgcolor="#FFFFFF" align="center">3</td>
@@ -209,9 +209,9 @@ The supporting figure formats of journal, conference or publisher are:
         <td bgcolor="#FFFFFF" align="center">7.24</td>
     </tr>
     <tr>
-        <td bgcolor="#FFFFFF" align="center" rowspan="2">[Cell](https://www.cell.com/figureguidelines)</th>
-        <td bgcolor="#FFFFFF" align="center" rowspan="2">Arial</th>
-        <td bgcolor="#FFFFFF" align="center" rowspan="2">300</th>
+        <td bgcolor="#FFFFFF" align="center" rowspan="2"><a href="https://www.cell.com/figureguidelines">Cell</a></td>
+        <td bgcolor="#FFFFFF" align="center" rowspan="2">Arial</td>
+        <td bgcolor="#FFFFFF" align="center" rowspan="2">300</td>
         <td bgcolor="#FFFFFF" align="center">2</td>
         <td bgcolor="#FFFFFF" align="center">3.35</td>
         <td bgcolor="#FFFFFF" align="center">6.85</td>
@@ -224,7 +224,7 @@ The supporting figure formats of journal, conference or publisher are:
         <td bgcolor="#FFFFFF" align="center">6.85</td>
     </tr>
     <tr>
-        <td bgcolor="#FFFFFF" align="center">[PNAS](https://www.pnas.org/author-center/submitting-your-manuscript)</td>
+        <td bgcolor="#FFFFFF" align="center"><a href="https://www.pnas.org/author-center/submitting-your-manuscript">PNAS</a></td>
         <td bgcolor="#FFFFFF" align="center">Helvetica</td>
         <td bgcolor="#FFFFFF" align="center">600</td>
         <td bgcolor="#FFFFFF" align="center">2</td>
@@ -233,7 +233,7 @@ The supporting figure formats of journal, conference or publisher are:
         <td bgcolor="#FFFFFF" align="center">-</td>
     </tr>
     <tr>
-        <td bgcolor="#FFFFFF" align="center">[ACS](https://pubs.acs.org/page/4authors/submission/graphics_prep.html)</td>
+        <td bgcolor="#FFFFFF" align="center"><a href="https://pubs.acs.org/page/4authors/submission/graphics_prep.html">ACS</a></td>
         <td bgcolor="#FFFFFF" align="center">Arial</td>
         <td bgcolor="#FFFFFF" align="center">600</td>
         <td bgcolor="#FFFFFF" align="center">2</td>
@@ -242,7 +242,7 @@ The supporting figure formats of journal, conference or publisher are:
         <td bgcolor="#FFFFFF" align="center">-</td>
     </tr>
     <tr>
-        <td bgcolor="#FFFFFF" align="center">[Oxford](https://academic.oup.com/bioinformatics/pages/instructions_for_authors)</td>
+        <td bgcolor="#FFFFFF" align="center"><a href="https://academic.oup.com/bioinformatics/pages/instructions_for_authors">Oxford</a></td>
         <td bgcolor="#FFFFFF" align="center">Arial</td>
         <td bgcolor="#FFFFFF" align="center">350</td>
         <td bgcolor="#FFFFFF" align="center">2</td>
@@ -251,7 +251,7 @@ The supporting figure formats of journal, conference or publisher are:
         <td bgcolor="#FFFFFF" align="center">-</td>
     </tr>
     <tr>
-        <td bgcolor="#FFFFFF" align="center">[PLOS](https://journals.plos.org/ploscompbiol/s/figures)</td>
+        <td bgcolor="#FFFFFF" align="center"><a href="https://journals.plos.org/ploscompbiol/s/figures">PLOS</a></td>
         <td bgcolor="#FFFFFF" align="center">Arial</td>
         <td bgcolor="#FFFFFF" align="center">300</td>
         <td bgcolor="#FFFFFF" align="center">1</td>
@@ -260,7 +260,7 @@ The supporting figure formats of journal, conference or publisher are:
         <td bgcolor="#FFFFFF" align="center">-</td>
     </tr>
     <tr>
-        <td bgcolor="#FFFFFF" align="center">[IEEE](https://www.ieee.org/content/dam/ieee-org/ieee/web/org/pubs/format-definition-table-and-glossary.pdf)</td>
+        <td bgcolor="#FFFFFF" align="center"><a href="https://www.ieee.org/content/dam/ieee-org/ieee/web/org/pubs/format-definition-table-and-glossary.pdf">IEEE</a></td>
         <td bgcolor="#FFFFFF" align="center">Times New Roman</td>
         <td bgcolor="#FFFFFF" align="center">300</td>
         <td bgcolor="#FFFFFF" align="center">2</td>
