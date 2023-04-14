@@ -1,4 +1,3 @@
-# noinspection PyPackageRequirements
 from Bio.PDB import PDBParser, MMCIFParser, PDBIO, MMCIFIO, Structure, Chain, Residue, Atom
 from datetime import datetime
 from logging import getLogger, CRITICAL
@@ -7,8 +6,7 @@ from numpy import argmin, argmax, min, max, mean, sum, sqrt
 from scipy.spatial.transform import Rotation
 from typing import Iterator
 from warnings import filterwarnings
-# noinspection PyPackageRequirements
-from pymol2 import PyMOL
+from pymol2 import PyMOL  #noqa
 
 filterwarnings("ignore")
 getLogger("matplotlib").setLevel(CRITICAL)
