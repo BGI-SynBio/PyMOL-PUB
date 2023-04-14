@@ -122,7 +122,8 @@ class DefaultStructureImage:
                 raise ValueError("No such representing information! We only support one type of information, i.e. "
                                  + "\"shading type:target,target,...,target\"")
 
-    def set_state(self, translate: list = None, rotate: list = None, inner_align: bool = False, target: str = None):
+    def set_state(self, translate: list = None, rotate: list = None, inner_align: bool = False, target: str = None,
+                  zoom_model: str = None):
         """
         Set the state of the structure.
 
@@ -137,16 +138,10 @@ class DefaultStructureImage:
 
         :param target: the target (or template) name can be specified if the inner align is executed.
         :type target: str or None
+
+        :param zoom_model: zoom the selection structure.
+        :type zoom_model: str or None
         """
-        self._mol.cmd.orient()
-
-        if translate is not None:
-            self._mol.cmd.translate(vector=translate)
-        else:
-            self._mol.cmd.center()
-
-        self._mol.cmd.zoom(complete=1)
-
         if inner_align and len(self.__structure_names) > 1:
             if target is not None:
                 for mobile in self.__structure_names:
@@ -161,6 +156,18 @@ class DefaultStructureImage:
             self._mol.cmd.rotate(axis="x", angle=rotate[0])
             self._mol.cmd.rotate(axis="y", angle=rotate[1])
             self._mol.cmd.rotate(axis="z", angle=rotate[2])
+
+        if translate is not None:
+            self._mol.cmd.translate(vector=translate)
+        else:
+            self._mol.cmd.center(state=-1)
+
+        self._mol.cmd.orient(state=-1)
+
+        if zoom_model is not None:
+            self._mol.cmd.zoom(selection="(m. " + zoom_model + ")", state=-1, complete=1)
+        else:
+            self._mol.cmd.zoom(state=-1, complete=1)
 
     def set_shape(self, representation_plan: list, initial_representation: str = "cartoon"):
         """
