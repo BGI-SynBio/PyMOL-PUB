@@ -414,7 +414,7 @@ class PropertyStructureImage(DefaultStructureImage):
         """
         Set colors for the structure with its element properties.
 
-        :param target: coloring select.
+        :param target: coloring target select, including "range", "segment", "chain" and "model".
         :type target: str
 
         :param properties: element properties of the structure.
