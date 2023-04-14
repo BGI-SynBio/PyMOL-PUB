@@ -11,7 +11,7 @@ However, these adjustments and batch protocols require the involvement of many s
 and operate at human speeds, all of which make them worthy of automation.
 Based on the original design of PyMOL and as an important supplement, 
 we develop a high-level interface in order to generate figures capable of reaching the 
-publication standard with configuration or a few codes.
+publication standard.
 By using our tool, the manual operations can be greatly reduced, 
 and the desired image output can be obtained with a few lines of code or only configuration.
 
