@@ -1,9 +1,16 @@
 # noinspection PyPackageRequirements
 from Bio.PDB import PDBParser, MMCIFParser, PDBIO, MMCIFIO, Structure, Chain, Residue, Atom
 from datetime import datetime
+from logging import getLogger, CRITICAL
 from numpy import ndarray, array, arange, zeros, dot, transpose, linalg, where
 from numpy import argmin, argmax, min, max, mean, sum, sqrt
+from scipy.spatial.transform import Rotation
 from typing import Iterator
+from warnings import filterwarnings
+from pymol2 import PyMOL
+
+filterwarnings("ignore")
+getLogger("matplotlib").setLevel(CRITICAL)
 
 
 class Monitor:
@@ -351,27 +358,12 @@ class Score:
         :returns current index, total index, final candidate structure and reference structure.
         :rtype int, int, numpy.ndarray, numpy.ndarray
         """
-
         # Yang Zhang and Jeffrey Skolnick (2004) Proteins
         # Wolfgang Kabsch (1976) Acta Crystallogr. D.
-        def calculate(candidate, reference, addition):
-            # unify the center point.
-            center = dot(transpose(candidate), reference)
 
-            # decompose the singular value for rotation matrix.
-            translation, _, unitary = linalg.svd(center)
-            if (linalg.det(translation) * linalg.det(unitary)) < 0.0:
-                translation[:, -1] = -translation[:, -1]
-
-            # create rotation matrix and rotate candidate structure.
-            rotation = dot(translation, unitary)
-            candidate = dot(candidate, rotation)
-
-            # recover the original state of reference structure.
-            candidate += addition
-            reference += addition
-
-            return candidate, reference
+        if len(candidate_structure) > len(reference_structure):
+            raise ValueError("The length of candidate structure needs to be less than or equal to "
+                             + "that of reference structure!")
 
         align_number = len(reference_structure) - len(candidate_structure) + 1
         for align_location in range(align_number):
@@ -380,14 +372,41 @@ class Score:
             if use_center:
                 used_c = c - mean(c, axis=0)
                 used_r = r - mean(r, axis=0)
-                final_c, final_r = calculate(used_c, used_r, mean(r, axis=0))
+                rotation = Rotation.align_vectors(used_c, used_r)[0].as_matrix()
+                final_c, final_r = dot(used_c, rotation) + mean(r, axis=0), used_r + mean(r, axis=0)
                 yield 0, 1, final_c, final_r, align_location
             else:
                 for center_location in range(len(candidate_structure)):
                     used_c = c - c[center_location]
                     used_r = r - r[center_location]
-                    final_c, final_r = calculate(used_c, used_r, r[center_location])
+                    rotation = Rotation.align_vectors(used_c, used_r)[0].as_matrix()
+                    final_c, final_r = dot(used_c, rotation) + r[center_location], used_r + r[center_location]
                     yield center_location, len(candidate_structure), final_c, final_r, align_location
+
+    @staticmethod
+    def get_rotation(candidate_structure, reference_structure):
+        """
+        Get the rotation matrix.
+
+        :param candidate_structure: candidate structure represented by three-dimension position list.
+        :type candidate_structure: numpy.ndarray
+
+        :param reference_structure: reference structure represented by three-dimension position list.
+        :type reference_structure: numpy.ndarray
+
+        :return: rotation matrix.
+        :rtype: numpy.ndarray
+        """
+        # unify the center point.
+        center = dot(transpose(candidate_structure), reference_structure)
+
+        # decompose the singular value for rotation matrix.
+        translation, _, unitary = linalg.svd(center)
+        if (linalg.det(translation) * linalg.det(unitary)) < 0.0:
+            translation[:, -1] = -translation[:, -1]
+
+        # create rotation matrix and rotate candidate structure.
+        return dot(translation, unitary)
 
 
 def similar(structure_1, structure_2, score_method, use_center: bool = True, metrics: float = None) -> tuple:
@@ -540,6 +559,7 @@ def cluster(structures, score_method, use_center: bool = True, metrics: float = 
                 cluster_flags[selected_indices[0]] += cluster_flags[selected_indices[index]]
                 del cluster_flags[selected_indices[index]]
 
+            # noinspection PyUnresolvedReferences
             cluster_flags[selected_indices[0]] = [structure_index]
 
     return list(cluster_flags.values())
@@ -582,12 +602,13 @@ def align(structures, score_method, use_center: bool = True, metrics: float = No
     return alignment_results
 
 
-def set_properties(chain: str, molecule_type: str, property_type: str = None, unit_values: dict = None) -> ndarray:
+def set_properties(structure_paths: list, molecule_type: str, property_type: str = None, targets: list = None,
+                   unit_values: dict = None) -> list:
     """
-    Set physicochemical properties for a known chain.
+    Set physicochemical properties for structures.
 
-    :param chain: chain information.
-    :type chain: str
+    :param structure_paths: the path to load structure.
+    :type structure_paths: list
 
     :param molecule_type: type of molecule, including DNA, RNA or AA (amino acid).
     :type molecule_type: str
@@ -595,204 +616,313 @@ def set_properties(chain: str, molecule_type: str, property_type: str = None, un
     :param property_type: physicochemical type to emphasis, like polarity, electronegativity, hydrophobicity, etc.
     :type property_type: str or None
 
+    :param targets: selet contents.
+    :type targets: list or None
+
     :param unit_values: values of unit, provided by users or the given property type.
     :type unit_values: dict or None
 
     :return: property values.
-    :rtype: numpy.ndarray
+    :rtype: list
     """
-    if unit_values is None:
-        if molecule_type == "AA":
-            if property_type == "polarity":
+    mol = PyMOL()
+    mol.start()
+    for structure_path in structure_paths:
+        mol.cmd.load(structure_path, quiet=1)
+    mol.cmd.ray(quiet=1)  # make PyMOL run silently.
+
+    properties = []
+    selection_commands = []
+    models = []
+    for target in targets:
+        shading_type, target_information = target.split(":")
+        if shading_type == "range":
+            selected_model, selected_range = target_information.split("+")
+            selection_command = "(m. " + selected_model + " and i. " + selected_range + " and (not hetatm))"
+        elif shading_type == "segment":
+            selected_model, selected_segment = target_information.split("+")
+            selection_command = "(m. " + selected_model + " and ps. " + selected_segment + " and (not hetatm))"
+        elif shading_type == "chain":
+            selected_model, selected_chain = target_information.split("+")
+            selection_command = "(m. " + selected_model + " and c. " + selected_chain + " and (not hetatm))"
+        elif shading_type == "model":
+            selected_model = target_information
+            selection_command = "(m. " + selected_model + " and (not hetatm))"
+        else:
+            raise ValueError("No such shading type! We only support "
+                             + "\"range\", \"segment\", \"chain\" and \"model\".")
+
+        selection_commands.append(selection_command)
+        models.append(selected_model)
+
+    if property_type == "PyMOL-align":
+        if len(structure_paths) == 2 and len(models) == 2:
+            mol.cmd.align(models[0], models[1])
+
+            mol.stored.s1 = []
+            mol.cmd.iterate_state(1, selection_commands[0], "stored.s1.append([x,y,z])")
+            mol.stored.s1 = array(mol.stored.s1)
+
+            mol.stored.s2 = []
+            mol.cmd.iterate_state(1, selection_commands[1], "stored.s2.append([x,y,z])")
+            mol.stored.s2 = array(mol.stored.s2)
+
+            properties = list(linalg.norm((mol.stored.s1 - mol.stored.s2), axis=1, ord=2))
+
+        else:
+            raise ValueError("We only support two structures when \"property_type\" is \"PyMOL-align\".")
+
+    elif property_type == "global-similarity":
+        if len(structure_paths) == 2 and len(models) == 2:
+            mol.stored.s1 = []
+            mol.cmd.iterate_state(1, selection_commands[0], "stored.s1.append([x,y,z])")
+            mol.stored.s1 = array(mol.stored.s1)
+
+            mol.stored.s2 = []
+            mol.cmd.iterate_state(1, selection_commands[1], "stored.s2.append([x,y,z])")
+            mol.stored.s2 = array(mol.stored.s2)
+
+            _, candidate, original_reference, _, _ = Score().__call__(structure_1=mol.stored.s1,
+                                                                      structure_2=mol.stored.s2)
+            properties = list(linalg.norm((candidate - original_reference), axis=1, ord=2))
+
+        else:
+            raise ValueError("We only support two structures when \"property_type\" is \"global-similarity\".")
+
+    elif property_type == "polarity":
+        if len(structure_paths) == 1 and len(models) == 1:
+            if molecule_type == "AA":
                 # Geoffrey M. Cooper and Robert E. Hausman (2007) ASM Press, Washington DC.
                 # also see https://en.wikipedia.org/wiki/Amino_acid.
                 # non-polar = 0 (False) and polar = 1 (True).
-                unit_values = {"A": 0, "C": 1, "D": 1, "E": 1, "F": 0, "G": 0, "H": 1, "I": 0, "K": 1, "L": 0,
-                               "M": 0, "N": 1, "P": 0, "Q": 1, "R": 1, "S": 1, "T": 1, "V": 0, "W": 0, "Y": 1}
-                property_values = zeros(shape=(len(chain),))
-                for unit_index, entity in enumerate(chain):
-                    property_values[unit_index] = unit_values[entity]
+                if unit_values is None:
+                    unit_values = {"A": 0, "C": 1, "D": 1, "E": 1, "F": 0, "G": 0, "H": 1, "I": 0, "K": 1, "L": 0,
+                                   "M": 0, "N": 1, "P": 0, "Q": 1, "R": 1, "S": 1, "T": 1, "V": 0, "W": 0, "Y": 1}
+            else:
+                raise ValueError("Property type \"polarity\" only support \"AA\".")
 
-                return property_values
+            mol.stored.residue = []
+            mol.cmd.iterate_state(1, selection_commands[0], "stored.residue.append(oneletter)")
+            for i in range(len(mol.stored.residue)):
+                properties.append(unit_values[mol.stored.residue[i]])
 
-            elif property_type == "electronegativity":  # net charge at pH = 7.4.
+        else:
+            raise ValueError("We only support one structure when \"property_type\" is \"polarity\".")
+
+    elif property_type == "electronegativity":
+        if len(structure_paths) == 1 and len(models) == 1:
+            if molecule_type == "AA":
+                # net charge at pH = 7.4.
                 # Geoffrey M. Cooper and Robert E. Hausman (2007) ASM Press, Washington DC.
                 # also see https://en.wikipedia.org/wiki/Amino_acid.
                 # negative = -1, neutral = 0, positive = 1; Histidine is 10% positive and 90% neutral, we set as 0.1.
-                unit_values = {"A": +0, "C": +0, "D": -1, "E": -1, "F": +0, "G": +0, "H": +0.1, "I": +0,
-                               "K": +1, "L": +0, "M": +0, "N": +0, "P": +0, "Q": +0, "R": +1, "S": +0,
-                               "T": +0, "V": +0, "W": +0, "Y": +0}
-                property_values = zeros(shape=(len(chain),))
-                for unit_index, entity in enumerate(chain):
-                    property_values[unit_index] = unit_values[entity]
+                if unit_values is None:
+                    unit_values = {"A": +0, "C": +0, "D": -1, "E": -1, "F": +0, "G": +0, "H": +0.1, "I": +0, "K": +1,
+                                   "L": +0, "M": +0, "N": +0, "P": +0, "Q": +0, "R": +1, "S": +0, "T": +0, "V": +0,
+                                   "W": +0, "Y": +0}
+            elif molecule_type == "DNA":
+                # net charge at pH = 7.4.
+                # Cameselle J.C. and Ribeiro J.M. (1986) Biochemical Education.
+                if unit_values is None:
+                    unit_values = {"A": -2, "T": -2, "C": -2, "G": -2}
+            elif molecule_type == "RNA":
+                # net charge at pH = 7.4.
+                # Cameselle J.C. and Ribeiro J.M. (1986) Biochemical Education.
+                if unit_values is None:
+                    unit_values = {"A": -2, "U": -2, "C": -2, "G": -2}
+            else:
+                raise ValueError("No such molecule type!")
 
-                return property_values
+            mol.stored.residue = []
+            mol.cmd.iterate_state(1, selection_commands[0], "stored.residue.append(oneletter)")
+            for i in range(len(mol.stored.residue)):
+                properties.append(unit_values[mol.stored.residue[i]])
 
-            elif property_type == "hydrophobicity":
+        else:
+            raise ValueError("We only support one structure when \"property_type\" is \"electronegativity\".")
+
+    elif property_type == "hydrophobicity":
+        if len(structure_paths) == 1 and len(models) == 1:
+            if molecule_type == "AA":
                 # Gian Gaetano Tartaglia and Michele Vendruscolo (2010) Journal of molecular biology.
                 # The scale of hydrophobicity index is between 0.00 and 1.00 under pH = 7.0.
-                unit_values = {"A": 0.69, "C": 0.80, "D": 0.17, "E": 0.43, "F": 0.75, "G": 0.55, "H": 0.48, "I": 0.97,
-                               "K": 0.00, "L": 1.00, "M": 0.95, "N": 0.35, "P": 0.88, "Q": 0.47, "R": 0.34, "S": 0.39,
-                               "T": 0.49, "V": 0.95, "W": 0.49, "Y": 0.43}
-                property_values = zeros(shape=(len(chain),))
-                for unit_index, entity in enumerate(chain):
-                    property_values[unit_index] = unit_values[entity]
+                if unit_values is None:
+                    unit_values = {"A": 0.69, "C": 0.80, "D": 0.17, "E": 0.43, "F": 0.75, "G": 0.55, "H": 0.48,
+                                   "I": 0.97, "K": 0.00, "L": 1.00, "M": 0.95, "N": 0.35, "P": 0.88, "Q": 0.47,
+                                   "R": 0.34, "S": 0.39, "T": 0.49, "V": 0.95, "W": 0.49, "Y": 0.43}
+            elif molecule_type == "DNA":
+                # Kevin M. Guckian and Barbara A. Schweitzer (2000) Journal of the American Chemical Society.
+                # The hydrophobicity coefficient.
+                if unit_values is None:
+                    unit_values = {"A": -1.07, "T": -0.36, "C": -0.76, "G": -1.36}
+            elif molecule_type == "RNA":
+                # Boldina G and Ivashchenko A (2009) Int J Biol Sci.
+                # The hydrophobicity coefficient.
+                if unit_values is None:
+                    unit_values = {"A": -1.07, "U": -0.76, "C": -0.76, "G": -1.36}
+            else:
+                raise ValueError("No such molecule type!")
 
-                return property_values
+            mol.stored.residue = []
+            mol.cmd.iterate_state(1, selection_commands[0], "stored.residue.append(oneletter)")
+            for i in range(len(mol.stored.residue)):
+                properties.append(unit_values[mol.stored.residue[i]])
 
-            elif property_type == "flexibility":
+        else:
+            raise ValueError("We only support one structure when \"property_type\" is \"hydrophobicity\".")
+
+    elif property_type == "flexibility":
+        if len(structure_paths) == 1 and len(models) == 1:
+            if molecule_type == "AA":
                 # Fang Huang and Werner M. Nau (2003) Angewandte Chemie International Edition.
                 # Tryptophan, Tyrosine, Cysteine and Methionine are themselves quenchers
                 # and they could consequently not be included in the study,
                 # so their conformational flexibility scales are unknown (represented by -1).
-                unit_values = {"A": 18, "C": -1, "D": 21, "E": 8.8, "F": 7.6, "G": 39, "H": 4.8, "I": 2.3, "K": 4.0,
-                               "L": 10, "M": -1, "N": 20, "P": 0.1, "Q": 7.2, "R": 4.6, "S": 25, "T": 11, "V": 3.0,
-                               "W": -1, "Y": -1}
-                property_values = zeros(shape=(len(chain),))
-                for unit_index, entity in enumerate(chain):
-                    property_values[unit_index] = unit_values[entity]
-
-                return property_values
-
-            elif property_type == "turn-propensity":
-                # Gian Gaetano Tartaglia and Michele Vendruscolo (2010) Journal of molecular biology.
-                # The scale of turn propensity is between 0.00 and 1.00.
-                unit_values = {"A": 0.22, "C": 0.70, "D": 0.74, "E": 0.32, "F": 0.20, "G": 0.95, "H": 0.56, "I": 0.00,
-                               "K": 0.60, "L": 0.21, "M": 0.21, "N": 1.00, "P": 0.66, "Q": 0.47, "R": 0.46, "S": 0.79,
-                               "T": 0.34, "V": 0.09, "W": 0.40, "Y": 0.50}
-                property_values = zeros(shape=(len(chain),))
-                for unit_index, entity in enumerate(chain):
-                    property_values[unit_index] = unit_values[entity]
-
-                return property_values
-
-            elif property_type == "helix-propensity":
-                # Gian Gaetano Tartaglia and Michele Vendruscolo (2010) Journal of molecular biology.
-                # The scale of alpha-helix propensity is between 0.00 and 1.00.
-                unit_values = {"A": 0.57, "C": 0.62, "D": 0.67, "E": 0.63, "F": 0.56, "G": 0.00, "H": 0.48, "I": 0.45,
-                               "K": 0.87, "L": 0.48, "M": 0.32, "N": 0.32, "P": 0.44, "Q": 0.51, "R": 1.00, "S": 0.45,
-                               "T": 0.30, "V": 0.45, "W": 0.00, "Y": 0.54}
-                property_values = zeros(shape=(len(chain),))
-                for unit_index, entity in enumerate(chain):
-                    property_values[unit_index] = unit_values[entity]
-
-                return property_values
-
-            elif property_type == "sheet-propensity":
-                # Gian Gaetano Tartaglia and Michele Vendruscolo (2010) Journal of molecular biology.
-                # The scale of beta-sheet propensity is between 0.00 and 1.00.
-                unit_values = {"A": 0.34, "C": 0.23, "D": 0.35, "E": 0.14, "F": 0.92, "G": 0.13, "H": 0.14, "I": 0.99,
-                               "K": 0.07, "L": 0.87, "M": 0.40, "N": 0.90, "P": 0.00, "Q": 0.72, "R": 0.22, "S": 0.06,
-                               "T": 0.14, "V": 0.78, "W": 0.62, "Y": 1.00}
-                property_values = zeros(shape=(len(chain),))
-                for unit_index, entity in enumerate(chain):
-                    property_values[unit_index] = unit_values[entity]
-
-                return property_values
-
-            elif property_type == "folding-propensity":
-                # Gian Gaetano Tartaglia and Michele Vendruscolo (2010) Journal of molecular biology.
-                # The scale of folding propensity is between 0.00 and 1.00.
-                unit_values = {"A": 0.34, "C": 0.97, "D": 0.61, "E": 0.73, "F": 0.31, "G": 0.58, "H": 0.47, "I": 0.55,
-                               "K": 0.50, "L": 0.65, "M": 0.55, "N": 0.48, "P": 1.00, "Q": 0.35, "R": 0.63, "S": 0.73,
-                               "T": 0.44, "V": 0.55, "W": 0.00, "Y": 0.21}
-                property_values = zeros(shape=(len(chain),))
-                for unit_index, entity in enumerate(chain):
-                    property_values[unit_index] = unit_values[entity]
-
-                return property_values
-
+                if unit_values is None:
+                    unit_values = {"A": 18, "C": -1, "D": 21, "E": 8.8, "F": 7.6, "G": 39, "H": 4.8, "I": 2.3, "K": 4.0,
+                                   "L": 10, "M": -1, "N": 20, "P": 0.1, "Q": 7.2, "R": 4.6, "S": 25, "T": 11, "V": 3.0,
+                                   "W": -1, "Y": -1}
             else:
-                raise ValueError("No such property type!")
+                raise ValueError("Property type \"flexibility\" only support \"AA\".")
 
-        elif molecule_type == "DNA":
-            if property_type == "hydrophobicity":
-                # Kevin M. Guckian and Barbara A. Schweitzer (2000) Journal of the American Chemical Society.
-                # The hydrophobicity coefficient.
-                unit_values = {"A": -1.07, "T": -0.36, "C": -0.76, "G": -1.36}
-                property_values = zeros(shape=(len(chain),))
-                for unit_index, entity in enumerate(chain):
-                    property_values[unit_index] = unit_values[entity]
-
-                return property_values
-
-            elif property_type == "electronegativity":  # net charge at pH = 7.4.
-                # Cameselle J.C. and Ribeiro J.M. (1986) Biochemical Education.
-                unit_values = {"A": -2, "T": -2, "C": -2, "G": -2}
-                property_values = zeros(shape=(len(chain),))
-                for unit_index, entity in enumerate(chain):
-                    property_values[unit_index] = unit_values[entity]
-
-                return property_values
-
-            elif property_type == "ionizationpotentials":
-                # Stacey D. Wetmore and Russell J. Boyd. (2000) Chemical Physics Letters.
-                # The ionization potentials of the nucleotide bases.(eV)
-                unit_values = {"A": 8.09, "T": 8.74, "C": 8.57, "G": 7.64}
-                property_values = zeros(shape=(len(chain),))
-                for unit_index, entity in enumerate(chain):
-                    property_values[unit_index] = unit_values[entity]
-
-                return property_values
-
-            elif property_type == "electronaffinities":
-                # Stacey D. Wetmore and Russell J. Boyd. (2000) Chemical Physics Letters.
-                # The electron affinities of the nucleotide bases.(eV)
-                unit_values = {"A": -0.40, "T": 0.14, "C": -0.06, "G": -0.27}
-                property_values = zeros(shape=(len(chain),))
-                for unit_index, entity in enumerate(chain):
-                    property_values[unit_index] = unit_values[entity]
-
-                return property_values
-
-            else:
-                raise ValueError("No such property type!")
-
-        elif molecule_type == "RNA":
-            if property_type == "hydrophobicity":
-                # Boldina G and Ivashchenko A (2009) Int J Biol Sci.
-                # The hydrophobicity coefficient.
-                unit_values = {"A": -1.07, "U": -0.76, "C": -0.76, "G": -1.36}
-                property_values = zeros(shape=(len(chain),))
-                for unit_index, entity in enumerate(chain):
-                    property_values[unit_index] = unit_values[entity]
-
-                return property_values
-
-            elif property_type == "electronegativity":  # net charge at pH = 7.4.
-                # Cameselle J.C. and Ribeiro J.M. (1986) Biochemical Education.
-                unit_values = {"A": -2, "U": -2, "C": -2, "G": -2}
-                property_values = zeros(shape=(len(chain),))
-                for unit_index, entity in enumerate(chain):
-                    property_values[unit_index] = unit_values[entity]
-
-                return property_values
-
-            elif property_type == "ionizationpotentials":
-                # Stacey D. Wetmore and Russell J. Boyd. (2000) Chemical Physics Letters.
-                # The ionization potentials of the nucleotide bases.(eV)
-                unit_values = {"A": 8.09, "U": 9.21, "C": 8.57, "G": 7.64}
-                property_values = zeros(shape=(len(chain),))
-                for unit_index, entity in enumerate(chain):
-                    property_values[unit_index] = unit_values[entity]
-
-                return property_values
-
-            elif property_type == "electronaffinities":
-                # Stacey D. Wetmore and Russell J. Boyd. (2000) Chemical Physics Letters.
-                # The electron affinities of the nucleotide bases.(eV)
-                unit_values = {"A": -0.40, "U": 0.18, "C": -0.06, "G": -0.27}
-                property_values = zeros(shape=(len(chain),))
-                for unit_index, entity in enumerate(chain):
-                    property_values[unit_index] = unit_values[entity]
-
-                return property_values
-
-            else:
-                raise ValueError("No such property type!")
+            mol.stored.residue = []
+            mol.cmd.iterate_state(1, selection_commands[0], "stored.residue.append(oneletter)")
+            for i in range(len(mol.stored.residue)):
+                properties.append(unit_values[mol.stored.residue[i]])
 
         else:
-            raise ValueError("No such molecule type!")
+            raise ValueError("We only support one structure when \"property_type\" is \"flexibility\".")
+
+    elif property_type == "turn-propensity":
+        if len(structure_paths) == 1 and len(models) == 1:
+            if molecule_type == "AA":
+                # Gian Gaetano Tartaglia and Michele Vendruscolo (2010) Journal of molecular biology.
+                # The scale of turn propensity is between 0.00 and 1.00.
+                if unit_values is None:
+                    unit_values = {"A": 0.22, "C": 0.70, "D": 0.74, "E": 0.32, "F": 0.20, "G": 0.95, "H": 0.56,
+                                   "I": 0.00, "K": 0.60, "L": 0.21, "M": 0.21, "N": 1.00, "P": 0.66, "Q": 0.47,
+                                   "R": 0.46, "S": 0.79, "T": 0.34, "V": 0.09, "W": 0.40, "Y": 0.50}
+            else:
+                raise ValueError("Property type \"turn-propensity\" only support \"AA\".")
+
+            mol.stored.residue = []
+            mol.cmd.iterate_state(1, selection_commands[0], "stored.residue.append(oneletter)")
+            for i in range(len(mol.stored.residue)):
+                properties.append(unit_values[mol.stored.residue[i]])
+
+        else:
+            raise ValueError("We only support one structure when \"property_type\" is \"turn-propensity\".")
+
+    elif property_type == "helix-propensity":
+        if len(structure_paths) == 1 and len(models) == 1:
+            if molecule_type == "AA":
+                # Gian Gaetano Tartaglia and Michele Vendruscolo (2010) Journal of molecular biology.
+                # The scale of alpha-helix propensity is between 0.00 and 1.00.
+                if unit_values is None:
+                    unit_values = {"A": 0.57, "C": 0.62, "D": 0.67, "E": 0.63, "F": 0.56, "G": 0.00, "H": 0.48,
+                                   "I": 0.45, "K": 0.87, "L": 0.48, "M": 0.32, "N": 0.32, "P": 0.44, "Q": 0.51,
+                                   "R": 1.00, "S": 0.45, "T": 0.30, "V": 0.45, "W": 0.00, "Y": 0.54}
+            else:
+                raise ValueError("Property type \"helix-propensity\" only support \"AA\".")
+
+            mol.stored.residue = []
+            mol.cmd.iterate_state(1, selection_commands[0], "stored.residue.append(oneletter)")
+            for i in range(len(mol.stored.residue)):
+                properties.append(unit_values[mol.stored.residue[i]])
+
+        else:
+            raise ValueError("We only support one structure when \"property_type\" is \"helix-propensity\".")
+
+    elif property_type == "sheet-propensity":
+        if len(structure_paths) == 1 and len(models) == 1:
+            if molecule_type == "AA":
+                # Gian Gaetano Tartaglia and Michele Vendruscolo (2010) Journal of molecular biology.
+                # The scale of beta-sheet propensity is between 0.00 and 1.00.
+                if unit_values is None:
+                    unit_values = {"A": 0.34, "C": 0.23, "D": 0.35, "E": 0.14, "F": 0.92, "G": 0.13, "H": 0.14,
+                                   "I": 0.99, "K": 0.07, "L": 0.87, "M": 0.40, "N": 0.90, "P": 0.00, "Q": 0.72,
+                                   "R": 0.22, "S": 0.06, "T": 0.14, "V": 0.78, "W": 0.62, "Y": 1.00}
+            else:
+                raise ValueError("Property type \"sheet-propensity\" only support \"AA\".")
+
+            mol.stored.residue = []
+            mol.cmd.iterate_state(1, selection_commands[0], "stored.residue.append(oneletter)")
+            for i in range(len(mol.stored.residue)):
+                properties.append(unit_values[mol.stored.residue[i]])
+
+        else:
+            raise ValueError("We only support one structure when \"property_type\" is \"sheet-propensity\".")
+
+    elif property_type == "folding-propensity":
+        if len(structure_paths) == 1 and len(models) == 1:
+            if molecule_type == "AA":
+                # Gian Gaetano Tartaglia and Michele Vendruscolo (2010) Journal of molecular biology.
+                # The scale of folding propensity is between 0.00 and 1.00.
+                if unit_values is None:
+                    unit_values = {"A": 0.34, "C": 0.97, "D": 0.61, "E": 0.73, "F": 0.31, "G": 0.58, "H": 0.47,
+                                   "I": 0.55, "K": 0.50, "L": 0.65, "M": 0.55, "N": 0.48, "P": 1.00, "Q": 0.35,
+                                   "R": 0.63, "S": 0.73, "T": 0.44, "V": 0.55, "W": 0.00, "Y": 0.21}
+            else:
+                raise ValueError("Property type \"folding-propensity\" only support \"AA\".")
+
+            mol.stored.residue = []
+            mol.cmd.iterate_state(1, selection_commands[0], "stored.residue.append(oneletter)")
+            for i in range(len(mol.stored.residue)):
+                properties.append(unit_values[mol.stored.residue[i]])
+
+        else:
+            raise ValueError("We only support one structure when \"property_type\" is \"folding-propensity\".")
+
+    elif property_type == "ionizationpotentials":
+        if len(structure_paths) == 1 and len(models) == 1:
+            if molecule_type == "DNA":
+                # Stacey D. Wetmore and Russell J. Boyd. (2000) Chemical Physics Letters.
+                # The ionization potentials of the nucleotide bases.(eV)
+                if unit_values is None:
+                    unit_values = {"A": 8.09, "T": 8.74, "C": 8.57, "G": 7.64}
+            elif molecule_type == "RNA":
+                # Stacey D. Wetmore and Russell J. Boyd. (2000) Chemical Physics Letters.
+                # The ionization potentials of the nucleotide bases.(eV)
+                if unit_values is None:
+                    unit_values = {"A": 8.09, "U": 9.21, "C": 8.57, "G": 7.64}
+            else:
+                raise ValueError("Property type \"ionizationpotentials\" only support \"DNA\" or \"RNA\".")
+
+            mol.stored.residue = []
+            mol.cmd.iterate_state(1, selection_commands[0], "stored.residue.append(oneletter)")
+            for i in range(len(mol.stored.residue)):
+                properties.append(unit_values[mol.stored.residue[i]])
+
+        else:
+            raise ValueError("We only support one structure when \"property_type\" is \"ionizationpotentials\".")
+
+    elif property_type == "electronaffinities":
+        if len(structure_paths) == 1 and len(models) == 1:
+            if molecule_type == "DNA":
+                # Stacey D. Wetmore and Russell J. Boyd. (2000) Chemical Physics Letters.
+                # The electron affinities of the nucleotide bases.(eV)
+                if unit_values is None:
+                    unit_values = {"A": -0.40, "T": 0.14, "C": -0.06, "G": -0.27}
+            elif molecule_type == "RNA":
+                # Stacey D. Wetmore and Russell J. Boyd. (2000) Chemical Physics Letters.
+                # The electron affinities of the nucleotide bases.(eV)
+                if unit_values is None:
+                    unit_values = {"A": -0.40, "U": 0.18, "C": -0.06, "G": -0.27}
+            else:
+                raise ValueError("Property type \"electronaffinities\" only support \"DNA\" or \"RNA\".")
+
+            mol.stored.residue = []
+            mol.cmd.iterate_state(1, selection_commands[0], "stored.residue.append(oneletter)")
+            for i in range(len(mol.stored.residue)):
+                properties.append(unit_values[mol.stored.residue[i]])
+
+        else:
+            raise ValueError("We only support one structure when \"property_type\" is \"electronaffinities\".")
+    else:
+        raise ValueError("No such property type!")
+
+    mol.stop()
+    return properties
 
 
 def set_difference(alignment_data: ndarray, model_type: str, calculation_type: str = "average") -> ndarray:

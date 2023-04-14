@@ -1,6 +1,6 @@
 from logging import getLogger, CRITICAL
 from matplotlib import pyplot, rcParams
-from numpy import zeros, sum, abs, array, linalg
+from numpy import zeros, sum
 from os import path
 # noinspection PyPackageRequirements
 from PIL import Image, PngImagePlugin
@@ -16,13 +16,13 @@ getLogger("matplotlib").setLevel(CRITICAL)
 class DefaultStructureImage:
 
     def __init__(self, structure_paths: list):
-        self.__mol = PyMOL()
-        self.__mol.start()
+        self._mol = PyMOL()
+        self._mol.start()
         self.__structure_names = []
         for structure_path in structure_paths:
-            self.__mol.cmd.load(structure_path, quiet=1)
+            self._mol.cmd.load(structure_path, quiet=1)
             self.__structure_names.append(structure_path[structure_path.rindex("/") + 1: structure_path.rindex(".")])
-        self.__mol.cmd.ray(quiet=1)  # make PyMOL run silently.
+        self._mol.cmd.ray(quiet=1)  # make PyMOL run silently.
 
     def set_cache(self, cache_contents: list):
         """
@@ -47,7 +47,7 @@ class DefaultStructureImage:
                                 selection_command = "(i. " + target + ")"
                             else:
                                 raise ValueError("Position (" + target + ") should be a positive integer!")
-                        self.__mol.cmd.hide(selection=selection_command)
+                        self._mol.cmd.hide(selection=selection_command)
 
                 elif shading_type == "range":
                     for target in target_information.split(","):
@@ -73,7 +73,7 @@ class DefaultStructureImage:
                                                      + "in the Range (" + target + ").")
                             else:
                                 raise ValueError("Range (" + target + ") needs to meet the \"number-number\" format!")
-                        self.__mol.cmd.hide(selection=selection_command)
+                        self._mol.cmd.hide(selection=selection_command)
 
                 elif shading_type == "residue":
                     for target in target_information.split(","):
@@ -82,7 +82,7 @@ class DefaultStructureImage:
                             selection_command = "(c. " + selected_chain + " and r. " + selected_residue + ")"
                         else:
                             selection_command = "(r. " + target + ")"
-                        self.__mol.cmd.hide(selection=selection_command)
+                        self._mol.cmd.hide(selection=selection_command)
 
                 elif shading_type == "segment":
                     for target in target_information.split(","):
@@ -99,7 +99,7 @@ class DefaultStructureImage:
                             else:
                                 raise ValueError("Segment (" + target + ") should be a string "
                                                  + "composed of uppercase letters!")
-                        self.__mol.cmd.hide(selection=selection_command)
+                        self._mol.cmd.hide(selection=selection_command)
 
                 elif shading_type == "chain":
                     for target in target_information.split(","):
@@ -108,12 +108,12 @@ class DefaultStructureImage:
                             selection_command = "(m. " + selected_model + " and c. " + selected_chain + ")"
                         else:
                             selection_command = "(c. " + target + ")"
-                        self.__mol.cmd.hide(selection=selection_command)
+                        self._mol.cmd.hide(selection=selection_command)
 
                 elif shading_type == "model":
                     for target in target_information.split(","):
                         selection_command = "(m. " + target + ")"
-                        self.__mol.cmd.hide(selection=selection_command)
+                        self._mol.cmd.hide(selection=selection_command)
 
                 else:
                     raise ValueError("No such shading type! We only support "
@@ -122,47 +122,45 @@ class DefaultStructureImage:
                 raise ValueError("No such representing information! We only support one type of information, i.e. "
                                  + "\"shading type:target,target,...,target\"")
 
-    def set_state(self, rotate_x: float = 0, rotate_y: float = 0, rotate_z: float = 0,
-                  inner_align: bool = False, target_name: str = None):
+    def set_state(self, translate: list = None, rotate: list = None, inner_align: bool = False, target: str = None):
         """
         Set the state of the structure.
 
-        :param rotate_x: rotate degree with x-axis.
-        :type rotate_x: float
+        :param translate: translate distances with x/y/z-axis.
+        :type translate: list or None
 
-        :param rotate_y: rotate degree with y-axis.
-        :type rotate_y: float
-
-        :param rotate_z: rotate degree with z-axis.
-        :type rotate_z: float
+        :param rotate: rotate degree with x/y/z-axis.
+        :type rotate: list or None
 
         :param inner_align: align multiple structures through built-in interfaces (cmd.align).
         :type inner_align: bool
 
-        :param target_name: the target (or template) name can be specified if the inner align is executed.
-        :type target_name: str or None
+        :param target: the target (or template) name can be specified if the inner align is executed.
+        :type target: str or None
         """
-        self.__mol.cmd.orient()
+        self._mol.cmd.orient()
 
-        if abs(rotate_x - 0) > 1e-3:
-            self.__mol.cmd.rotate(axis="x", angle=rotate_x)
-        if abs(rotate_y - 0) > 1e-3:
-            self.__mol.cmd.rotate(axis="y", angle=rotate_y)
-        if abs(rotate_z - 0) > 1e-3:
-            self.__mol.cmd.rotate(axis="z", angle=rotate_z)
+        if translate is not None:
+            self._mol.cmd.translate(vector=translate)
+        else:
+            self._mol.cmd.center()
+
+        self._mol.cmd.zoom(complete=1)
 
         if inner_align and len(self.__structure_names) > 1:
-            if target_name is not None:
-                for mobile_name in self.__structure_names:
-                    if mobile_name != target_name:
-                        self.__mol.cmd.align(mobile_name, target_name)
+            if target is not None:
+                for mobile in self.__structure_names:
+                    if mobile != target:
+                        self._mol.cmd.align(mobile, target)
             else:
-                target_name = self.__structure_names[0]
-                for mobile_name in self.__structure_names[1:]:
-                    self.__mol.cmd.align(mobile_name, target_name)
+                target = self.__structure_names[0]
+                for mobile in self.__structure_names[1:]:
+                    self._mol.cmd.align(mobile, target)
 
-        self.__mol.cmd.center()
-        self.__mol.cmd.zoom(complete=1)
+        if rotate is not None:
+            self._mol.cmd.rotate(axis="x", angle=rotate[0])
+            self._mol.cmd.rotate(axis="y", angle=rotate[1])
+            self._mol.cmd.rotate(axis="z", angle=rotate[2])
 
     def set_shape(self, representation_plan: list, initial_representation: str = "cartoon"):
         """
@@ -174,7 +172,7 @@ class DefaultStructureImage:
         :param initial_representation: if representation type is index, can optionally operate on the specified chain.
         :type initial_representation: str
         """
-        self.__mol.cmd.show(representation=initial_representation, selection="(all)")
+        self._mol.cmd.show(representation=initial_representation, selection="(all)")
 
         for step, (representing_information, representation) in enumerate(representation_plan):
             if type(representing_information) is not str:
@@ -197,7 +195,7 @@ class DefaultStructureImage:
                                 selection_command = "(i. " + target + ")"
                             else:
                                 raise ValueError("Position (" + target + ") should be a positive integer!")
-                        self.__mol.cmd.show(representation=representation, selection=selection_command)
+                        self._mol.cmd.show(representation=representation, selection=selection_command)
 
                 elif shading_type == "range":
                     for target in target_information.split(","):
@@ -226,7 +224,7 @@ class DefaultStructureImage:
                             else:
                                 raise ValueError(
                                     "Range (" + target + ") needs to meet the \"number-number\" format!")
-                        self.__mol.cmd.show(representation=representation, selection=selection_command)
+                        self._mol.cmd.show(representation=representation, selection=selection_command)
 
                 elif shading_type == "residue":
                     for target in target_information.split(","):
@@ -235,7 +233,7 @@ class DefaultStructureImage:
                             selection_command = "(c. " + selected_chain + " and r. " + selected_residue + ")"
                         else:
                             selection_command = "(r. " + target + ")"
-                        self.__mol.cmd.show(representation=representation, selection=selection_command)
+                        self._mol.cmd.show(representation=representation, selection=selection_command)
 
                 elif shading_type == "segment":
                     for target in target_information.split(","):
@@ -252,217 +250,26 @@ class DefaultStructureImage:
                             else:
                                 raise ValueError("Segment (" + target + ") should be a string "
                                                  + "composed of uppercase letters!")
-                        self.__mol.cmd.show(representation=representation, selection=selection_command)
+                        self._mol.cmd.show(representation=representation, selection=selection_command)
 
                 elif shading_type == "chain":
                     for target in target_information.split(","):
-                        self.__mol.cmd.show(representation=representation, selection="(c. " + target + ")")
+                        self._mol.cmd.show(representation=representation, selection="(c. " + target + ")")
 
                 elif shading_type == "model":
                     for target in target_information.split(","):
-                        self.__mol.cmd.show(representation=representation, selection="(m. " + target + ")")
+                        self._mol.cmd.show(representation=representation, selection="(m. " + target + ")")
 
                 else:
                     raise ValueError("No such shading type! We only support "
                                      + "\"position\", \"range\", \"residue\", \"segment\", \"chain\" and \"model\".")
 
             elif representing_information == "all":
-                self.__mol.cmd.show(representation=representation, selection="(all)")
+                self._mol.cmd.show(representation=representation, selection="(all)")
 
             else:
                 raise ValueError("No such representing information! We only support two types of information: "
                                  + "(1) \"all\"; and (2) \"shading type:target,target,...,target\"")
-
-    # def set_spectrum_color(self, palette_plan: list, expression: str = "count", initial_palette: str = "white_gray",
-    #                        minimum: float = None, maximum: float = None, byres: int = 0, template_structure: str = None,
-    #                        color_structure: str = None):
-    #     """
-    #     Colors atoms with a spectrum of colors based on an atomic property.
-    #
-    #     :param palette_plan: coloring plan for the structure.
-    #     :type palette_plan: list
-    #
-    #     :param expression: count, b, q or pc: atom count, temperature factor, occupancy or partial charge.
-    #     :type expression: str
-    #
-    #     :param initial_palette: initial palette in the structure.
-    #     :type initial_palette: str
-    #
-    #     :param minimum: minimum value.
-    #     :type minimum: float or None
-    #
-    #     :param maximum: maximum value.
-    #     :type maximum: float or None
-    #
-    #     :param byres: controls whether coloring is applied per-residue.
-    #     :type byres: int
-    #
-    #     :param template_structure: the template structure used to calculate the property.
-    #     :type template_structure: str or None
-    #
-    #     :param color_structure: the color structure used to calculate the property.
-    #     :type color_structure: str or None
-    #     """
-    #     if expression == "RMSD":
-    #         if template_structure is None or color_structure is None:
-    #             raise ValueError("We need \"template_structure\" and \"color_structure\" to calculate the RMSD!")
-    #
-    #         self.set_properties(expression=expression, template_structure=template_structure,
-    #                             color_structure=color_structure)
-    #         expression = "b"
-    #
-    #     self.__mol.cmd.spectrum(expression=expression, palette=initial_palette, selection="(all)", minimum=minimum,
-    #                             maximum=maximum, byres=byres)
-    #
-    #     for step, (palette_information, palette) in enumerate(palette_plan):
-    #         if type(palette_information) is not str:
-    #             raise ValueError("The format of palette information at step " + str(step + 1) + " is illegal! "
-    #                              + "We only support \"str\" format!")
-    #
-    #         if ":" in palette_information:
-    #             shading_type, target_information = palette_information.split(":")
-    #             if shading_type == "range":
-    #                 for target in target_information.split(","):
-    #                     if "+" in target:
-    #                         selected_chain, selected_range = target.split("+")
-    #                         if "-" in selected_range and selected_range.count("-") == 1:
-    #                             former, latter = selected_range.split("-")
-    #                             if int(former) < int(latter):
-    #                                 selection_command = "(c. " + selected_chain + " and i. " + selected_range + ")"
-    #                             else:
-    #                                 raise ValueError("The former position needs to be less than the latter position "
-    #                                                  + "in the Range (" + selected_range + ").")
-    #                         else:
-    #                             raise ValueError("Range (" + selected_range + ") needs to "
-    #                                              + "meet the \"number-number\" format!")
-    #                     else:
-    #                         if "-" in target and target.count("-") == 1:
-    #                             former, latter = target.split("-")
-    #                             if int(former) < int(latter):
-    #                                 selection_command = "(i. " + target + ")"
-    #                             else:
-    #                                 raise ValueError("The former position needs to be less than the latter position "
-    #                                                  + "in the Range (" + target + ").")
-    #                         else:
-    #                             raise ValueError("Range (" + target + ") needs to meet the \"number-number\" format!")
-    #                     self.__mol.cmd.spectrum(expression=expression, palette=palette, selection=selection_command,
-    #                                             minimum=minimum, maximum=maximum, byres=byres)
-    #
-    #             elif shading_type == "segment":
-    #                 for target in target_information.split(","):
-    #                     if "+" in target:
-    #                         selected_chain, selected_segment = target.split("+")
-    #                         if search(pattern=r"^[A-Z]+$", string=selected_segment):
-    #                             selection_command = "(c. " + selected_chain + " and ps. " + selected_segment + ")"
-    #                         else:
-    #                             raise ValueError("Segment (" + selected_segment + ") should be a string "
-    #                                              + "composed of uppercase letters!")
-    #                     else:
-    #                         if search(pattern=r"^[A-Z]+$", string=target):
-    #                             selection_command = "(ps. " + target + ")"
-    #                         else:
-    #                             raise ValueError("Segment (" + target + ") should be a string "
-    #                                              + "composed of uppercase letters!")
-    #                     self.__mol.cmd.spectrum(expression=expression, palette=palette, selection=selection_command,
-    #                                             minimum=minimum, maximum=maximum, byres=byres)
-    #
-    #             elif shading_type == "chain":
-    #                 for target in target_information.split(","):
-    #                     self.__mol.cmd.spectrum(expression=expression, palette=palette, selection="(c. " + target + ")",
-    #                                             minimum=minimum, maximum=maximum, byres=byres)
-    #
-    #             elif shading_type == "model":
-    #                 for target in target_information.split(","):
-    #                     self.__mol.cmd.spectrum(expression=expression, palette=palette, selection="(m. " + target + ")",
-    #                                             minimum=minimum, maximum=maximum, byres=byres)
-    #
-    #             else:
-    #                 raise ValueError("No such shading type! We only support "
-    #                                  + "\"range\", \"segment\", \"chain\" and \"model\".")
-    #
-    #         elif palette_information == "all":
-    #             self.__mol.cmd.spectrum(expression=expression, palette=palette, selection="(all)", minimum=minimum,
-    #                                     maximum=maximum, byres=byres)
-    #
-    #         else:
-    #             raise ValueError("No such coloring information! We only support two types of information: "
-    #                              + "(1) \"all\"; and (2) \"shading type:target,target,...,target\"")
-    #
-    # def align_structures(self, structure1: str, structure2: str):
-    #     """
-    #     Alignment the structure1 and structure2.
-    #
-    #     :param structure1: the first structure.
-    #     :type structure1: str
-    #
-    #     :param structure2: the first structure.
-    #     :type structure2: str
-    #     """
-    #     self.__mol.cmd.align(structure1, structure2)
-    #
-    # def set_advance(self, settings: dict = None, cartoon_putty: str = "off"):
-    #     """
-    #     Creates a ray-traced image of the current frame.
-    #
-    #     :param settings: set internal renderer configs.
-    #     :type settings: dict or None
-    #
-    #     :param cartoon_putty: to enable the putty view.
-    #     :type cartoon_putty: str
-    #     """
-    #     if cartoon_putty == "on":
-    #         self.__mol.cmd.cartoon("putty")
-    #
-    #     if settings is None:
-    #         settings = {"ray_trace_mode": 0}
-    #
-    #     for function, config in settings.items():
-    #         self.__mol.cmd.set(function, config)
-    #
-    # def set_properties(self, expression: str, template_structure: str = None, color_structure: str = None):
-    #     """
-    #     Redefine the color property of atoms.
-    #
-    #     :param expression: atom property.
-    #     :type expression: str
-    #
-    #     :param template_structure: the template structure used to calculate the property.
-    #     :type template_structure: str or None
-    #
-    #     :param color_structure: the color structure used to calculate the property.
-    #     :type color_structure: str or None
-    #     """
-    #     if expression == "RMSD":
-    #         self.__mol.stored.s1 = []
-    #         if "+" in template_structure:
-    #             selected_model, selected_part = template_structure.split("+")
-    #             if "-" in selected_part:
-    #                 selection_command = "(m. " + selected_model + " and i. " + selected_part + " and (not hetatm))"
-    #             else:
-    #                 selection_command = "(m. " + selected_model + " and c. " + selected_part + " and (not hetatm))"
-    #         else:
-    #             selection_command = "(m. " + template_structure + " and (not hetatm))"
-    #         self.__mol.cmd.iterate_state(1, selection_command, "stored.s1.append([x,y,z])")
-    #         self.__mol.stored.s1 = array(self.__mol.stored.s1)
-    #
-    #         self.__mol.stored.s2 = []
-    #         if "+" in color_structure:
-    #             selected_model, selected_part = color_structure.split("+")
-    #             if "-" in selected_part:
-    #                 selection_command = "(m. " + selected_model + " and i. " + selected_part + " and (not hetatm))"
-    #             else:
-    #                 selection_command = "(m. " + selected_model + " and c. " + selected_part + " and (not hetatm))"
-    #             color_model = selected_model
-    #         else:
-    #             selection_command = "(m. " + color_structure + " and (not hetatm))"
-    #             color_model = color_structure
-    #         color_selection = selection_command
-    #         self.__mol.cmd.iterate_state(1, selection_command, "stored.s2.append([x,y,z])")
-    #         self.__mol.stored.s2 = array(self.__mol.stored.s2)
-    #
-    #         self.__mol.cmd.alter("(m. " + color_model + ")", "b=0.0")
-    #         self.__mol.stored.rmsd = list(linalg.norm((self.__mol.stored.s1 - self.__mol.stored.s2), axis=1, ord=2))
-    #         self.__mol.cmd.alter(color_selection, "b=stored.rmsd.pop(0)")
 
     def save(self, save_path: str, width: int = 640, ratio: float = 0.75, dpi: int = 1200):
         """
@@ -480,7 +287,8 @@ class DefaultStructureImage:
         :param dpi: dots per inch.
         :type dpi: int
         """
-        self.__mol.cmd.png(filename=save_path, width=width, height=width * ratio, dpi=dpi, quiet=1)
+        self._mol.cmd.png(filename=save_path, width=width, height=width * ratio, dpi=dpi, quiet=1)
+        self._mol.stop()
 
 
 class HighlightStructureImage(DefaultStructureImage):
@@ -498,7 +306,7 @@ class HighlightStructureImage(DefaultStructureImage):
         :param edge_color: edge color of the structure if required.
         :type edge_color: str or None
         """
-        self.__mol.cmd.color(color=initial_color, selection="(all)")
+        self._mol.cmd.color(color=initial_color, selection="(all)")
 
         for step, (coloring_information, color) in enumerate(coloring_plan):
             if type(coloring_information) is not str:
@@ -520,7 +328,7 @@ class HighlightStructureImage(DefaultStructureImage):
                                 selection_command = "(i. " + target + ")"
                             else:
                                 raise ValueError("Position (" + target + ") should be a positive integer!")
-                        self.__mol.cmd.color(color=color, selection=selection_command)
+                        self._mol.cmd.color(color=color, selection=selection_command)
 
                 elif shading_type == "range":
                     for target in target_information.split(","):
@@ -546,7 +354,7 @@ class HighlightStructureImage(DefaultStructureImage):
                                                      + "in the Range (" + target + ").")
                             else:
                                 raise ValueError("Range (" + target + ") needs to meet the \"number-number\" format!")
-                        self.__mol.cmd.color(color=color, selection=selection_command)
+                        self._mol.cmd.color(color=color, selection=selection_command)
 
                 elif shading_type == "residue":
                     for target in target_information.split(","):
@@ -555,7 +363,7 @@ class HighlightStructureImage(DefaultStructureImage):
                             selection_command = "(c. " + selected_chain + " and r. " + selected_residue + ")"
                         else:
                             selection_command = "(r. " + target + ")"
-                        self.__mol.cmd.color(color=color, selection=selection_command)
+                        self._mol.cmd.color(color=color, selection=selection_command)
 
                 elif shading_type == "segment":
                     for target in target_information.split(","):
@@ -572,46 +380,48 @@ class HighlightStructureImage(DefaultStructureImage):
                             else:
                                 raise ValueError("Segment (" + target + ") should be a string "
                                                  + "composed of uppercase letters!")
-                        self.__mol.cmd.color(color=color, selection=selection_command)
+                        self._mol.cmd.color(color=color, selection=selection_command)
 
                 elif shading_type == "chain":
                     for target in target_information.split(","):
-                        self.__mol.cmd.color(color=color, selection="(c. " + target + ")")
+                        self._mol.cmd.color(color=color, selection="(c. " + target + ")")
 
                 elif shading_type == "model":
                     for target in target_information.split(","):
-                        self.__mol.cmd.color(color=color, selection="(m. " + target + ")")
+                        self._mol.cmd.color(color=color, selection="(m. " + target + ")")
 
                 else:
                     raise ValueError("No such shading type! We only support "
                                      + "\"position\", \"range\", \"residue\", \"segment\", \"chain\" and \"model\".")
 
             elif coloring_information == "all":
-                self.__mol.cmd.color(color=color, selection="(all)")
+                self._mol.cmd.color(color=color, selection="(all)")
 
             else:
                 raise ValueError("No such coloring information! We only support two types of information: "
                                  + "(1) \"all\"; and (2) \"shading type:target,target,...,target\"")
 
         if edge_color is not None:
-            self.__mol.cmd.set(name="ray_trace_color", value=edge_color)
-            self.__mol.cmd.set(name="ray_trace_mode", value=1)
+            self._mol.cmd.set(name="ray_trace_color", value=edge_color)
+            self._mol.cmd.set(name="ray_trace_mode", value=1)
 
 
 class PropertyStructureImage(DefaultStructureImage):
 
     def set_color(self, target: str, properties: list = None,
-                  color_map: str = "rainbow", initial_color: str = "0xFFFFCC", edge_color: str = None,
+                  color_map: str = "rainbow", initial_color: str = "0xAAAAAA", edge_color: str = None,
                   gauge_strengthen: bool = False):
         """
         Set colors for the structure with its element properties.
 
-        :param target: coloring
+        :param target: coloring select.
+        :type target: str
 
         :param properties: element properties of the structure.
         :type properties: list or None
 
-        :param color_map:
+        :param color_map: coloring palette.
+        :type color_map: str
 
         :param initial_color: initial color in the structure.
         :type initial_color: str
@@ -622,34 +432,51 @@ class PropertyStructureImage(DefaultStructureImage):
         :param gauge_strengthen: strengthen property differences through gauge changes (available in "cartoon").
         :type gauge_strengthen: bool
         """
-        self.__mol.cmd.color(color=initial_color, selection="(all)")
+        self._mol.cmd.color(color=initial_color, selection="(all)")
 
-        if gauge_strengthen and properties is not None:
-            self.__mol.cmd.show(representation="cartoon", selection="(all)")
-            self.__mol.cmd.cartoon("putty")
+        shading_type, target_information = target.split(":")
+        if shading_type == "range":
+            if "+" in target_information:
+                selected_model, selected_range = target_information.split("+")
+                selection_command = "(m. " + selected_model + " and i. " + selected_range + ")"
+            else:
+                selection_command = "(i. " + target_information + ")"
+        elif shading_type == "segment":
+            if "+" in target_information:
+                selected_model, selected_segment = target_information.split("+")
+                selection_command = "(m. " + selected_model + " and ps. " + selected_segment + ")"
+            else:
+                selection_command = "(ps. " + target_information + ")"
+        elif shading_type == "chain":
+            if "+" in target_information:
+                selected_model, selected_chain = target_information.split("+")
+                selection_command = "(m. " + selected_model + " and c. " + selected_chain + ")"
+            else:
+                selection_command = "(c. " + target_information + ")"
+        elif shading_type == "model":
+            selection_command = "(m. " + target_information + ")"
+        else:
+            raise ValueError("No such shading type! We only support "
+                             + "\"range\", \"segment\", \"chain\" and \"model\".")
 
         if properties is None:
-            self.__mol.cmd.spectrum(expression="count", palette=color_map, selection="(all)", byres=0)
-
+            self._mol.cmd.spectrum(expression="count", palette=color_map, selection=selection_command, byres=0)
         else:
-            shading_type, target_information = target.split(":")
-            # TODO
-            if shading_type == "range":
-                pass
-            elif shading_type == "segment":
-                pass
-            elif shading_type == "chain":
-                pass
-            elif shading_type == "model":
-                pass
-
+            if len(properties) == self._mol.cmd.count_atoms(selection_command):
+                self._mol.stored.properties = properties
+                self._mol.cmd.alter(selection_command, "b=stored.properties.pop(0)")
+                self._mol.cmd.spectrum(expression="b", palette=color_map, selection=selection_command, byres=0)
             else:
-                raise ValueError("No such shading type! We only support "
-                                 + "\"range\", \"segment\", \"chain\" and \"model\".")
+                raise ValueError("We need one-to-one atomic properties.")
+
+        if gauge_strengthen and properties is not None:
+            self._mol.cmd.show(representation="cartoon", selection=selection_command)
+            self._mol.cmd.cartoon("putty")
+            self._mol.cmd.set(name="cartoon_putty_transform", value=7)
 
         if edge_color is not None:
-            self.__mol.cmd.set(name="ray_trace_color", value=edge_color)
-            self.__mol.cmd.set(name="ray_trace_mode", value=1)
+            self._mol.cmd.set(name="ray_trace_color", value=edge_color)
+            self._mol.cmd.set(name="ray_trace_mode", value=1)
 
 
 class Figure:
