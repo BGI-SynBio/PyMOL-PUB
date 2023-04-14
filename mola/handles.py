@@ -1,4 +1,3 @@
-# noinspection PyPackageRequirements
 from Bio.PDB import PDBParser, MMCIFParser, PDBIO, MMCIFIO, Structure, Chain, Residue, Atom
 from datetime import datetime
 from logging import getLogger, CRITICAL
@@ -7,7 +6,10 @@ from numpy import argmin, argmax, min, max, mean, sum, sqrt
 from scipy.spatial.transform import Rotation
 from typing import Iterator
 from warnings import filterwarnings
-from pymol2 import PyMOL
+try:
+    from pymol2 import PyMOL  # Please refer to https://pymol.org/2/ for download of PyMOL library
+except ModuleNotFoundError:
+    print("PyMOL is not installed!")
 
 filterwarnings("ignore")
 getLogger("matplotlib").setLevel(CRITICAL)
@@ -616,7 +618,7 @@ def set_properties(structure_paths: list, molecule_type: str, property_type: str
     :param property_type: physicochemical type to emphasis, like polarity, electronegativity, hydrophobicity, etc.
     :type property_type: str or None
 
-    :param targets: selet contents.
+    :param targets: selected contents.
     :type targets: list or None
 
     :param unit_values: values of unit, provided by users or the given property type.
@@ -922,6 +924,7 @@ def set_properties(structure_paths: list, molecule_type: str, property_type: str
         raise ValueError("No such property type!")
 
     mol.stop()
+
     return properties
 
 

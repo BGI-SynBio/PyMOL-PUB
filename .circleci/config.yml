@@ -19,6 +19,7 @@ jobs:
             pip install biopython==1.78
             pip install matplotlib==3.1.1
             pip install Pillow==8.2.0
+            pip install scipy==1.4.1
 
       - run:
           name: temp style
@@ -33,7 +34,6 @@ jobs:
             . venv/bin/activate
             pip install nose
             nosetests -v
-
 
       - store_artifacts:
           path: test-reports

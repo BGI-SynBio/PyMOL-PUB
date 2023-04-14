@@ -2,9 +2,11 @@ from logging import getLogger, CRITICAL
 from matplotlib import pyplot, rcParams
 from numpy import zeros, sum
 from os import path
-# noinspection PyPackageRequirements
 from PIL import Image, PngImagePlugin
-from pymol2 import PyMOL
+try:
+    from pymol2 import PyMOL  # Please refer to https://pymol.org/2/ for download of PyMOL library
+except ModuleNotFoundError:
+    print("PyMOL is not installed!")
 from re import search
 from types import FunctionType
 from warnings import filterwarnings
@@ -421,7 +423,7 @@ class PropertyStructureImage(DefaultStructureImage):
         """
         Set colors for the structure with its element properties.
 
-        :param target: coloring select.
+        :param target: coloring target select, including "range", "segment", "chain" and "model".
         :type target: str
 
         :param properties: element properties of the structure.
@@ -576,9 +578,9 @@ class Figure:
 
         elif manuscript_format == "PNAS":
             if occupied_columns == 1:
-                self.fig = pyplot.figure(figsize=(3.43, 3.43 / aspect_ratio[1] * aspect_ratio[0]))
+                self.fig = pyplot.figure(figsize=(3.42, 3.42 / aspect_ratio[1] * aspect_ratio[0]))
             elif occupied_columns == 2:
-                self.fig = pyplot.figure(figsize=(7.08, 7.08 / aspect_ratio[1] * aspect_ratio[0]))
+                self.fig = pyplot.figure(figsize=(7.00, 7.00 / aspect_ratio[1] * aspect_ratio[0]))
             else:
                 raise ValueError("PNAS's standard figures allow 1 and 2 column(s).")
 
@@ -588,7 +590,7 @@ class Figure:
 
         elif manuscript_format == "ACS":
             if occupied_columns == 1:
-                self.fig = pyplot.figure(figsize=(3.30, 3.30 / aspect_ratio[1] * aspect_ratio[0]))
+                self.fig = pyplot.figure(figsize=(3.25, 3.25 / aspect_ratio[1] * aspect_ratio[0]))
             elif occupied_columns == 2:
                 self.fig = pyplot.figure(figsize=(7.00, 7.00 / aspect_ratio[1] * aspect_ratio[0]))
             else:
@@ -599,9 +601,9 @@ class Figure:
 
         elif manuscript_format == "Oxford":
             if occupied_columns == 1:
-                self.fig = pyplot.figure(figsize=(3.35, 3.35 / aspect_ratio[1] * aspect_ratio[0]))
+                self.fig = pyplot.figure(figsize=(3.39, 3.39 / aspect_ratio[1] * aspect_ratio[0]))
             elif occupied_columns == 2:
-                self.fig = pyplot.figure(figsize=(6.70, 6.70 / aspect_ratio[1] * aspect_ratio[0]))
+                self.fig = pyplot.figure(figsize=(7.00, 7.00 / aspect_ratio[1] * aspect_ratio[0]))
             else:
                 raise ValueError("Oxford standard figures allow 1 and 2 column(s).")
 
@@ -621,23 +623,12 @@ class Figure:
             if occupied_columns == 1:
                 self.fig = pyplot.figure(figsize=(3.50, 3.50 / aspect_ratio[1] * aspect_ratio[0]))
             elif occupied_columns == 2:
-                self.fig = pyplot.figure(figsize=(7.16, 7.16 / aspect_ratio[1] * aspect_ratio[0]))
+                self.fig = pyplot.figure(figsize=(7.25, 7.25 / aspect_ratio[1] * aspect_ratio[0]))
             else:
                 raise ValueError("IEEE standard figures allow 1 and 2 column(s).")
 
             self.minimum_dpi = 300
             rcParams["font.family"] = "Times New Roman"
-
-        elif manuscript_format == "ACM":
-            if occupied_columns == 1:
-                self.fig = pyplot.figure(figsize=(2.50, 2.50 / aspect_ratio[1] * aspect_ratio[0]))
-            elif occupied_columns == 2:
-                self.fig = pyplot.figure(figsize=(6.02, 6.02 / aspect_ratio[1] * aspect_ratio[0]))
-            else:
-                raise ValueError("ACM standard figures allow 1 and 2 column(s).")
-
-            self.minimum_dpi = 300
-            rcParams["font.family"] = "Linux Libertine"
 
         rcParams["mathtext.fontset"] = "custom"
         rcParams["mathtext.rm"] = "Linux Libertine"
