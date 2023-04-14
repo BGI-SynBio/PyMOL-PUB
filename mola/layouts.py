@@ -4,6 +4,7 @@ from numpy import zeros, sum
 from os import path
 # noinspection PyPackageRequirements
 from PIL import Image, PngImagePlugin
+# noinspection PyPackageRequirements
 from pymol2 import PyMOL
 from re import search
 from types import FunctionType

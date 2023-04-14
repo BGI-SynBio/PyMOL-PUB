@@ -80,17 +80,17 @@ varying the thickness and gradient color of the cartoon representation (see the 
 ## Installation
 You can install it using pip:
 
-```commandline
-   pip install PyMOL-advance
+```sh
+pip install PyMOL-advance
 ```
 
 Or you can also install it from source after installing [git](https://git-scm.com/):
 
-```commandline
-   git clone https://github.com/BGI-SynBio/PyMOL-advance.git
-   cd PyMOL-advance
-   pip install -r requirements.txt
-   python setup.py install develop --user
+```sh
+git clone https://github.com/BGI-SynBio/PyMOL-advance.git
+cd PyMOL-advance
+pip install -r requirements.txt
+python setup.py install develop --user
 ```
 
 The tool requires 
@@ -107,6 +107,42 @@ Moreover, some well-established libraries:
 
 
 ## Customizations and protocols
+### Scalable string expression for part selection
+We present a string expression to describe two types of selection scheme, 
+one is "all" and another is "type:target,target,...,target",
+which avoids users from needing to input extensive selection information based on the original PyMOL design.
+
+Here, "type" is selection class, including (1) "position", (2) "range", (3) "residue", (4) "segment", 
+(5) "chain" and (6) "model".
+"target" represents the selection range under the corresponding "type".
+
+Some examples are shown below:
+```python
+# select the model called "predicted".
+a = "model:predicted"
+# select A-chain.
+b = "chain:A"
+# select segment "NPGP" in all chains.
+c = "segment:NPGP"
+# select residue "HOH" in all chains.
+d = "residue:HOH"
+# select range from 10 to 20 and from 50 to 60 in all chains.
+e = "range:10-20,50-60"
+# select 10-th position in all chains.
+f = "position:10"
+```
+For types below the chain scale, i.e. type (1) - (4), 
+we provide a built-in chain description mechanism for more accurate selection.
+For example:
+
+```python
+# select range from 10 to 20 in all chains.
+a = "range:10-20"
+# select range from 10 to 20 in A-chain.
+b = "range:A+10-200"
+```
+
+### Structure image creation
 For the structure image, two types of rendering objectives have been offered: 
 the first aims to accentuate specific region(s), 
 and the second intends to showcase element (deoxyribonucleic acid, ribonucleic acid and amino acid) 
@@ -171,6 +207,7 @@ image.save(save_path="aligned_structure.png", width=1800, ratio=0.5)
 More comparable cases are attached in the [cases](https://github.com/BGI-SynBio/PyMOL-advance/tree/main/cases) folder.
 
 
+### Publication-standard figure creation
 At the figure level, we can customize the target publication format during the 
 [initialization](https://github.com/BGI-SynBio/PyMOL-advance/blob/main/mola/layouts.py#L355) of the figure.
 The supporting figure formats of journal, conference or publisher are:

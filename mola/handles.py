@@ -7,6 +7,7 @@ from numpy import argmin, argmax, min, max, mean, sum, sqrt
 from scipy.spatial.transform import Rotation
 from typing import Iterator
 from warnings import filterwarnings
+# noinspection PyPackageRequirements
 from pymol2 import PyMOL
 
 filterwarnings("ignore")
