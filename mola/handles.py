@@ -615,7 +615,7 @@ def set_properties(structure_paths: list, molecule_type: str, property_type: str
     :param molecule_type: type of molecule, including DNA, RNA or AA (amino acid).
     :type molecule_type: str
 
-    :param property_type: physicochemical type to emphasis, like polarity, electronegativity, hydrophobicity, etc.
+    :param property_type: physicochemical type to emphasize, like polarity, electronegativity, hydrophobicity, etc.
     :type property_type: str or None
 
     :param targets: selected contents.

@@ -3,6 +3,7 @@ from matplotlib import pyplot, rcParams
 from numpy import zeros, sum
 from os import path
 from PIL import Image, PngImagePlugin
+
 try:
     from pymol2 import PyMOL  # Please refer to https://pymol.org/2/ for download of PyMOL library
 except ModuleNotFoundError:
@@ -107,9 +108,9 @@ class DefaultStructureImage:
                     for target in target_information.split(","):
                         if "+" in target:
                             selected_model, selected_chain = target.split("+")
-                            selection_command = "(m. " + selected_model + " and c. " + selected_chain + ")"
+                            selection_command = "(m. " + selected_model + " and c. " + selected_chain + " and (not hetatm))"
                         else:
-                            selection_command = "(c. " + target + ")"
+                            selection_command = "(c. " + target + " and (not hetatm))"
                         self._mol.cmd.hide(selection=selection_command)
 
                 elif shading_type == "model":
@@ -124,8 +125,108 @@ class DefaultStructureImage:
                 raise ValueError("No such representing information! We only support one type of information, i.e. "
                                  + "\"shading type:target,target,...,target\"")
 
-    def set_state(self, translate: list = None, rotate: list = None, inner_align: bool = False, target: str = None,
-                  zoom_model: str = None):
+    def set_zoom(self, zoom_contents: list, buffer: float = 0.0):
+        """
+        Set zoom contents of the structure.
+
+        :param zoom_contents: zoom contents.
+        :type zoom_contents: list
+
+        :param buffer: the buffer area size of the target structure.
+        :type buffer: float
+        """
+        for zoom_information in zoom_contents:
+            if ":" in zoom_information:
+                shading_type, target_information = zoom_information.split(":")
+                if shading_type == "position":
+                    for target in target_information.split(","):
+                        if "+" in target:
+                            selected_chain, selected_position = target.split("+")
+                            if search(pattern=r"^[0-9]*[1-9][0-9]*$", string=selected_position):
+                                selection_command = "(c. " + selected_chain + " and i. " + selected_position + ")"
+                            else:
+                                raise ValueError("Position (" + selected_position + ")  should be a positive integer!")
+                        else:
+                            if search(pattern=r"^[0-9]*[1-9][0-9]*$", string=target):
+                                selection_command = "(i. " + target + ")"
+                            else:
+                                raise ValueError("Position (" + target + ") should be a positive integer!")
+                        self._mol.cmd.zoom(selection=selection_command, buffer=buffer)
+
+                elif shading_type == "range":
+                    for target in target_information.split(","):
+                        if "+" in target:
+                            selected_chain, selected_range = target.split("+")
+                            if "-" in selected_range and selected_range.count("-") == 1:
+                                former, latter = selected_range.split("-")
+                                if int(former) < int(latter):
+                                    selection_command = "(c. " + selected_chain + " and i. " + selected_range + ")"
+                                else:
+                                    raise ValueError("The former position needs to be less than the latter position "
+                                                     + "in the Range (" + selected_range + ").")
+                            else:
+                                raise ValueError("Range (" + selected_range + ") needs to "
+                                                 + "meet the \"number-number\" format!")
+                        else:
+                            if "-" in target and target.count("-") == 1:
+                                former, latter = target.split("-")
+                                if int(former) < int(latter):
+                                    selection_command = "(i. " + target + ")"
+                                else:
+                                    raise ValueError("The former position needs to be less than the latter position "
+                                                     + "in the Range (" + target + ").")
+                            else:
+                                raise ValueError("Range (" + target + ") needs to meet the \"number-number\" format!")
+                        self._mol.cmd.zoom(selection=selection_command, buffer=buffer)
+
+                elif shading_type == "residue":
+                    for target in target_information.split(","):
+                        if "+" in target:
+                            selected_chain, selected_residue = target.split("+")
+                            selection_command = "(c. " + selected_chain + " and r. " + selected_residue + ")"
+                        else:
+                            selection_command = "(r. " + target + ")"
+                        self._mol.cmd.zoom(selection=selection_command, buffer=buffer)
+
+                elif shading_type == "segment":
+                    for target in target_information.split(","):
+                        if "+" in target:
+                            selected_chain, selected_segment = target.split("+")
+                            if search(pattern=r"^[A-Z]+$", string=selected_segment):
+                                selection_command = "(c. " + selected_chain + " and ps. " + selected_segment + ")"
+                            else:
+                                raise ValueError("Segment (" + selected_segment + ") should be a string "
+                                                 + "composed of uppercase letters!")
+                        else:
+                            if search(pattern=r"^[A-Z]+$", string=target):
+                                selection_command = "(ps. " + target + ")"
+                            else:
+                                raise ValueError("Segment (" + target + ") should be a string "
+                                                 + "composed of uppercase letters!")
+                        self._mol.cmd.zoom(selection=selection_command, buffer=buffer)
+
+                elif shading_type == "chain":
+                    for target in target_information.split(","):
+                        if "+" in target:
+                            selected_model, selected_chain = target.split("+")
+                            selection_command = "(m. " + selected_model + " and c. " + selected_chain + ")"
+                        else:
+                            selection_command = "(c. " + target + ")"
+                        self._mol.cmd.zoom(selection=selection_command, buffer=buffer)
+
+                elif shading_type == "model":
+                    for target in target_information.split(","):
+                        selection_command = "(m. " + target + ")"
+                        self._mol.cmd.zoom(selection=selection_command, buffer=buffer)
+
+                else:
+                    raise ValueError("No such shading type! We only support "
+                                     + "\"position\", \"range\", \"residue\", \"segment\", \"chain\" and \"model\".")
+            else:
+                raise ValueError("No such representing information! We only support one type of information, i.e. "
+                                 + "\"shading type:target,target,...,target\"")
+
+    def set_state(self, translate: list = None, rotate: list = None, inner_align: bool = False, target: str = None):
         """
         Set the state of the structure.
 
@@ -140,9 +241,6 @@ class DefaultStructureImage:
 
         :param target: the target (or template) name can be specified if the inner align is executed.
         :type target: str or None
-
-        :param zoom_model: zoom the selection structure.
-        :type zoom_model: str or None
         """
         if inner_align and len(self.__structure_names) > 1:
             if target is not None:
@@ -154,11 +252,6 @@ class DefaultStructureImage:
                 for mobile in self.__structure_names[1:]:
                     self._mol.cmd.align(mobile, target)
 
-        if rotate is not None:
-            self._mol.cmd.rotate(axis="x", angle=rotate[0])
-            self._mol.cmd.rotate(axis="y", angle=rotate[1])
-            self._mol.cmd.rotate(axis="z", angle=rotate[2])
-
         if translate is not None:
             self._mol.cmd.translate(vector=translate)
         else:
@@ -166,12 +259,15 @@ class DefaultStructureImage:
 
         self._mol.cmd.orient(state=-1)
 
-        if zoom_model is not None:
-            self._mol.cmd.zoom(selection="(m. " + zoom_model + ")", state=-1, complete=1)
-        else:
-            self._mol.cmd.zoom(state=-1, complete=1)
+        self._mol.cmd.zoom(selection="all", state=-1, complete=1)
 
-    def set_shape(self, representation_plan: list, initial_representation: str = "cartoon"):
+        if rotate is not None:
+            self._mol.cmd.rotate(axis="x", angle=rotate[0])
+            self._mol.cmd.rotate(axis="y", angle=rotate[1])
+            self._mol.cmd.rotate(axis="z", angle=rotate[2])
+
+    def set_shape(self, representation_plan: list, initial_representation: str = "cartoon",
+                  independent_color: bool = False, closed_surface: bool = False):
         """
         Set the shape (or representation in PyMOL) of the structure.
 
@@ -180,8 +276,17 @@ class DefaultStructureImage:
 
         :param initial_representation: if representation type is index, can optionally operate on the specified chain.
         :type initial_representation: str
+
+        :param independent_color: if independent_color is False, colors can leak into the open surface edge.
+        :type independent_color: bool
+
+        :param closed_surface: if closed_surface is True, create a closed surface.
+        :type closed_surface: bool
         """
         self._mol.cmd.show(representation=initial_representation, selection="(all)")
+
+        if independent_color:
+            self._mol.cmd.set(name="surface_proximity", value="off")
 
         for step, (representing_information, representation) in enumerate(representation_plan):
             if type(representing_information) is not str:
@@ -204,7 +309,11 @@ class DefaultStructureImage:
                                 selection_command = "(i. " + target + ")"
                             else:
                                 raise ValueError("Position (" + target + ") should be a positive integer!")
-                        self._mol.cmd.show(representation=representation, selection=selection_command)
+                        if representation == "surface" and closed_surface:
+                            self._mol.cmd.create("new_entity", selection_command)
+                            self._mol.cmd.show(representation=representation, selection="new_entity")
+                        else:
+                            self._mol.cmd.show(representation=representation, selection=selection_command)
 
                 elif shading_type == "range":
                     for target in target_information.split(","):
@@ -233,7 +342,11 @@ class DefaultStructureImage:
                             else:
                                 raise ValueError(
                                     "Range (" + target + ") needs to meet the \"number-number\" format!")
-                        self._mol.cmd.show(representation=representation, selection=selection_command)
+                        if representation == "surface" and closed_surface:
+                            self._mol.cmd.create("new_entity", selection_command)
+                            self._mol.cmd.show(representation=representation, selection="new_entity")
+                        else:
+                            self._mol.cmd.show(representation=representation, selection=selection_command)
 
                 elif shading_type == "residue":
                     for target in target_information.split(","):
@@ -242,7 +355,11 @@ class DefaultStructureImage:
                             selection_command = "(c. " + selected_chain + " and r. " + selected_residue + ")"
                         else:
                             selection_command = "(r. " + target + ")"
-                        self._mol.cmd.show(representation=representation, selection=selection_command)
+                        if representation == "surface" and closed_surface:
+                            self._mol.cmd.create("new_entity", selection_command)
+                            self._mol.cmd.show(representation=representation, selection="new_entity")
+                        else:
+                            self._mol.cmd.show(representation=representation, selection=selection_command)
 
                 elif shading_type == "segment":
                     for target in target_information.split(","):
@@ -259,11 +376,19 @@ class DefaultStructureImage:
                             else:
                                 raise ValueError("Segment (" + target + ") should be a string "
                                                  + "composed of uppercase letters!")
-                        self._mol.cmd.show(representation=representation, selection=selection_command)
+                        if representation == "surface" and closed_surface:
+                            self._mol.cmd.create("new_entity", selection_command)
+                            self._mol.cmd.show(representation=representation, selection="new_entity")
+                        else:
+                            self._mol.cmd.show(representation=representation, selection=selection_command)
 
                 elif shading_type == "chain":
                     for target in target_information.split(","):
-                        self._mol.cmd.show(representation=representation, selection="(c. " + target + ")")
+                        if representation == "surface" and closed_surface:
+                            self._mol.cmd.create("new_entity", "(c. " + target + ")")
+                            self._mol.cmd.show(representation=representation, selection="new_entity")
+                        else:
+                            self._mol.cmd.show(representation=representation, selection="(c. " + target + ")")
 
                 elif shading_type == "model":
                     for target in target_information.split(","):

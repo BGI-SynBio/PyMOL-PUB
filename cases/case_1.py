@@ -12,25 +12,28 @@ def designed(file_parent_path, temp_parent_path, save_parent_path):
     # Visualization of the structure 1F34.
     s1f34 = HighlightStructureImage(structure_paths=[file_parent_path + "1F34.pdb"])
     s1f34.set_cache(cache_contents=["residue:HOH"])
-    s1f34.set_state(rotate=[240, 340, 90])
-    s1f34.set_shape(representation_plan=[("chain:A", "surface"), ("chain:B", "cartoon")])
+    s1f34.set_shape(representation_plan=[("chain:A", "surface"), ("chain:B", "cartoon")],
+                    independent_color=True, closed_surface=True)
+    s1f34.set_state(rotate=[330, 10, 270])
     s1f34.set_color(coloring_plan=[("chain:A", "0xF2F2F2"), ("chain:B", "0x2D2F82"),
                                    ("range:A+1-30,A+65-80,A+90-100,A+108-115,A+120-140", "0xF08080"),
                                    ("range:A+150-160,A+170-180,A+185-195,A+280-310", "0xF08080")])
-    s1f34.save(save_path=temp_parent_path + "1F34.png", width=1280, ratio=0.8)
+    s1f34.save(save_path=temp_parent_path + "1F34.png", width=1280, ratio=0.9)
 
     # Visualization of the structure 1AY7.
     s1ay7 = HighlightStructureImage(structure_paths=[file_parent_path + "1AY7.pdb"])
     s1ay7.set_cache(cache_contents=["residue:HOH"])
-    s1ay7.set_state(rotate=[120, 30, 325])
-    s1ay7.set_shape(representation_plan=[("chain:A", "cartoon"), ("chain:B", "surface")])
+    s1ay7.set_shape(representation_plan=[("chain:A", "cartoon"), ("chain:B", "surface")],
+                    independent_color=True, closed_surface=True)
+    s1ay7.set_state(rotate=[110, 30, 325])
     s1ay7.set_color(coloring_plan=[("chain:A", "0x2D2F82"), ("chain:B", "0xF2F2F2"), ("range:B+25-45", "0xF08080")])
     s1ay7.save(save_path=temp_parent_path + "1AY7.png", width=1280, ratio=1.2)
 
     # Visualization of the structure 1YCR.
     s1ycr = HighlightStructureImage(structure_paths=[file_parent_path + "1YCR.pdb"])
-    s1ycr.set_state(rotate=[270, 330, 255])
-    s1ycr.set_shape(representation_plan=[("chain:A", "surface"), ("chain:B", "cartoon")])
+    s1ycr.set_shape(representation_plan=[("chain:A", "surface"), ("chain:B", "cartoon")],
+                    independent_color=True, closed_surface=True)
+    s1ycr.set_state(rotate=[250, 330, 255])
     s1ycr.set_color(coloring_plan=[("chain:A", "0xF2F2F2"), ("chain:B", "0x2D2F82"), ("position:A+96", "0xF08080"),
                                    ("range:A+25-30,A+50-55,A+58-65,A+70-73,A+93-94,A+99-100", "0xF08080")])
     s1ycr.save(save_path=temp_parent_path + "1YCR.png", width=1280, ratio=0.75)
