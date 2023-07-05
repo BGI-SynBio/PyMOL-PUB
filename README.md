@@ -1,4 +1,4 @@
-# PyMOL-advance: high-level interface from structure data to publication-standard figures
+# PyMOL-PUB: high-level interface from structure data to publication-standard figures
 
 With the rapid progress of fields like protein structure prediction, 
 an increasing number of researchers from different backgrounds require the use of 
@@ -16,7 +16,7 @@ By using our tool, the manual operations can be greatly reduced,
 and the desired image output can be obtained with a few lines of code or only configuration.
 
 <p align="center">
-    <img src="https://github.com/BGI-SynBio/PyMOL-advance/blob/main/docs/source/_static/overview.png"/>
+    <img src="https://github.com/BGI-SynBio/PyMOL-PUB/blob/main/docs/source/_static/overview.png"/>
 </p>
 
 ## Case presentation
@@ -30,13 +30,13 @@ Based on three structures with default visualization output
     </tr>
     <tr>
         <td bgcolor="#FFFFFF">
-            <img width="100%" src="https://github.com/BGI-SynBio/PyMOL-advance/blob/main/cases/baseline/1.1AY7.png"/>
+            <img width="100%" src="https://github.com/BGI-SynBio/PyMOL-PUB/blob/main/cases/baseline/1.1AY7.png"/>
         </td>
         <td bgcolor="#FFFFFF">
-            <img width="100%" src="https://github.com/BGI-SynBio/PyMOL-advance/blob/main/cases/baseline/1.1F34.png"/>
+            <img width="100%" src="https://github.com/BGI-SynBio/PyMOL-PUB/blob/main/cases/baseline/1.1F34.png"/>
         </td>
         <td bgcolor="#FFFFFF">
-            <img width="100%" src="https://github.com/BGI-SynBio/PyMOL-advance/blob/main/cases/baseline/1.1YCR.png"/>
+            <img width="100%" src="https://github.com/BGI-SynBio/PyMOL-PUB/blob/main/cases/baseline/1.1YCR.png"/>
         </td>
     </tr>
 </table>
@@ -44,10 +44,10 @@ Based on three structures with default visualization output
 an ideal publication-standard figure 
 
 <p align="center">
-    <img width="40%" src="https://github.com/BGI-SynBio/PyMOL-advance/blob/main/cases/designed/1.png"/>
+    <img width="40%" src="https://github.com/BGI-SynBio/PyMOL-PUB/blob/main/cases/designed/1.png"/>
 </p>
 
-can be [created](https://github.com/BGI-SynBio/PyMOL-advance/blob/main/cases/case_1.py) 
+can be [created](https://github.com/BGI-SynBio/PyMOL-PUB/blob/main/cases/case_1.py) 
 using 55 lines of code, which is similar to Figure 1 of 
 [Carles Corbi-Verge et al. work](https://biosignaling.biomedcentral.com/articles/10.1186/s12964-016-0131-4).
 
@@ -70,13 +70,13 @@ varying the thickness and gradient color of the cartoon representation (see the 
     </tr>
     <tr>
         <td bgcolor="#FFFFFF">
-            <img width="240px" src="https://github.com/BGI-SynBio/PyMOL-advance/blob/main/cases/expected/3.png"/>
+            <img width="240px" src="https://github.com/BGI-SynBio/PyMOL-PUB/blob/main/cases/expected/3.png"/>
         </td>
         <td bgcolor="#FFFFFF">
-            <img width="240px" src="https://github.com/BGI-SynBio/PyMOL-advance/blob/main/cases/designed/3.png"/>
+            <img width="240px" src="https://github.com/BGI-SynBio/PyMOL-PUB/blob/main/cases/designed/3.png"/>
         </td>
         <td bgcolor="#FFFFFF">
-            <img width="240px" src="https://github.com/BGI-SynBio/PyMOL-advance/blob/main/cases/designed/3(clearer).png"/>
+            <img width="240px" src="https://github.com/BGI-SynBio/PyMOL-PUB/blob/main/cases/designed/3(clearer).png"/>
         </td>
     </tr>
 </table>
@@ -85,14 +85,14 @@ varying the thickness and gradient color of the cartoon representation (see the 
 You can install it using pip:
 
 ```sh
-pip install PyMOL-advance
+pip install PyMOL-PUB
 ```
 
 Or you can also install it from source after installing [git](https://git-scm.com/):
 
 ```sh
-git clone https://github.com/BGI-SynBio/PyMOL-advance.git
-cd PyMOL-advance
+git clone https://github.com/BGI-SynBio/PyMOL-PUB.git
+cd PyMOL-PUB
 pip install -r requirements.txt
 python setup.py install develop --user
 ```
@@ -151,26 +151,26 @@ For the structure image, two types of rendering objectives have been offered:
 the first aims to accentuate specific region(s), 
 and the second intends to showcase element (deoxyribonucleic acid, ribonucleic acid and amino acid) 
 property information in the structure.
-The [HighlightStructureImage](https://github.com/BGI-SynBio/PyMOL-advance/blob/main/mola/layouts.py#L303) class 
+The [HighlightStructureImage](https://github.com/BGI-SynBio/PyMOL-PUB/blob/main/mola/layouts.py#L303) class 
 can offer adequate services for the former, 
 whereas the 
-[PropertyStructureImage](https://github.com/BGI-SynBio/PyMOL-advance/blob/main/mola/layouts.py#L418) class 
+[PropertyStructureImage](https://github.com/BGI-SynBio/PyMOL-PUB/blob/main/mola/layouts.py#L418) class 
 is developed for the latter.
 
 Irrespective of the structure visualisation method, 
 as applicable in all cases, 
 the recommended function calling order (not mandatory) is to 
 (1) omit unnecessary parts by 
-["set_cache"](https://github.com/BGI-SynBio/PyMOL-advance/blob/main/mola/layouts.py#L29) function, 
+["set_cache"](https://github.com/BGI-SynBio/PyMOL-PUB/blob/main/mola/layouts.py#L29) function, 
 (2) adjust the structure's spatial orientation by
-["set_state"](https://github.com/BGI-SynBio/PyMOL-advance/blob/main/mola/layouts.py#L127) function, 
+["set_state"](https://github.com/BGI-SynBio/PyMOL-PUB/blob/main/mola/layouts.py#L127) function, 
 (3) modify the structure or its parts representation by
-["set_shape"](https://github.com/BGI-SynBio/PyMOL-advance/blob/main/mola/layouts.py#L174) function, 
+["set_shape"](https://github.com/BGI-SynBio/PyMOL-PUB/blob/main/mola/layouts.py#L174) function, 
 (4) complete coloring of the structure or its parts 
-by highlight [coloring](https://github.com/BGI-SynBio/PyMOL-advance/blob/main/mola/layouts.py#L305) 
-or property driven [coloring](https://github.com/BGI-SynBio/PyMOL-advance/blob/main/mola/layouts.py#L420),
+by highlight [coloring](https://github.com/BGI-SynBio/PyMOL-PUB/blob/main/mola/layouts.py#L305) 
+or property driven [coloring](https://github.com/BGI-SynBio/PyMOL-PUB/blob/main/mola/layouts.py#L420),
 both called "set_color" function in the corresponding class,
-and (5) save the image by ["save"](https://github.com/BGI-SynBio/PyMOL-advance/blob/main/mola/layouts.py#L283) function.
+and (5) save the image by ["save"](https://github.com/BGI-SynBio/PyMOL-PUB/blob/main/mola/layouts.py#L283) function.
 
 A highlight structure image example can be:
 ```python
@@ -208,12 +208,12 @@ image.set_color(target="model:predicted", color_map="rainbow", edge_color="0x000
 image.save(save_path="aligned_structure.png", width=1800, ratio=0.5)
 ```
 
-More comparable cases are attached in the [cases](https://github.com/BGI-SynBio/PyMOL-advance/tree/main/cases) folder.
+More comparable cases are attached in the [cases](https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/cases) folder.
 
 
 ### Publication-standard figure creation
 At the figure level, we can customize the target publication format during the 
-[initialization](https://github.com/BGI-SynBio/PyMOL-advance/blob/main/mola/layouts.py#L493) of the figure.
+[initialization](https://github.com/BGI-SynBio/PyMOL-PUB/blob/main/mola/layouts.py#L493) of the figure.
 The supporting figure formats of journal, conference or publisher are:
 
 <table width="100%" align="center", table-layout:fixed>
@@ -320,13 +320,13 @@ figure = Figure(manuscript_format="Science", occupied_columns=3)
 
 Once the figure has been created, 
 it is possible to insert the generated structure image(s) into it 
-by utilizing the ["set_image"](https://github.com/BGI-SynBio/PyMOL-advance/blob/main/mola/layouts.py#L692) function 
+by utilizing the ["set_image"](https://github.com/BGI-SynBio/PyMOL-PUB/blob/main/mola/layouts.py#L692) function 
 or paint various outcomes, 
 like [line chart, bar chart, violin chart, and so on](https://matplotlib.org/stable/gallery/index), 
-through the ["set_panel"](https://github.com/BGI-SynBio/PyMOL-advance/blob/main/mola/layouts.py#L663) function.
-The [Figure](https://github.com/BGI-SynBio/PyMOL-advance/blob/main/mola/layouts.py#L491) class 
+through the ["set_panel"](https://github.com/BGI-SynBio/PyMOL-PUB/blob/main/mola/layouts.py#L663) function.
+The [Figure](https://github.com/BGI-SynBio/PyMOL-PUB/blob/main/mola/layouts.py#L491) class 
 also provides a 
-[grid selection](https://github.com/BGI-SynBio/PyMOL-advance/blob/main/mola/layouts.py#L644) function
+[grid selection](https://github.com/BGI-SynBio/PyMOL-PUB/blob/main/mola/layouts.py#L644) function
 since publications usually have varying information to display in one figure.
 
 ## Configuration-driven figure creation
