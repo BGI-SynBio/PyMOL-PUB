@@ -9,4 +9,4 @@ if __name__ == "__main__":
         ax.axis("off")
         ax.arrow(0.5 - 0.5 * cos(x), 0.5 - 0.5 * sin(x), 1.0 * cos(x), 1.0 * sin(x), width=0.02, head_width=0.3,
                  head_length=0.4, overhang=0.25, length_includes_head=True, facecolor="black")
-        fig.savefig('../mola/supp/widgets/arrow [' + str(degree) + '-degree].png', dpi=1200)
+        fig.savefig('../molpub/supp/widgets/arrow [' + str(degree) + '-degree].png', dpi=1200)

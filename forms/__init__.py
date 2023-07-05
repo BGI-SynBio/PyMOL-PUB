@@ -1,4 +1,4 @@
-parent_path = "../mola/supp/widgets/"
+parent_path = "../molpub/supp/widgets/"
 
 
 def optimize_format(image_path: str):

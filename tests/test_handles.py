@@ -1,12 +1,12 @@
 from numpy import random, linalg, vstack
 from unittest import TestCase
 
-from mola.handles import Monitor
-from mola.handles import Score
-from mola.handles import similar
-from mola.handles import cluster
-from mola.handles import align
-from mola.handles import set_difference
+from molpub.handles import Monitor
+from molpub.handles import Score
+from molpub.handles import similar
+from molpub.handles import cluster
+from molpub.handles import align
+from molpub.handles import set_difference
 
 
 class TestScore(TestCase):

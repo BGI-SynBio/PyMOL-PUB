@@ -1,3 +1,7 @@
+<p align="center">
+    <img width="100%" src="https://github.com/BGI-SynBio/PyMOL-PUB/blob/main/docs/source/_static/logo.svg"/>
+</p>
+
 # PyMOL-PUB: high-level interface from structure data to publication-standard figures
 
 With the rapid progress of fields like protein structure prediction, 
@@ -151,30 +155,30 @@ For the structure image, two types of rendering objectives have been offered:
 the first aims to accentuate specific region(s), 
 and the second intends to showcase element (deoxyribonucleic acid, ribonucleic acid and amino acid) 
 property information in the structure.
-The [HighlightStructureImage](https://github.com/BGI-SynBio/PyMOL-PUB/blob/main/mola/layouts.py#L303) class 
+The [HighlightStructureImage](https://github.com/BGI-SynBio/PyMOL-PUB/blob/main/molpub/layouts.py#L303) class 
 can offer adequate services for the former, 
 whereas the 
-[PropertyStructureImage](https://github.com/BGI-SynBio/PyMOL-PUB/blob/main/mola/layouts.py#L418) class 
+[PropertyStructureImage](https://github.com/BGI-SynBio/PyMOL-PUB/blob/main/molpub/layouts.py#L418) class 
 is developed for the latter.
 
 Irrespective of the structure visualisation method, 
 as applicable in all cases, 
 the recommended function calling order (not mandatory) is to 
 (1) omit unnecessary parts by 
-["set_cache"](https://github.com/BGI-SynBio/PyMOL-PUB/blob/main/mola/layouts.py#L29) function, 
+["set_cache"](https://github.com/BGI-SynBio/PyMOL-PUB/blob/main/molpub/layouts.py#L29) function, 
 (2) adjust the structure's spatial orientation by
-["set_state"](https://github.com/BGI-SynBio/PyMOL-PUB/blob/main/mola/layouts.py#L127) function, 
+["set_state"](https://github.com/BGI-SynBio/PyMOL-PUB/blob/main/molpub/layouts.py#L127) function, 
 (3) modify the structure or its parts representation by
-["set_shape"](https://github.com/BGI-SynBio/PyMOL-PUB/blob/main/mola/layouts.py#L174) function, 
+["set_shape"](https://github.com/BGI-SynBio/PyMOL-PUB/blob/main/molpub/layouts.py#L174) function, 
 (4) complete coloring of the structure or its parts 
-by highlight [coloring](https://github.com/BGI-SynBio/PyMOL-PUB/blob/main/mola/layouts.py#L305) 
-or property driven [coloring](https://github.com/BGI-SynBio/PyMOL-PUB/blob/main/mola/layouts.py#L420),
+by highlight [coloring](https://github.com/BGI-SynBio/PyMOL-PUB/blob/main/molpub/layouts.py#L305) 
+or property driven [coloring](https://github.com/BGI-SynBio/PyMOL-PUB/blob/main/molpub/layouts.py#L420),
 both called "set_color" function in the corresponding class,
-and (5) save the image by ["save"](https://github.com/BGI-SynBio/PyMOL-PUB/blob/main/mola/layouts.py#L283) function.
+and (5) save the image by ["save"](https://github.com/BGI-SynBio/PyMOL-PUB/blob/main/molpub/layouts.py#L283) function.
 
 A highlight structure image example can be:
 ```python
-from mola.layouts import HighlightStructureImage
+from molpub.layouts import HighlightStructureImage
 
 # create a structure image based on a structure file "structure.pdb".
 image = HighlightStructureImage(structure_paths=["structure.pdb"])
@@ -193,7 +197,7 @@ image.save(save_path="structure.png", width=1280, ratio=0.8)
 Besides, a property driven structure image example can be:
 
 ```python
-from mola.layouts import PropertyStructureImage
+from molpub.layouts import PropertyStructureImage
 
 # create a structure image based on two structure files "expected.pdb" and "predicted.pdb".
 image = PropertyStructureImage(structure_paths=["expected.pdb", "predicted.pdb"])
@@ -213,7 +217,7 @@ More comparable cases are attached in the [cases](https://github.com/BGI-SynBio/
 
 ### Publication-standard figure creation
 At the figure level, we can customize the target publication format during the 
-[initialization](https://github.com/BGI-SynBio/PyMOL-PUB/blob/main/mola/layouts.py#L493) of the figure.
+[initialization](https://github.com/BGI-SynBio/PyMOL-PUB/blob/main/molpub/layouts.py#L493) of the figure.
 The supporting figure formats of journal, conference or publisher are:
 
 <table width="100%" align="center", table-layout:fixed>
@@ -314,19 +318,19 @@ The supporting figure formats of journal, conference or publisher are:
 The target figure can be set to the Science format and full width by constructing the subsequent object.
 
 ```python
-from mola.layouts import Figure
+from molpub.layouts import Figure
 figure = Figure(manuscript_format="Science", occupied_columns=3)
 ```
 
 Once the figure has been created, 
 it is possible to insert the generated structure image(s) into it 
-by utilizing the ["set_image"](https://github.com/BGI-SynBio/PyMOL-PUB/blob/main/mola/layouts.py#L692) function 
+by utilizing the ["set_image"](https://github.com/BGI-SynBio/PyMOL-PUB/blob/main/molpub/layouts.py#L692) function 
 or paint various outcomes, 
 like [line chart, bar chart, violin chart, and so on](https://matplotlib.org/stable/gallery/index), 
-through the ["set_panel"](https://github.com/BGI-SynBio/PyMOL-PUB/blob/main/mola/layouts.py#L663) function.
-The [Figure](https://github.com/BGI-SynBio/PyMOL-PUB/blob/main/mola/layouts.py#L491) class 
+through the ["set_panel"](https://github.com/BGI-SynBio/PyMOL-PUB/blob/main/molpub/layouts.py#L663) function.
+The [Figure](https://github.com/BGI-SynBio/PyMOL-PUB/blob/main/molpub/layouts.py#L491) class 
 also provides a 
-[grid selection](https://github.com/BGI-SynBio/PyMOL-PUB/blob/main/mola/layouts.py#L644) function
+[grid selection](https://github.com/BGI-SynBio/PyMOL-PUB/blob/main/molpub/layouts.py#L644) function
 since publications usually have varying information to display in one figure.
 
 ## Configuration-driven figure creation

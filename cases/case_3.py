@@ -1,5 +1,5 @@
-from mola.layouts import DefaultStructureImage, PropertyStructureImage
-from mola.handles import set_properties
+from molpub.layouts import DefaultStructureImage, PropertyStructureImage
+from molpub.handles import set_properties
 
 
 def baseline(file_parent_path, save_parent_path):
