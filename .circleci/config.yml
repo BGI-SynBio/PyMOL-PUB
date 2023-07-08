@@ -35,6 +35,14 @@ jobs:
             pip install nose
             nosetests -v
 
+#      - run:
+#          name: run doctests
+#          command: |
+#            . venv/bin/activate
+#            python -m doctest -f molpub/configs.py
+#            python -m doctest -f molpub/handles.py
+#            python -m doctest -f molpub/layouts.py
+
       - store_artifacts:
           path: test-reports
           destination: test-reports

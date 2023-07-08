@@ -1,5 +1,4 @@
-from molpub.layouts import DefaultStructureImage, PropertyStructureImage
-from molpub.handles import set_properties
+from molpub import DefaultStructureImage, PropertyStructureImage, set_properties
 
 
 def baseline(file_parent_path, save_parent_path):

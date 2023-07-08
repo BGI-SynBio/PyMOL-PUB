@@ -1,4 +1,4 @@
-from molpub.layouts import DefaultStructureImage, HighlightStructureImage, PropertyStructureImage, Figure
+from molpub import DefaultStructureImage, HighlightStructureImage, PropertyStructureImage, Figure
 
 
 def baseline(file_parent_path, save_parent_path):

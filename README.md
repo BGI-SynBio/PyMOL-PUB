@@ -115,106 +115,6 @@ Moreover, some well-established libraries:
 
 
 ## Customizations and protocols
-### Scalable string expression for part selection
-We present a string expression to describe two types of selection scheme, 
-one is "all" and another is "type:target,target,...,target",
-which avoids users from needing to input extensive selection information based on the original PyMOL design.
-
-Here, "type" is selection class, including (1) "position", (2) "range", (3) "residue", (4) "segment", 
-(5) "chain" and (6) "model".
-"target" represents the selection range under the corresponding "type".
-
-Some examples are shown below:
-```python
-# select the model called "predicted".
-a = "model:predicted"
-# select A-chain.
-b = "chain:A"
-# select segment "NPGP" in all chains.
-c = "segment:NPGP"
-# select residue "HOH" in all chains.
-d = "residue:HOH"
-# select range from 10 to 20 and from 50 to 60 in all chains.
-e = "range:10-20,50-60"
-# select 10-th position in all chains.
-f = "position:10"
-```
-For types below the chain scale, i.e. type (1) - (4), 
-we provide a built-in chain description mechanism for more accurate selection.
-For example:
-
-```python
-# select range from 10 to 20 in all chains.
-a = "range:10-20"
-# select range from 10 to 20 in A-chain.
-b = "range:A+10-200"
-```
-
-### Structure image creation
-For the structure image, two types of rendering objectives have been offered: 
-the first aims to accentuate specific region(s), 
-and the second intends to showcase element (deoxyribonucleic acid, ribonucleic acid and amino acid) 
-property information in the structure.
-The [HighlightStructureImage](https://github.com/BGI-SynBio/PyMOL-PUB/blob/main/molpub/layouts.py#L303) class 
-can offer adequate services for the former, 
-whereas the 
-[PropertyStructureImage](https://github.com/BGI-SynBio/PyMOL-PUB/blob/main/molpub/layouts.py#L418) class 
-is developed for the latter.
-
-Irrespective of the structure visualisation method, 
-as applicable in all cases, 
-the recommended function calling order (not mandatory) is to 
-(1) omit unnecessary parts by 
-["set_cache"](https://github.com/BGI-SynBio/PyMOL-PUB/blob/main/molpub/layouts.py#L29) function, 
-(2) adjust the structure's spatial orientation by
-["set_state"](https://github.com/BGI-SynBio/PyMOL-PUB/blob/main/molpub/layouts.py#L127) function, 
-(3) modify the structure or its parts representation by
-["set_shape"](https://github.com/BGI-SynBio/PyMOL-PUB/blob/main/molpub/layouts.py#L174) function, 
-(4) complete coloring of the structure or its parts 
-by highlight [coloring](https://github.com/BGI-SynBio/PyMOL-PUB/blob/main/molpub/layouts.py#L305) 
-or property driven [coloring](https://github.com/BGI-SynBio/PyMOL-PUB/blob/main/molpub/layouts.py#L420),
-both called "set_color" function in the corresponding class,
-and (5) save the image by ["save"](https://github.com/BGI-SynBio/PyMOL-PUB/blob/main/molpub/layouts.py#L283) function.
-
-A highlight structure image example can be:
-```python
-from molpub.layouts import HighlightStructureImage
-
-# create a structure image based on a structure file "structure.pdb".
-image = HighlightStructureImage(structure_paths=["structure.pdb"])
-# hide all water molecules.
-image.set_cache(cache_contents=["residue:HOH"])
-# rotate the structure according to the x-axis 240 degrees, y-axis 340 degrees, and z-axis 90 degrees.
-image.set_state(rotate=[240, 340, 90])
-# set A-chain to surface representation and B-chain to cartoon representation.
-image.set_shape(representation_plan=[("chain:A", "surface"), ("chain:B", "cartoon")])
-# set A-chain to "0xF2F2F2" color and B-chain to "0x2D2F82" color.
-image.set_color(coloring_plan=[("chain:A", "0xF2F2F2"), ("chain:B", "0x2D2F82")])
-# save the structure with the width 1280 and the height 1280 * 0.8 = 1024.
-image.save(save_path="structure.png", width=1280, ratio=0.8)
-```
-
-Besides, a property driven structure image example can be:
-
-```python
-from molpub.layouts import PropertyStructureImage
-
-# create a structure image based on two structure files "expected.pdb" and "predicted.pdb".
-image = PropertyStructureImage(structure_paths=["expected.pdb", "predicted.pdb"])
-# rotate the structure according to the x-axis 0 degrees, y-axis 60 degrees, and z-axis 255 degrees.
-# and align two structures based on the PyMOL built-in method using the expected structure as a template.
-image.set_state(rotate=[0, 60, 255], inner_align=True, target="expected")
-# set two structures to cartoon representation.
-image.set_shape(representation_plan=[("model:predicted", "cartoon"), ("model:expected", "cartoon")])
-# set the color of predicted structure is the rainbow spectrum, starting in red and ending in purple.
-image.set_color(target="model:predicted", color_map="rainbow", edge_color="0x000000", gauge_strengthen=True)
-# save the structure with the width 1800 and the height 1800 * 0.5 = 900.
-image.save(save_path="aligned_structure.png", width=1800, ratio=0.5)
-```
-
-More comparable cases are attached in the [cases](https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/cases) folder.
-
-
 ### Publication-standard figure creation
 At the figure level, we can customize the target publication format during the 
 [initialization](https://github.com/BGI-SynBio/PyMOL-PUB/blob/main/molpub/layouts.py#L493) of the figure.
@@ -315,6 +215,12 @@ The supporting figure formats of journal, conference or publisher are:
     </tr>
 </table>
 
+The collected font format are:
+"Time New Roman", "Helvetica", "Arial", "Linux Libertine" and "Lucida Calligraphy".
+The TTF files are located in the 
+['fonts'](https://github.com/BGI-SynBio/PyMOL-advance/tree/main/molpub/fonts) folder.
+These font formats will automatically connect to matplotlib when PyMOL-advance initializes.  
+
 The target figure can be set to the Science format and full width by constructing the subsequent object.
 
 ```python
@@ -333,8 +239,318 @@ also provides a
 [grid selection](https://github.com/BGI-SynBio/PyMOL-PUB/blob/main/molpub/layouts.py#L644) function
 since publications usually have varying information to display in one figure.
 
-## Configuration-driven figure creation
-In preparation
+### Structure image creation
+For the structure image, two types of rendering objectives have been offered: 
+the first aims to accentuate specific region(s), 
+and the second intends to showcase element (deoxyribonucleic acid, ribonucleic acid and amino acid) 
+property information in the structure.
+The [HighlightStructureImage](https://github.com/BGI-SynBio/PyMOL-PUB/blob/main/molpub/layouts.py#L303) class 
+can offer adequate services for the former, 
+whereas the 
+[PropertyStructureImage](https://github.com/BGI-SynBio/PyMOL-PUB/blob/main/molpub/layouts.py#L418) class 
+is developed for the latter.
+
+Irrespective of the structure visualisation method, 
+as applicable in all cases, 
+the recommended function calling order (not mandatory) is to 
+(1) omit unnecessary parts by 
+["set_cache"](https://github.com/BGI-SynBio/PyMOL-PUB/blob/main/molpub/layouts.py#L29) function, 
+(2) adjust the structure's spatial orientation by
+["set_state"](https://github.com/BGI-SynBio/PyMOL-PUB/blob/main/molpub/layouts.py#L127) function, 
+(3) modify the structure or its parts representation by
+["set_shape"](https://github.com/BGI-SynBio/PyMOL-PUB/blob/main/molpub/layouts.py#L174) function, 
+(4) complete coloring of the structure or its parts 
+by highlight [coloring](https://github.com/BGI-SynBio/PyMOL-PUB/blob/main/molpub/layouts.py#L305) 
+or property driven [coloring](https://github.com/BGI-SynBio/PyMOL-PUB/blob/main/molpub/layouts.py#L420),
+both called "set_color" function in the corresponding class,
+and (5) save the image by ["save"](https://github.com/BGI-SynBio/PyMOL-PUB/blob/main/molpub/layouts.py#L283) function.
+
+A highlight structure image example can be:
+```python
+from molpub.layouts import HighlightStructureImage
+
+# create a structure image based on a structure file "structure.pdb".
+image = HighlightStructureImage(structure_paths=["structure.pdb"])
+# hide all water molecules.
+image.set_cache(cache_contents=["residue:HOH"])
+# rotate the structure according to the x-axis 240 degrees, y-axis 340 degrees, and z-axis 90 degrees.
+image.set_state(rotate=[240, 340, 90])
+# set A-chain to surface representation and B-chain to cartoon representation.
+image.set_shape(representation_plan=[("chain:A", "surface"), ("chain:B", "cartoon")])
+# set A-chain to "0xF2F2F2" color and B-chain to "0x2D2F82" color.
+image.set_color(coloring_plan=[("chain:A", "0xF2F2F2"), ("chain:B", "0x2D2F82")])
+# save the structure with the width 1280 and the height 1280 * 0.8 = 1024.
+image.save(save_path="structure.png", width=1280, ratio=0.8)
+```
+
+Besides, a property driven structure image example can be:
+
+```python
+from molpub.layouts import PropertyStructureImage
+
+# create a structure image based on two structure files "expected.pdb" and "predicted.pdb".
+image = PropertyStructureImage(structure_paths=["expected.pdb", "predicted.pdb"])
+# rotate the structure according to the x-axis 0 degrees, y-axis 60 degrees, and z-axis 255 degrees.
+# and align two structures based on the PyMOL built-in method using the expected structure as a template.
+image.set_state(rotate=[0, 60, 255], inner_align=True, target="expected")
+# set two structures to cartoon representation.
+image.set_shape(representation_plan=[("model:predicted", "cartoon"), ("model:expected", "cartoon")])
+# set the color of predicted structure is the rainbow spectrum, starting in red and ending in purple.
+image.set_color(target="model:predicted", color_map="rainbow", edge_color="0x000000", gauge_strengthen=True)
+# save the structure with the width 1800 and the height 1800 * 0.5 = 900.
+image.save(save_path="aligned_structure.png", width=1800, ratio=0.5)
+```
+
+More comparable cases are attached in the [cases](https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/cases) folder.
+
+### Scalable string expression for part selection
+We present a string expression to describe two types of selection scheme, 
+one is "all" and another is "type:target,target,...,target",
+which avoids users from needing to input extensive selection information based on the original PyMOL design.
+
+Here, "type" is selection class, including (1) "position", (2) "range", (3) "residue", (4) "segment", 
+(5) "chain" and (6) "model".
+"target" represents the selection range under the corresponding "type".
+
+Some examples are shown below:
+```python
+# select the model called "predicted".
+a = "model:predicted"
+# select A-chain.
+b = "chain:A"
+# select segment "NPGP" in all chains.
+c = "segment:NPGP"
+# select residue "HOH" in all chains.
+d = "residue:HOH"
+# select range from 10 to 20 and from 50 to 60 in all chains.
+e = "range:10-20,50-60"
+# select 10-th position in all chains.
+f = "position:10"
+```
+For types below the chain scale, i.e. type (1) - (4), 
+we provide a built-in chain description mechanism for more accurate selection.
+For example:
+
+```python
+# select range from 10 to 20 in all chains.
+a = "range:10-20"
+# select range from 10 to 20 in A-chain.
+b = "range:A+10-200"
+```
+
+### Rotation widget icons
+Rotation widget icons describe the rotation of molecular structure, determined by the azimuth angle (for x+y plane) and the elevation angle (for z plane).
+
+There are two styles.
+In style 1, the widget is defined by direction and the azimuth angle.
+<table align="center", table-layout:fixed>
+    <tr>
+        <th rowspan="2">direction</th><th colspan="5">azimuth angle</th>
+    </tr>
+    <tr>
+        <td bgcolor="#FFFFFF" bgcolor="#FFFFFF" align="center">30 (1pi6)</td>
+        <td bgcolor="#FFFFFF" bgcolor="#FFFFFF" align="center">60 (1pi3)</td>
+        <td bgcolor="#FFFFFF" bgcolor="#FFFFFF" align="center">90 (1pi2)</td>
+        <td bgcolor="#FFFFFF" bgcolor="#FFFFFF" align="center">120 (2pi3)</td>
+        <td bgcolor="#FFFFFF" bgcolor="#FFFFFF" align="center">180 (1pi1)</td>
+    </tr>
+    <tr>
+        <td bgcolor="#FFFFFF" bgcolor="#FFFFFF" align="center">+</td>
+        <td bgcolor="#FFFFFF"><img src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation [+.1pi6].svg"/></td>
+        <td bgcolor="#FFFFFF"><img src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation [+.1pi3].svg"/></td>
+        <td bgcolor="#FFFFFF"><img src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation [+.1pi2].svg"/></td>
+        <td bgcolor="#FFFFFF"><img src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation [+.2pi3].svg"/></td>
+        <td bgcolor="#FFFFFF"><img src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation [+.1pi1].svg"/></td>
+    </tr>
+    <tr>
+        <td bgcolor="#FFFFFF" bgcolor="#FFFFFF" align="center">-</td>
+        <td bgcolor="#FFFFFF"><img src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation [-.1pi6].svg"/></td>
+        <td bgcolor="#FFFFFF"><img src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation [-.1pi3].svg"/></td>
+        <td bgcolor="#FFFFFF"><img src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation [-.1pi2].svg"/></td>
+        <td bgcolor="#FFFFFF"><img src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation [-.2pi3].svg"/></td>
+        <td bgcolor="#FFFFFF"><img src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation [-.1pi1].svg"/></td>
+    </tr>
+</table>
+
+Sometimes, we need to operate the elevation angle concurrently.
+A more complex widget attribute setup is (elevation angle, azimuth angle).
+
+<table align="center" table-layout:fixed>
+    <tr>
+        <th rowspan="2">elevation angle</th><th colspan="11">azimuth angle</th>
+    </tr>
+    <tr>
+        <td bgcolor="#FFFFFF" align="center">-180 (-1pi1)</td>
+        <td bgcolor="#FFFFFF" align="center">-120 (-2pi3)</td>
+        <td bgcolor="#FFFFFF" align="center">-90 (-1pi2)</td>
+        <td bgcolor="#FFFFFF" align="center">-60 (-1pi3)</td>
+        <td bgcolor="#FFFFFF" align="center">-30 (-1pi6)</td>
+        <td bgcolor="#FFFFFF" align="center">0 (+0pi1)</td>
+        <td bgcolor="#FFFFFF" align="center">+30 (+1pi6)</td>
+        <td bgcolor="#FFFFFF" align="center">+60 (1pi3)</td>
+        <td bgcolor="#FFFFFF" align="center">+90 (1pi2)</td>
+        <td bgcolor="#FFFFFF" align="center">+120 (2pi3)</td>
+        <td bgcolor="#FFFFFF" align="center">+180 (1pi1)</td>
+    </tr>
+    <tr>
+        <td bgcolor="#FFFFFF" align="center">-180 (-1pi1)</td>
+        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation [-1pi1.-1pi1].svg"/></td>
+        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation [-1pi1.-2pi3].svg"/></td>
+        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation [-1pi1.-1pi2].svg"/></td>
+        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation [-1pi1.-1pi3].svg"/></td>
+        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation [-1pi1.-1pi6].svg"/></td>
+        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation [-1pi1.+0pi1].svg"/></td>
+        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation [-1pi1.+1pi6].svg"/></td>
+        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation [-1pi1.+1pi3].svg"/></td>
+        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation [-1pi1.+1pi2].svg"/></td>
+        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation [-1pi1.+2pi3].svg"/></td>
+        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation [-1pi1.+1pi1].svg"/></td>
+    </tr>
+    <tr>
+        <td bgcolor="#FFFFFF" align="center">-120 (-2pi3)</td>
+        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation [-2pi3.-1pi1].svg"/></td>
+        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation [-2pi3.-2pi3].svg"/></td>
+        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation [-2pi3.-1pi2].svg"/></td>
+        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation [-2pi3.-1pi3].svg"/></td>
+        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation [-2pi3.-1pi6].svg"/></td>
+        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation [-2pi3.+0pi1].svg"/></td>
+        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation [-2pi3.+1pi6].svg"/></td>
+        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation [-2pi3.+1pi3].svg"/></td>
+        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation [-2pi3.+1pi2].svg"/></td>
+        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation [-2pi3.+2pi3].svg"/></td>
+        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation [-2pi3.+1pi1].svg"/></td>
+    </tr>
+    <tr>
+        <td bgcolor="#FFFFFF" align="center">-90 (-1pi2)</td>
+        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation [-1pi2.-1pi1].svg"/></td>
+        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation [-1pi2.-2pi3].svg"/></td>
+        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation [-1pi2.-1pi2].svg"/></td>
+        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation [-1pi2.-1pi3].svg"/></td>
+        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation [-1pi2.-1pi6].svg"/></td>
+        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation [-1pi2.+0pi1].svg"/></td>
+        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation [-1pi2.+1pi6].svg"/></td>
+        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation [-1pi2.+1pi3].svg"/></td>
+        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation [-1pi2.+1pi2].svg"/></td>
+        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation [-1pi2.+2pi3].svg"/></td>
+        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation [-1pi2.+1pi1].svg"/></td>
+    </tr>
+    <tr>
+        <td bgcolor="#FFFFFF" align="center">-60 (-1pi3)</td>
+        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation [-1pi3.-1pi1].svg"/></td>
+        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation [-1pi3.-2pi3].svg"/></td>
+        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation [-1pi3.-1pi2].svg"/></td>
+        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation [-1pi3.-1pi3].svg"/></td>
+        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation [-1pi3.-1pi6].svg"/></td>
+        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation [-1pi3.+0pi1].svg"/></td>
+        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation [-1pi3.+1pi6].svg"/></td>
+        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation [-1pi3.+1pi3].svg"/></td>
+        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation [-1pi3.+1pi2].svg"/></td>
+        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation [-1pi3.+2pi3].svg"/></td>
+        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation [-1pi3.+1pi1].svg"/></td>
+    </tr>
+    <tr>
+        <td bgcolor="#FFFFFF" align="center">-30 (-1pi6)</td>
+        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation [-1pi6.-1pi1].svg"/></td>
+        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation [-1pi6.-2pi3].svg"/></td>
+        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation [-1pi6.-1pi2].svg"/></td>
+        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation [-1pi6.-1pi3].svg"/></td>
+        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation [-1pi6.-1pi6].svg"/></td>
+        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation [-1pi6.+0pi1].svg"/></td>
+        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation [-1pi6.+1pi6].svg"/></td>
+        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation [-1pi6.+1pi3].svg"/></td>
+        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation [-1pi6.+1pi2].svg"/></td>
+        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation [-1pi6.+2pi3].svg"/></td>
+        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation [-1pi6.+1pi1].svg"/></td>
+    </tr>
+    <tr>
+        <td bgcolor="#FFFFFF" align="center">0 (+0pi1)</td>
+        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation [+0pi1.-1pi1].svg"/></td>
+        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation [+0pi1.-2pi3].svg"/></td>
+        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation [+0pi1.-1pi2].svg"/></td>
+        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation [+0pi1.-1pi3].svg"/></td>
+        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation [+0pi1.-1pi6].svg"/></td>
+        <td bgcolor="#FFFFFF" align="center">N/A</td>
+        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation [+0pi1.+1pi6].svg"/></td>
+        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation [+0pi1.+1pi3].svg"/></td>
+        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation [+0pi1.+1pi2].svg"/></td>
+        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation [+0pi1.+2pi3].svg"/></td>
+        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation [+0pi1.+1pi1].svg"/></td>
+    </tr>
+    <tr>
+        <td bgcolor="#FFFFFF" align="center">+30 (+1pi6)</td>
+        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation [+1pi6.-1pi1].svg"/></td>
+        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation [+1pi6.-2pi3].svg"/></td>
+        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation [+1pi6.-1pi2].svg"/></td>
+        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation [+1pi6.-1pi3].svg"/></td>
+        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation [+1pi6.-1pi6].svg"/></td>
+        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation [+1pi6.+0pi1].svg"/></td>
+        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation [+1pi6.+1pi6].svg"/></td>
+        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation [+1pi6.+1pi3].svg"/></td>
+        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation [+1pi6.+1pi2].svg"/></td>
+        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation [+1pi6.+2pi3].svg"/></td>
+        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation [+1pi6.+1pi1].svg"/></td>
+    </tr>
+    <tr>
+        <td bgcolor="#FFFFFF" align="center">+60 (+1pi3)</td>
+        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation [+1pi3.-1pi1].svg"/></td>
+        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation [+1pi3.-2pi3].svg"/></td>
+        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation [+1pi3.-1pi2].svg"/></td>
+        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation [+1pi3.-1pi3].svg"/></td>
+        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation [+1pi3.-1pi6].svg"/></td>
+        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation [+1pi3.+0pi1].svg"/></td>
+        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation [+1pi3.+1pi6].svg"/></td>
+        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation [+1pi3.+1pi3].svg"/></td>
+        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation [+1pi3.+1pi2].svg"/></td>
+        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation [+1pi3.+2pi3].svg"/></td>
+        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation [+1pi3.+1pi1].svg"/></td>
+    </tr>
+    <tr>
+        <td bgcolor="#FFFFFF" align="center">+90 (+1pi2)</td>
+        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation [+1pi2.-1pi1].svg"/></td>
+        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation [+1pi2.-2pi3].svg"/></td>
+        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation [+1pi2.-1pi2].svg"/></td>
+        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation [+1pi2.-1pi3].svg"/></td>
+        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation [+1pi2.-1pi6].svg"/></td>
+        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation [+1pi2.+0pi1].svg"/></td>
+        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation [+1pi2.+1pi6].svg"/></td>
+        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation [+1pi2.+1pi3].svg"/></td>
+        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation [+1pi2.+1pi2].svg"/></td>
+        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation [+1pi2.+2pi3].svg"/></td>
+        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation [+1pi2.+1pi1].svg"/></td>
+    </tr>
+    <tr>
+        <td bgcolor="#FFFFFF" align="center">+120 (+2pi3)</td>
+        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation [+2pi3.-1pi1].svg"/></td>
+        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation [+2pi3.-2pi3].svg"/></td>
+        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation [+2pi3.-1pi2].svg"/></td>
+        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation [+2pi3.-1pi3].svg"/></td>
+        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation [+2pi3.-1pi6].svg"/></td>
+        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation [+2pi3.+0pi1].svg"/></td>
+        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation [+2pi3.+1pi6].svg"/></td>
+        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation [+2pi3.+1pi3].svg"/></td>
+        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation [+2pi3.+1pi2].svg"/></td>
+        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation [+2pi3.+2pi3].svg"/></td>
+        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation [+2pi3.+1pi1].svg"/></td>
+    </tr>
+    <tr>
+        <td bgcolor="#FFFFFF" align="center">+180 (+1pi1)</td>
+        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation [+1pi1.-1pi1].svg"/></td>
+        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation [+1pi1.-2pi3].svg"/></td>
+        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation [+1pi1.-1pi2].svg"/></td>
+        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation [+1pi1.-1pi3].svg"/></td>
+        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation [+1pi1.-1pi6].svg"/></td>
+        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation [+1pi1.+0pi1].svg"/></td>
+        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation [+1pi1.+1pi6].svg"/></td>
+        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation [+1pi1.+1pi3].svg"/></td>
+        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation [+1pi1.+1pi2].svg"/></td>
+        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation [+1pi1.+2pi3].svg"/></td>
+        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation [+1pi1.+1pi1].svg"/></td>
+    </tr>
+</table>
+
+The interface is shown in 
+[obtain_widget_icon](https://github.com/BGI-SynBio/PyMOL-PUB/blob/main/molpub/layouts.py#L20) 
+
 
 ## Acknowledgements
 This work is funded by 

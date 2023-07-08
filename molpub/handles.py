@@ -1,3 +1,4 @@
+# noinspection PyPackageRequirements
 from Bio.PDB import PDBParser, MMCIFParser, PDBIO, MMCIFIO, Structure, Chain, Residue, Atom
 from datetime import datetime
 from logging import getLogger, CRITICAL
@@ -111,7 +112,7 @@ class Score:
         :type use_center: bool
 
         :return: score, rotated candidate structure, original reference structure, start location.
-        :rtype: tuple[float, numpy.ndarray, numpy.ndarray, int]
+        :rtype: float, numpy.ndarray, numpy.ndarray, int
         """
         if structure_1.shape != structure_2.shape:
             use_center = False
@@ -422,7 +423,7 @@ def similar(structure_1, structure_2, score_method, use_center: bool = True, met
     :type structure_2: numpy.ndarray
 
     :param score_method: method to calculate the similarity score.
-    :type score_method: mola.handles.Score
+    :type score_method: molpub.handles.Score
 
     :param use_center: use center location.
     :type use_center: bool
@@ -513,7 +514,7 @@ def cluster(structures, score_method, use_center: bool = True, metrics: float = 
     :type structures: numpy.ndarray
 
     :param score_method: method to calculate the similarity score.
-    :type score_method: mola.handles.Score
+    :type score_method: molpub.handles.Score
 
     :param use_center: use center location.
     :type use_center: bool
@@ -575,7 +576,7 @@ def align(structures, score_method, use_center: bool = True, metrics: float = No
     :type structures: numpy.ndarray
 
     :param score_method: method to calculate the similarity score.
-    :type score_method: mola.handles.Score
+    :type score_method: molpub.handles.Score
 
     :param use_center: use center location.
     :type use_center: bool
@@ -627,12 +628,6 @@ def set_properties(structure_paths: list, molecule_type: str, property_type: str
     :return: property values.
     :rtype: list
     """
-    mol = PyMOL()
-    mol.start()
-    for structure_path in structure_paths:
-        mol.cmd.load(structure_path, quiet=1)
-    mol.cmd.ray(quiet=1)  # make PyMOL run silently.
-
     properties = []
     selection_commands = []
     models = []
@@ -656,6 +651,12 @@ def set_properties(structure_paths: list, molecule_type: str, property_type: str
 
         selection_commands.append(selection_command)
         models.append(selected_model)
+
+    mol = PyMOL()
+    mol.start()
+    for structure_path in structure_paths:
+        mol.cmd.load(structure_path, quiet=1)
+    mol.cmd.ray(quiet=1)  # make PyMOL run silently.
 
     if property_type == "PyMOL-align":
         if len(structure_paths) == 2 and len(models) == 2:
@@ -684,8 +685,8 @@ def set_properties(structure_paths: list, molecule_type: str, property_type: str
             mol.cmd.iterate_state(1, selection_commands[1], "stored.s2.append([x,y,z])")
             mol.stored.s2 = array(mol.stored.s2)
 
-            _, candidate, original_reference, _, _ = Score().__call__(structure_1=mol.stored.s1,
-                                                                      structure_2=mol.stored.s2)
+            score = Score()
+            _, candidate, original_reference, _, _ = score(structure_1=mol.stored.s1, structure_2=mol.stored.s2)
             properties = list(linalg.norm((candidate - original_reference), axis=1, ord=2))
 
         else:
