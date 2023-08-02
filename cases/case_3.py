@@ -21,6 +21,7 @@ def designed(file_parent_path, save_parent_path):
     structure.set_zoom(zoom_contents=["model:Predict"])
     structure.set_color(target="range:Predict+2-274", properties=properties, color_map="rmbc")
     structure.save(save_path=save_parent_path + "3.png", width=1800, ratio=1.2)
+    structure.close()
 
     # Alignment of the structure 7QQA and Predict, the visualization the Predict clearer.
     properties = set_properties(structure_paths=[file_parent_path + "7QQA.pdb", file_parent_path + "Predict.pdb"],
@@ -33,6 +34,7 @@ def designed(file_parent_path, save_parent_path):
     structure.set_zoom(zoom_contents=["model:Predict"])
     structure.set_color(target="range:Predict+2-274", properties=properties, color_map="rainbow", gauge_strengthen=True)
     structure.save(save_path=save_parent_path + "3(clearer).png", width=1800, ratio=1.2)
+    structure.close()
 
 
 if __name__ == "__main__":
