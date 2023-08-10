@@ -33,16 +33,70 @@ def obtain_widget_icon(save_path: str, widget_type: str, params: dict, dpi: int 
     :param dpi: dots per inch.
     :type dpi: int
     """
-    if widget_type == "arrow":
+    if widget_type == "line":
+        if "degree" in params:
+            if 0 <= params["degree"] <= 180:
+                x = pi * params["degree"] / 180
+                figure = pyplot.figure(figsize=(2, 2))
+                if "color" in params:
+                    color = params["color"]
+                else:
+                    color = "black"
+                if "linestyle" in params:
+                    linestyle = params["linestyle"]
+                else:
+                    linestyle = "-"
+                if "linewidth" in params:
+                    linewidth = params["linewidth"]
+                else:
+                    linewidth = 1.0
+
+                pyplot.xlim(-1, 1)
+                pyplot.ylim(-1, 1)
+                pyplot.plot([-cos(x), cos(x)], [-sin(x), sin(x)], linewidth=linewidth,
+                            color=color, linestyle=linestyle)
+                pyplot.axis('off')
+                figure.savefig(save_path, dpi=dpi, transparent=True, pad_inches=0, bbox_inches="tight")
+                pyplot.close()
+            else:
+                raise ValueError("The scope of \"degree\" is [0, 360].")
+        else:
+            raise ValueError("\"degree\" is a parameter that \"arrow\" must specify.")
+
+    elif widget_type == "arrow":
         if "degree" in params:
             if 0 <= params["degree"] <= 360:
                 x = pi * params["degree"] / 180
                 figure = pyplot.figure(figsize=(2, 2))
-                ax = figure.add_axes([0, 0, 1, 1])
-                ax.arrow(0.5 - 0.5 * cos(x), 0.5 - 0.5 * sin(x), 1.0 * cos(x), 1.0 * sin(x), width=0.02, head_width=0.3,
-                         head_length=0.4, overhang=0.25, length_includes_head=True, facecolor="black")
-                ax.axis("off")
-                figure.savefig(save_path, dpi=dpi)
+                if "color" in params:
+                    color = params["color"]
+                else:
+                    color = "black"
+                if "linestyle" in params:
+                    linestyle = params["linestyle"]
+                else:
+                    linestyle = "-"
+                if "width" in params:
+                    width = params["width"]
+                else:
+                    width = 0.02
+                if "head_width" in params:
+                    head_width = params["head_width"]
+                else:
+                    head_width = 0.3
+                if "head_length" in params:
+                    head_length = params["head_length"]
+                else:
+                    head_length = 0.4
+                if "overhang" in params:
+                    overhang = params["overhang"]
+                else:
+                    overhang = 0.25
+                pyplot.arrow(0.5 - 0.5 * cos(x), 0.5 - 0.5 * sin(x), 1.0 * cos(x), 1.0 * sin(x), width=width,
+                             head_width=head_width, head_length=head_length, overhang=overhang,
+                             length_includes_head=True, color=color, linestyle=linestyle)
+                pyplot.axis('off')
+                figure.savefig(save_path, dpi=dpi, transparent=True)
                 pyplot.close()
             else:
                 raise ValueError("The scope of \"degree\" is [0, 360].")
@@ -322,7 +376,21 @@ class DefaultStructureImage:
         for hidden_information in cache_contents:
             if ":" in hidden_information:
                 shading_type, target_information = hidden_information.split(":")
-                if shading_type == "position":
+                if shading_type == "atom":
+                    for target in target_information.split(","):
+                        if "+" in target:
+                            if target.count("+") > 1:
+                                selected_model, selected_chain, selected_atom = target.split("+")
+                                selection_command = "(m. " + selected_model + " and c. " + selected_chain
+                                selection_command = selection_command + " and e. " + selected_atom + ")"
+                            else:
+                                selected_chain, selected_atom = target.split("+")
+                                selection_command = "(c. " + selected_chain + " and e. " + selected_atom + ")"
+                        else:
+                            selection_command = "(e. " + target + ")"
+                        self._mol.cmd.hide(selection=selection_command)
+
+                elif shading_type == "position":
                     for target in target_information.split(","):
                         if "+" in target:
                             selected_chain, selected_position = target.split("+")
@@ -340,17 +408,31 @@ class DefaultStructureImage:
                 elif shading_type == "range":
                     for target in target_information.split(","):
                         if "+" in target:
-                            selected_chain, selected_range = target.split("+")
-                            if "-" in selected_range and selected_range.count("-") == 1:
-                                former, latter = selected_range.split("-")
-                                if int(former) < int(latter):
-                                    selection_command = "(c. " + selected_chain + " and i. " + selected_range + ")"
+                            if target.count("+") > 1:
+                                selected_model, selected_chain, selected_range = target.split("+")
+                                if "-" in selected_range and selected_range.count("-") == 1:
+                                    former, latter = selected_range.split("-")
+                                    if int(former) < int(latter):
+                                        selection_command = "(m. " + selected_model + " and c. " + selected_chain
+                                        selection_command = selection_command + " and i. " + selected_range + ")"
+                                    else:
+                                        raise ValueError("The former position needs to be less than the latter position"
+                                                         + " in the Range (" + selected_range + ").")
                                 else:
-                                    raise ValueError("The former position needs to be less than the latter position "
-                                                     + "in the Range (" + selected_range + ").")
+                                    raise ValueError("Range (" + selected_range + ") needs to "
+                                                     + "meet the \"number-number\" format!")
                             else:
-                                raise ValueError("Range (" + selected_range + ") needs to "
-                                                 + "meet the \"number-number\" format!")
+                                selected_chain, selected_range = target.split("+")
+                                if "-" in selected_range and selected_range.count("-") == 1:
+                                    former, latter = selected_range.split("-")
+                                    if int(former) < int(latter):
+                                        selection_command = "(c. " + selected_chain + " and i. " + selected_range + ")"
+                                    else:
+                                        raise ValueError("The former position needs to be less than the latter position"
+                                                         + " in the Range (" + selected_range + ").")
+                                else:
+                                    raise ValueError("Range (" + selected_range + ") needs to "
+                                                     + "meet the \"number-number\" format!")
                         else:
                             if "-" in target and target.count("-") == 1:
                                 former, latter = target.split("-")
@@ -366,8 +448,13 @@ class DefaultStructureImage:
                 elif shading_type == "residue":
                     for target in target_information.split(","):
                         if "+" in target:
-                            selected_chain, selected_residue = target.split("+")
-                            selection_command = "(c. " + selected_chain + " and r. " + selected_residue + ")"
+                            if target.count("+") > 1:
+                                selected_model, selected_chain, selected_residue = target.split("+")
+                                selection_command = "(m. " + selected_model + " and c. " + selected_chain
+                                selection_command = selection_command + " and r. " + selected_residue + ")"
+                            else:
+                                selected_chain, selected_residue = target.split("+")
+                                selection_command = "(c. " + selected_chain + " and r. " + selected_residue + ")"
                         else:
                             selection_command = "(r. " + target + ")"
                         self._mol.cmd.hide(selection=selection_command)
@@ -424,7 +511,21 @@ class DefaultStructureImage:
         for zoom_information in zoom_contents:
             if ":" in zoom_information:
                 shading_type, target_information = zoom_information.split(":")
-                if shading_type == "position":
+                if shading_type == "atom":
+                    for target in target_information.split(","):
+                        if "+" in target:
+                            if target.count("+") > 1:
+                                selected_model, selected_chain, selected_atom = target.split("+")
+                                selection_command = "(m. " + selected_model + " and c. " + selected_chain
+                                selection_command = selection_command + " and e. " + selected_atom + ")"
+                            else:
+                                selected_chain, selected_atom = target.split("+")
+                                selection_command = "(c. " + selected_chain + " and e. " + selected_atom + ")"
+                        else:
+                            selection_command = "(e. " + target + ")"
+                        self._mol.cmd.zoom(selection=selection_command, buffer=buffer)
+
+                elif shading_type == "position":
                     for target in target_information.split(","):
                         if "+" in target:
                             selected_chain, selected_position = target.split("+")
@@ -442,17 +543,31 @@ class DefaultStructureImage:
                 elif shading_type == "range":
                     for target in target_information.split(","):
                         if "+" in target:
-                            selected_chain, selected_range = target.split("+")
-                            if "-" in selected_range and selected_range.count("-") == 1:
-                                former, latter = selected_range.split("-")
-                                if int(former) < int(latter):
-                                    selection_command = "(c. " + selected_chain + " and i. " + selected_range + ")"
+                            if target.count("+") > 1:
+                                selected_model, selected_chain, selected_range = target.split("+")
+                                if "-" in selected_range and selected_range.count("-") == 1:
+                                    former, latter = selected_range.split("-")
+                                    if int(former) < int(latter):
+                                        selection_command = "(m. " + selected_model + " and c. " + selected_chain
+                                        selection_command = selection_command + " and i. " + selected_range + ")"
+                                    else:
+                                        raise ValueError("The former position needs to be less than the latter position"
+                                                         + " in the Range (" + selected_range + ").")
                                 else:
-                                    raise ValueError("The former position needs to be less than the latter position "
-                                                     + "in the Range (" + selected_range + ").")
+                                    raise ValueError("Range (" + selected_range + ") needs to "
+                                                     + "meet the \"number-number\" format!")
                             else:
-                                raise ValueError("Range (" + selected_range + ") needs to "
-                                                 + "meet the \"number-number\" format!")
+                                selected_chain, selected_range = target.split("+")
+                                if "-" in selected_range and selected_range.count("-") == 1:
+                                    former, latter = selected_range.split("-")
+                                    if int(former) < int(latter):
+                                        selection_command = "(c. " + selected_chain + " and i. " + selected_range + ")"
+                                    else:
+                                        raise ValueError("The former position needs to be less than the latter position"
+                                                         + " in the Range (" + selected_range + ").")
+                                else:
+                                    raise ValueError("Range (" + selected_range + ") needs to "
+                                                     + "meet the \"number-number\" format!")
                         else:
                             if "-" in target and target.count("-") == 1:
                                 former, latter = target.split("-")
@@ -468,8 +583,13 @@ class DefaultStructureImage:
                 elif shading_type == "residue":
                     for target in target_information.split(","):
                         if "+" in target:
-                            selected_chain, selected_residue = target.split("+")
-                            selection_command = "(c. " + selected_chain + " and r. " + selected_residue + ")"
+                            if target.count("+") > 1:
+                                selected_model, selected_chain, selected_residue = target.split("+")
+                                selection_command = "(m. " + selected_model + " and c. " + selected_chain
+                                selection_command = selection_command + " and r. " + selected_residue + ")"
+                            else:
+                                selected_chain, selected_residue = target.split("+")
+                                selection_command = "(c. " + selected_chain + " and r. " + selected_residue + ")"
                         else:
                             selection_command = "(r. " + target + ")"
                         self._mol.cmd.zoom(selection=selection_command, buffer=buffer)
@@ -512,7 +632,8 @@ class DefaultStructureImage:
                 raise ValueError("No such representing information! We only support one type of information, i.e. "
                                  + "\"shading type:target,target,...,target\"")
 
-    def set_state(self, translate: list = None, rotate: list = None, inner_align: bool = False, target: str = None):
+    def set_state(self, translate: list = None, rotate: list = None, inner_align: bool = False, target: str = None,
+                  mobile: str = None, only_rotate: bool = False):
         """
         Set the state of the structure.
 
@@ -527,30 +648,45 @@ class DefaultStructureImage:
 
         :param target: the target (or template) name can be specified if the inner align is executed.
         :type target: str or None
+
+        :param mobile: the mobile name can be specified if the inner align is executed.
+        :type mobile: str or None
+
+        :param only_rotate: only rotation, no initialization.
+        :type only_rotate: bool
         """
         if inner_align and len(self.__structure_names) > 1:
             if target is not None:
-                for mobile in self.__structure_names:
-                    if mobile != target:
-                        self._mol.cmd.align(mobile, target)
+                if mobile is not None:
+                    self._mol.cmd.align(mobile, target)
+                else:
+                    for mobile in self.__structure_names:
+                        if mobile != target:
+                            self._mol.cmd.align(mobile, target)
             else:
                 target = self.__structure_names[0]
                 for mobile in self.__structure_names[1:]:
                     self._mol.cmd.align(mobile, target)
 
-        if translate is not None:
-            self._mol.cmd.translate(vector=translate)
-        else:
-            self._mol.cmd.center(state=-1)
-
-        self._mol.cmd.orient(state=-1)
-
-        self._mol.cmd.zoom(selection="all", state=-1, complete=1)
-
-        if rotate is not None:
+        if only_rotate:
             self._mol.cmd.rotate(axis="x", angle=rotate[0])
             self._mol.cmd.rotate(axis="y", angle=rotate[1])
             self._mol.cmd.rotate(axis="z", angle=rotate[2])
+
+        else:
+            if translate is not None:
+                self._mol.cmd.translate(vector=translate)
+            else:
+                self._mol.cmd.center(state=-1)
+
+            self._mol.cmd.orient(state=-1)
+
+            self._mol.cmd.zoom(selection="all", state=-1, complete=1)
+
+            if rotate is not None:
+                self._mol.cmd.rotate(axis="x", angle=rotate[0])
+                self._mol.cmd.rotate(axis="y", angle=rotate[1])
+                self._mol.cmd.rotate(axis="z", angle=rotate[2])
 
     def set_shape(self, representation_plan: list, initial_representation: str = "cartoon",
                   independent_color: bool = False, closed_surface: bool = False):
@@ -708,6 +844,11 @@ class DefaultStructureImage:
         :type dpi: int
         """
         self._mol.cmd.png(filename=save_path, width=width, height=width * ratio, dpi=dpi, quiet=1)
+
+    def close(self):
+        """
+        Close the PyMOL.
+        """
         self._mol.stop()
 
 
@@ -735,7 +876,21 @@ class HighlightStructureImage(DefaultStructureImage):
 
             if ":" in coloring_information:
                 shading_type, target_information = coloring_information.split(":")
-                if shading_type == "position":
+                if shading_type == "atom":
+                    for target in target_information.split(","):
+                        if "+" in target:
+                            if target.count("+") > 1:
+                                selected_model, selected_chain, selected_atom = target.split("+")
+                                selection_command = "(m. " + selected_model + " and c. " + selected_chain
+                                selection_command = selection_command + " and e. " + selected_atom + ")"
+                            else:
+                                selected_chain, selected_atom = target.split("+")
+                                selection_command = "(c. " + selected_chain + " and e. " + selected_atom + ")"
+                        else:
+                            selection_command = "(e. " + target + ")"
+                        self._mol.cmd.color(color=color, selection=selection_command)
+
+                elif shading_type == "position":
                     for target in target_information.split(","):
                         if "+" in target:
                             selected_chain, selected_position = target.split("+")
@@ -753,17 +908,32 @@ class HighlightStructureImage(DefaultStructureImage):
                 elif shading_type == "range":
                     for target in target_information.split(","):
                         if "+" in target:
-                            selected_chain, selected_range = target.split("+")
-                            if "-" in selected_range and selected_range.count("-") == 1:
-                                former, latter = selected_range.split("-")
-                                if int(former) < int(latter):
-                                    selection_command = "(c. " + selected_chain + " and i. " + selected_range + ")"
+                            if target.count("+") > 1:
+                                selected_model, selected_chain, selected_range = target.split("+")
+                                if "-" in selected_range and selected_range.count("-") == 1:
+                                    former, latter = selected_range.split("-")
+                                    if int(former) < int(latter):
+                                        selection_command = "(m. " + selected_model + " and c. " + selected_chain
+                                        selection_command = selection_command + " and i. " + selected_range + ")"
+                                    else:
+                                        raise ValueError(
+                                            "The former position needs to be less than the latter position "
+                                            + "in the Range (" + selected_range + ").")
                                 else:
-                                    raise ValueError("The former position needs to be less than the latter position "
-                                                     + "in the Range (" + selected_range + ").")
+                                    raise ValueError("Range (" + selected_range + ") needs to "
+                                                     + "meet the \"number-number\" format!")
                             else:
-                                raise ValueError("Range (" + selected_range + ") needs to "
-                                                 + "meet the \"number-number\" format!")
+                                selected_chain, selected_range = target.split("+")
+                                if "-" in selected_range and selected_range.count("-") == 1:
+                                    former, latter = selected_range.split("-")
+                                    if int(former) < int(latter):
+                                        selection_command = "(c. " + selected_chain + " and i. " + selected_range + ")"
+                                    else:
+                                        raise ValueError("The former position needs to be less than the latter position"
+                                                         + " in the Range (" + selected_range + ").")
+                                else:
+                                    raise ValueError("Range (" + selected_range + ") needs to "
+                                                     + "meet the \"number-number\" format!")
                         else:
                             if "-" in target and target.count("-") == 1:
                                 former, latter = target.split("-")
@@ -804,7 +974,12 @@ class HighlightStructureImage(DefaultStructureImage):
 
                 elif shading_type == "chain":
                     for target in target_information.split(","):
-                        self._mol.cmd.color(color=color, selection="(c. " + target + ")")
+                        if "+" in target:
+                            selected_model, selected_chain = target.split("+")
+                            selection_command = "(m. " + selected_model + " and c. " + selected_chain + ")"
+                        else:
+                            selection_command = "(c. " + target + ")"
+                        self._mol.cmd.color(color=color, selection=selection_command)
 
                 elif shading_type == "model":
                     for target in target_information.split(","):
@@ -902,7 +1077,8 @@ class PropertyStructureImage(DefaultStructureImage):
 class Figure:
 
     def __init__(self, manuscript_format: str = "Nature", column_format: int = None, occupied_columns: int = 1,
-                 aspect_ratio: tuple = (1, 2), row_number: int = 1, column_number: int = 1, interval: tuple = (0, 0)):
+                 aspect_ratio: tuple = (1, 2), row_number: int = 1, column_number: int = 1, interval: tuple = (0, 0),
+                 dpi: int = None, mathtext: bool = False):
         """
         Initialize a manuscript figure.
 
@@ -1041,11 +1217,17 @@ class Figure:
             self.minimum_dpi = 300
             rcParams["font.family"] = "Times New Roman"
 
-        rcParams["mathtext.fontset"] = "custom"
-        rcParams["mathtext.rm"] = "Linux Libertine"
-        rcParams["mathtext.cal"] = "Lucida Calligraphy"
-        rcParams["mathtext.bf"] = "Linux Libertine:bold"
-        rcParams["mathtext.it"] = "Linux Libertine:italic"
+        if mathtext:
+            rcParams["mathtext.default"] = "regular"
+        else:
+            rcParams["mathtext.fontset"] = "custom"
+            rcParams["mathtext.rm"] = "Linux Libertine"
+            rcParams["mathtext.cal"] = "Lucida Calligraphy"
+            rcParams["mathtext.bf"] = "Linux Libertine:bold"
+            rcParams["mathtext.it"] = "Linux Libertine:italic"
+
+        if dpi is not None:
+            self.minimum_dpi = dpi
 
         if row_number > 1 or column_number > 1:
             self.grid = pyplot.GridSpec(row_number, column_number)
@@ -1101,7 +1283,9 @@ class Figure:
             raise ValueError("We need to input \'function\' or \'image_path\'!")
 
     def set_image(self, image_path: str = None, widget_type: str = None, widget_attributes: str = None,
-                  image_format: str = ".png", locations: list = None, layout: tuple = None, zorder: int = None):
+                  image_format: str = ".png", locations: list = None, layout: tuple = None, zorder: int = None,
+                  frame_off: bool = True, backgroundcolor: str = "#FFFFFF", positions: tuple = None,
+                  linewidth: float = 1.0, transparent: bool = False, linecolor: str = "#000000"):
         """
         Put the structure image or widget with a specific size in a specific position of a panel.
 
@@ -1125,13 +1309,31 @@ class Figure:
 
         :param zorder: order in which components are superimposed on each other.
         :type zorder: int or None
+
+        :param frame_off: draw frame for the image, no frame by default.
+        :type frame_off: bool
+
+        :param backgroundcolor: the background color for image panel.
+        :type backgroundcolor: str
+
+        :param positions: set the position of the image in the panel.
+        :type positions: tuple or None
+
+        :param linewidth: the width of the frame.
+        :type linewidth: float
+
+        :param transparent: set a transparent background.
+        :type transparent: bool
+
+        :param linecolor: the color of the frame.
+        :type linecolor: str
         """
         if image_path is not None and (widget_type is not None or widget_attributes is not None):
             raise ValueError("We can't choose between \'image_path\' and \'widget_type|widget_attributes\'!")
 
         if image_path is None and (widget_type is not None and widget_attributes is not None):
-            root_path, image_path = path.abspath(__file__).replace("\\", "/")[:-10] + "supp/widgets/", None
-            image_path = root_path + widget_type + " [" + widget_attributes.replace(", ", ".") + "]"
+            root_path = path.abspath(__file__).replace("\\", "/")[:-17] + "docs/source/_static/widgets/"
+            image_path = root_path + widget_type + "[" + widget_attributes.replace(", ", ".") + "]"
             image_path += image_format
 
         if image_path is None:
@@ -1141,12 +1343,16 @@ class Figure:
 
         if image_format == ".png":
             image_data = Image.open(fp=image_path)
-            self.paste_bitmap(image=image_data, locations=locations, layout=layout, zorder=zorder)
+            self.paste_bitmap(image=image_data, locations=locations, layout=layout, zorder=zorder, frame_off=frame_off,
+                              backgroundcolor=backgroundcolor, positions=positions, linewidth=linewidth,
+                              transparent=transparent, linecolor=linecolor)
         else:
             raise ValueError("Only PNG files are support!")
 
     def set_text(self, annotation: str, font_size: int = 16, alignment: str = "center", locations: list = None,
-                 layout: tuple = None, zorder: int = None, weight: str = "normal", color: str = "#000000"):
+                 layout: tuple = None, zorder: int = None, weight: str = "normal", color: str = "#000000",
+                 backgroundcolor: str = "#FFFFFF", positions: tuple = (0.0, 0.0), frame_off: bool = True,
+                 transparent: bool = False):
         """
         Put the text box with a specific size in a specific position of a panel.
 
@@ -1173,6 +1379,18 @@ class Figure:
 
         :param color: font color.
         :type color: str
+
+        :param backgroundcolor: background color.
+        :type backgroundcolor: str
+
+        :param positions: set the position of the text in the panel.
+        :type positions: tuple
+
+        :param frame_off: draw frame for the text, no frame by default.
+        :type frame_off: bool
+
+        :param transparent: set a transparent background.
+        :type transparent: bool
         """
         if locations is not None and layout is not None:
             raise ValueError("We can't choose between \'locations\' and \'layout\'!")
@@ -1180,21 +1398,35 @@ class Figure:
         if layout is not None and locations is None:
             locations = self.calculate_locations(layout=layout)
 
+        if transparent:
+            alpha = 0.01
+        else:
+            alpha = 0.5
+
         if locations is not None:
+            ax = self.fig.add_axes(locations, facecolor=backgroundcolor)
+            ax.patch.set_alpha(alpha)
+            ax.get_xaxis().set_visible(False)
+            ax.get_yaxis().set_visible(False)
+            if frame_off:
+                ax.spines['top'].set_visible(False)
+                ax.spines['right'].set_visible(False)
+                ax.spines['bottom'].set_visible(False)
+                ax.spines['left'].set_visible(False)
+
             if zorder is not None:
-                ax = self.fig.add_axes(locations)
-                ax.axis("off")
-                ax.text(0, 0, annotation, fontsize=font_size, horizontalalignment=alignment, weight=weight, color=color,
-                        zorder=zorder)
+                ax.text(positions[0], positions[1], annotation, fontsize=font_size, horizontalalignment=alignment,
+                        weight=weight, color=color, zorder=zorder)
             else:
-                ax = self.fig.add_axes(locations)
-                ax.axis("off")
-                ax.text(0, 0, annotation, fontsize=font_size, horizontalalignment=alignment, weight=weight, color=color)
+                ax.text(positions[0], positions[1], annotation, fontsize=font_size, horizontalalignment=alignment,
+                        weight=weight, color=color)
         else:
             raise ValueError("We need to input \'locations\' or \'layout\'!")
 
     def paste_bitmap(self, image: PngImagePlugin.PngImageFile, locations: list = None, layout: tuple = None,
-                     zorder: int = None):
+                     zorder: int = None, frame_off: bool = True, backgroundcolor: str = "#FFFFFF",
+                     positions: tuple = None, linewidth: float = 1.0, transparent: bool = False,
+                     linecolor: str = "#000000"):
         """
         Paste a bitmap in the figure or the panel in figure.
 
@@ -1209,6 +1441,24 @@ class Figure:
 
         :param zorder: order in which components are superimposed on each other.
         :type zorder: int or None
+
+        :param frame_off: draw frame for the image, no frame by default.
+        :type frame_off: bool
+
+        :param backgroundcolor: the background color for image panel.
+        :type backgroundcolor: str
+
+        :param positions: set the position of the image in the panel.
+        :type positions: tuple or None
+
+        :param linewidth: the width of the frame.
+        :type linewidth: float
+
+        :param transparent: set a transparent background.
+        :type transparent: bool
+
+        :param linecolor: the color of the frame.
+        :type linecolor: str
         """
         if image.info["dpi"][0] < self.minimum_dpi:
             raise ValueError("The dpi of image is less than the minimum dpi requirement!")
@@ -1219,15 +1469,41 @@ class Figure:
         if layout is not None and locations is None:
             locations = self.calculate_locations(layout=layout)
 
+        if transparent:
+            alpha = 0.01
+        else:
+            alpha = 0.5
+
         if locations is not None:
-            if zorder is not None:
-                ax = self.fig.add_axes(locations)
-                ax.axis("off")
-                ax.imshow(X=image, zorder=zorder)
+            ax = self.fig.add_axes(locations, facecolor=backgroundcolor)
+            ax.patch.set_alpha(alpha)
+            ax.get_xaxis().set_visible(False)
+            ax.get_yaxis().set_visible(False)
+            if positions is not None:
+                ax.set_xlim(0, positions[0])
+                ax.set_ylim(0, positions[1])
+                extent = (positions[2], positions[3], positions[4], positions[5])
             else:
-                ax = self.fig.add_axes(locations)
-                ax.axis("off")
-                ax.imshow(X=image)
+                extent = None
+            if frame_off:
+                ax.spines['top'].set_visible(False)
+                ax.spines['right'].set_visible(False)
+                ax.spines['bottom'].set_visible(False)
+                ax.spines['left'].set_visible(False)
+            else:
+                ax.spines['top'].set_linewidth(linewidth)
+                ax.spines['right'].set_linewidth(linewidth)
+                ax.spines['bottom'].set_linewidth(linewidth)
+                ax.spines['left'].set_linewidth(linewidth)
+                ax.spines['top'].set_edgecolor(linecolor)
+                ax.spines['right'].set_edgecolor(linecolor)
+                ax.spines['bottom'].set_edgecolor(linecolor)
+                ax.spines['left'].set_edgecolor(linecolor)
+
+            if zorder is not None:
+                ax.imshow(X=image, extent=extent, zorder=zorder)
+            else:
+                ax.imshow(X=image, extent=extent)
         else:
             raise ValueError("We need to input \'locations\' or \'layout\'!")
 
