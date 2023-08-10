@@ -20,7 +20,7 @@ def combination_1():
         pyplot.ylim(image_data.height + 100, -100)
         pyplot.xticks([])
         pyplot.yticks([])
-        pyplot.xlabel(turn + "\n" + str(degree), fontsize=10)
+        pyplot.xlabel(turn + "\n" + str(degree), fontsize=6)
         remove("./temp/comb1.png")
         index += 1
 
@@ -35,7 +35,7 @@ def combination_1():
         pyplot.ylim(image_data.height + 100, -100)
         pyplot.xticks([])
         pyplot.yticks([])
-        pyplot.xlabel(turn + "\n" + str(degree), fontsize=10)
+        pyplot.xlabel(turn + "\n" + str(degree), fontsize=6)
         remove("./temp/comb1.png")
         index += 1
 
