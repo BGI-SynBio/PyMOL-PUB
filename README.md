@@ -2,7 +2,7 @@
     <img width="100%" src="./docs/source/_static/logo.svg"/>
 </p>
 
-# PyMOL-PUB: high-level interface from structure data to publication-standard figures
+# PyMOL-PUB: an extension for publication-quality figure production from structure data
 
 With the rapid progress of fields like protein structure prediction, 
 an increasing number of researchers from different backgrounds require the use of 
@@ -273,10 +273,10 @@ from molpub.layouts import HighlightStructureImage
 image = HighlightStructureImage(structure_paths=["structure.pdb"])
 # hide all water molecules.
 image.set_cache(cache_contents=["residue:HOH"])
-# rotate the structure according to the x-axis 240 degrees, y-axis 340 degrees, and z-axis 90 degrees.
-image.set_state(rotate=[240, 340, 90])
 # set A-chain to surface representation and B-chain to cartoon representation.
 image.set_shape(representation_plan=[("chain:A", "surface"), ("chain:B", "cartoon")])
+# rotate the structure according to the x-axis 240 degrees, y-axis 340 degrees, and z-axis 90 degrees.
+image.set_state(rotate=[240, 340, 90])
 # set A-chain to "0xF2F2F2" color and B-chain to "0x2D2F82" color.
 image.set_color(coloring_plan=[("chain:A", "0xF2F2F2"), ("chain:B", "0x2D2F82")])
 # save the structure with the width 1280 and the height 1280 * 0.8 = 1024.
@@ -290,11 +290,11 @@ from molpub.layouts import PropertyStructureImage
 
 # create a structure image based on two structure files "expected.pdb" and "predicted.pdb".
 image = PropertyStructureImage(structure_paths=["expected.pdb", "predicted.pdb"])
+# set two structures to cartoon representation.
+image.set_shape(representation_plan=[("model:predicted", "cartoon"), ("model:expected", "cartoon")])
 # rotate the structure according to the x-axis 0 degrees, y-axis 60 degrees, and z-axis 255 degrees.
 # and align two structures based on the PyMOL built-in method using the expected structure as a template.
 image.set_state(rotate=[0, 60, 255], inner_align=True, target="expected")
-# set two structures to cartoon representation.
-image.set_shape(representation_plan=[("model:predicted", "cartoon"), ("model:expected", "cartoon")])
 # set the color of predicted structure is the rainbow spectrum, starting in red and ending in purple.
 image.set_color(target="model:predicted", color_map="rainbow", edge_color="0x000000", gauge_strengthen=True)
 # save the structure with the width 1800 and the height 1800 * 0.5 = 900.

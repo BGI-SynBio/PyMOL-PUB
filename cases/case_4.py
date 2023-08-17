@@ -65,7 +65,7 @@ def designed(file_parent_path, temp_parent_path, save_parent_path):
     gpr110gi.close()
 
     # Construct the case figure.
-    case = Figure(manuscript_format="Science", occupied_columns=2, aspect_ratio=(1.54, 5))
+    case = Figure(manuscript_format="Science", occupied_columns=2, aspect_ratio=(1.54, 5), mathtext=False)
     for order, structure_name in enumerate(["GPR110Gq", "GPR110Gs", "GPR110G12", "GPR110G13", "GPR110Gi"]):
         case.set_image(image_path=temp_parent_path + structure_name + "-surface.png", layout=(5, 1, order + 1))
         case.set_image(image_path=temp_parent_path + structure_name + "-cartoon.png",

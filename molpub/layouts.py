@@ -502,7 +502,7 @@ class DefaultStructureImage:
         """
         Set zoom contents of the structure.
 
-        :param zoom_contents: zoom contents.
+        :param zoom_contents: structure content that needs to be zoomed.
         :type zoom_contents: list
 
         :param buffer: the buffer area size of the target structure.
@@ -1078,7 +1078,7 @@ class Figure:
 
     def __init__(self, manuscript_format: str = "Nature", column_format: int = None, occupied_columns: int = 1,
                  aspect_ratio: tuple = (1, 2), row_number: int = 1, column_number: int = 1, interval: tuple = (0, 0),
-                 dpi: int = None, mathtext: bool = False):
+                 dpi: int = None, mathtext: bool = True):
         """
         Initialize a manuscript figure.
 
@@ -1102,6 +1102,12 @@ class Figure:
 
         :param interval: horizontal (width) and vertical (height) space interval between panels.
         :type interval: tuple
+
+        :param dpi: customized dpi from user (users to improve figure clarity).
+        :type dpi: int or None
+
+        :param mathtext: use mathtext if required.
+        :type mathtext: bool
         """
         if manuscript_format == "Nature":
             if occupied_columns == 1:
@@ -1226,7 +1232,7 @@ class Figure:
             rcParams["mathtext.bf"] = "Linux Libertine:bold"
             rcParams["mathtext.it"] = "Linux Libertine:italic"
 
-        if dpi is not None:
+        if dpi is not None and dpi >= self.minimum_dpi:
             self.minimum_dpi = dpi
 
         if row_number > 1 or column_number > 1:

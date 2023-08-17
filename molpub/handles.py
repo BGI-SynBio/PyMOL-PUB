@@ -21,6 +21,16 @@ class Monitor:
     def __init__(self):
         """
         Initialize the monitor to identify the task progress.
+
+        Example
+            >>> from dsw import Monitor
+            >>> monitor = Monitor()
+            >>> monitor(current_state=1, total_state=10)
+            \r|███                 | 10% ( 1/10) wait 0000:00:00.
+            >>> monitor(current_state=5, total_state=10)
+            \r|███████████         | 50% ( 5/10) wait 0000:00:00.
+            >>> monitor(current_state=10, total_state=10)
+            \r|████████████████████|100% (10/10) used 0000:00:00.
         """
         self.last_time = None
 
@@ -1008,7 +1018,7 @@ def kmer(chain: str, structure: ndarray, sub_length: int) -> Iterator[tuple]:
     :param sub_length: length of sub segment.
     :type sub_length: int
 
-    :returns sub chain and the corresponding sub structure.
+    :return sub chain and the corresponding sub structure.
     :rtype str, numpy.ndarray
     """
     number = len(structure) // len(chain)
@@ -1088,7 +1098,7 @@ def load_structure_from_file(file_path: str, molecule_type: str = "AA") -> tuple
 
 def save_structure_to_file(chains: list, structures: ndarray, file_path: str, model_type: str = "CA"):
     """
-    Save temporary structure file.
+    Save temporary structure to file.
 
     :param chains: chains.
     :type chains: list

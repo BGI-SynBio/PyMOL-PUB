@@ -42,7 +42,7 @@ def designed(file_parent_path, temp_parent_path, save_parent_path):
     s1ycr.close()
 
     # Construct the case figure.
-    case = Figure(manuscript_format="Nature", aspect_ratio=(606, 358))
+    case = Figure(manuscript_format="Nature", aspect_ratio=(606, 358), mathtext=False)
     case.set_image(image_path=temp_parent_path + "1F34.png", layout=(1, 2, 1))
     case.set_image(image_path=temp_parent_path + "1AY7.png", layout=(2, 2, 3))
     case.set_image(image_path=temp_parent_path + "1YCR.png", layout=(2, 2, 4))

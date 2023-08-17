@@ -27,7 +27,7 @@ def designed(file_parent_path, temp_parent_path, save_parent_path):
     predict.close()
 
     # Construct the case figure.
-    case = Figure(manuscript_format="Science", occupied_columns=2, aspect_ratio=(7, 10))
+    case = Figure(manuscript_format="Science", occupied_columns=2, aspect_ratio=(7, 10), mathtext=False)
     case.set_image(image_path=temp_parent_path + "T0950.png", layout=(1, 1, 1))
     case.set_image(image_path=temp_parent_path + "Predict.png", layout=(1, 1, 1))
     case.save_figure(save_parent_path + "2.png")
