@@ -22,7 +22,7 @@ def designed(file_parent_path, temp_parent_path, save_parent_path):
                                                       file_parent_path + "Predict.pdb"])
     predict.set_cache(cache_contents=["model:T0950"])
     predict.set_state(rotate=[120, 180, 0], inner_align=True, target="T0950")
-    predict.set_color(target="model:Predict", color_map="rainbow", edge_color="0x000000", gauge_strengthen=True)
+    predict.set_color(target="model:Predict", color_map="rainbow", edge_color="0x000000")
     predict.save(save_path=temp_parent_path + "Predict.png", width=1800, ratio=0.7)
     predict.close()
 
