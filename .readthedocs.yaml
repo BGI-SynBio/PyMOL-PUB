@@ -10,4 +10,8 @@ sphinx:
 
 formats:
   - pdf
-  - epub
+
+python:
+  install:
+   - requirements: requirements.txt
+  system_packages: true
