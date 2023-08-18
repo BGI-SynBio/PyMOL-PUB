@@ -1,9 +1,9 @@
 from setuptools import setup
 
 setup(
-    name="PyMOL-advance",
-    version="0.1",
-    description="PyMOL-advance: high-level interfaces from structure data to publication-standard figures",
+    name="PyMOL-PUB",
+    version="1.0",
+    description="PyMOL-PUB: an extension for publication-quality figure production from structure data",
     long_description="With the rapid progress of fields like protein structure prediction, "
                      "an increasing number of researchers from different backgrounds require the use of PyMOL for "
                      "molecular visualization. To be used in publications, the default visualization output of PyMOL "
@@ -19,11 +19,11 @@ setup(
     author="Haoling Zhang",
     author_email="zhanghaoling@genomics.cn",
     url="https://github.com/BGI-SynBio/PyMOL-PUB",
-    packages=["molpub", "cases"],
+    packages=["molpub", "cases", "tests"],
     install_requires=["numpy", "pymol", "pillow", "biopython", "matplotlib"],
     license="GPL",
     classifiers=["License :: OSI Approved :: GNU General Public License (GPL)",
                  "Programming Language :: Python :: 3",
                  "Operating System :: OS Independent"],
-    keywords="PyMOL, batch visualization",
+    keywords="pymol, pymol-extension, matplotlib, structure-cluster, structure-alignment, manuscript-figure",
 )
