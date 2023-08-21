@@ -677,11 +677,11 @@ class DefaultStructureImage:
             if translate is not None:
                 self._mol.cmd.translate(vector=translate)
             else:
-                self._mol.cmd.center(state=-1)
+                self._mol.cmd.center()
 
-            self._mol.cmd.orient(state=-1)
+            self._mol.cmd.orient()
 
-            self._mol.cmd.zoom(selection="all", state=-1, complete=1)
+            self._mol.cmd.zoom(complete=1)
 
             if rotate is not None:
                 self._mol.cmd.rotate(axis="x", angle=rotate[0])
