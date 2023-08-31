@@ -584,8 +584,15 @@ and you can obtain
 
 Here, the scope of "elevation" and "azimuth" and \[-180, 180\].
 
+## Funding
+This work was supported by the National Key Research and Development Program of China (no. 2021YFF120010), 
+National Natural Science Foundation of China (no. 32101182 and 32201175) 
+and Shenzhen Science, Technology and Innovation Commission under grant no. SGDX20220530110802015.
+This work was also supported by China National GeneBank.
+Yuting Chen and Haoling Zhang were also funded by the [Warren L. DeLano Memorial PyMOL Open-Source Fellowship](http://pymol.org/fellowship).
+
 ## Acknowledgements
-This work is funded by 
-[Warren L. DeLano Memorial PyMOL Open-Source Fellowship](http://pymol.org/fellowship). 
 We thank Dr. Jarrett Johnson from Schrödinger, Inc. for constructive discussions 
 on functional design and implementation mode.
+We also thank Prof. Yang Zhang from University of Michigan and Dr. Chengxin Zhang from Yale University 
+on the application scope of structure alignment methods.
