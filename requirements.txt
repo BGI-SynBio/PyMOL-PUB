@@ -4,3 +4,4 @@ numpy>=1.21.2
 pillow>=8.2.0
 scipy>=1.4.1
 sphinx_rtd_theme>=0.4.3
+PyQt5>=5.15.10

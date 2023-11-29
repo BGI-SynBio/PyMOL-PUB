@@ -108,7 +108,7 @@ Please refer to the [official website](https://pymol.org/2/#download) for instal
  
 Moreover, some well-established libraries: 
 [biopython >= 1.78](https://pypi.org/project/biopython/1.78/), 
-[matplotlib >= 3.1.1](https://pypi.org/project/matplotlib/3.1.1/), 
+[matplotlib >= 3.2.0](https://pypi.org/project/matplotlib/3.2.0/), 
 [numpy >= 1.21.2](https://pypi.org/project/numpy/1.21.2/), 
 [pillow >= 8.2.0](https://pypi.org/project/Pillow/8.2.0/) and 
 [scipy >= 1.4.1](https://pypi.org/project/scipy/1.4.1/).

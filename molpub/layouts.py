@@ -705,7 +705,8 @@ class DefaultStructureImage:
         :param closed_surface: if closed_surface is True, create a closed surface.
         :type closed_surface: bool
         """
-        self._mol.cmd.show(representation=initial_representation, selection="(all)")
+        if initial_representation is not None:
+            self._mol.cmd.show(representation=initial_representation, selection="(all)")
 
         if independent_color:
             self._mol.cmd.set(name="surface_proximity", value="off")
@@ -845,6 +846,31 @@ class DefaultStructureImage:
         """
         self._mol.cmd.png(filename=save_path, width=width, height=width * ratio, dpi=dpi, quiet=1)
 
+    def save_pymol(self, save_path: str):
+        """
+        Save the PyMOL state.
+
+        :param save_path: path to save file.
+        :type save_path: str
+        """
+        self._mol.cmd.save(filename=save_path)
+
+    def load_pymol(self, load_path: str):
+        """
+        Load the PyMOL state.
+
+        :param load_path: path to save file.
+        :type load_path: str
+        """
+        self.clear()
+        self._mol.cmd.load(filename=load_path)
+
+    def clear(self):
+        """
+        Clear the PyMOL.
+        """
+        self._mol.cmd.delete("all")
+
     def close(self):
         """
         Close the PyMOL.
@@ -867,7 +893,8 @@ class HighlightStructureImage(DefaultStructureImage):
         :param edge_color: edge color of the structure if required.
         :type edge_color: str or None
         """
-        self._mol.cmd.color(color=initial_color, selection="(all)")
+        if initial_color is not None:
+            self._mol.cmd.color(color=initial_color, selection="(all)")
 
         for step, (coloring_information, color) in enumerate(coloring_plan):
             if type(coloring_information) is not str:
@@ -1257,6 +1284,7 @@ class Figure:
                        grid_params["t"]: grid_params["t"] + grid_params["h"]])
         self.occupy_locations[grid_params["l"]: (grid_params["l"] + grid_params["w"]),
                               grid_params["t"]: (grid_params["t"] + grid_params["h"])] = 1
+        grid_params["t"]: (grid_params["t"] + grid_params["h"])] = 1
 
     # noinspection PyMethodMayBeStatic
     def set_panel(self, function: FunctionType = None, function_params: dict = None, image_path: str = None):

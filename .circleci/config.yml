@@ -20,6 +20,7 @@ jobs:
             pip install matplotlib==3.2.0
             pip install Pillow==8.2.0
             pip install scipy==1.4.1
+            pip install PyQt5=5.15.10
 
       - run:
           name: temp style
