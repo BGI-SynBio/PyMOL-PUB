@@ -1284,7 +1284,6 @@ class Figure:
                        grid_params["t"]: grid_params["t"] + grid_params["h"]])
         self.occupy_locations[grid_params["l"]: (grid_params["l"] + grid_params["w"]),
                               grid_params["t"]: (grid_params["t"] + grid_params["h"])] = 1
-        grid_params["t"]: (grid_params["t"] + grid_params["h"])] = 1
 
     # noinspection PyMethodMayBeStatic
     def set_panel(self, function: FunctionType = None, function_params: dict = None, image_path: str = None):

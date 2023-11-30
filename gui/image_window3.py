@@ -10,6 +10,7 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
+
 class ImageWindow3(object):
     def setupUi(self, Form):
         Form.setObjectName("Form")

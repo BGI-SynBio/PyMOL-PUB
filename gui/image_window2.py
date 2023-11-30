@@ -10,6 +10,7 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
+
 class ImageWindow2(object):
     def setupUi(self, Form):
         Form.setObjectName("Form")
@@ -27,7 +28,7 @@ class ImageWindow2(object):
         font.setFamily("Times New Roman")
         font.setPointSize(12)
         self.label_3.setFont(font)
-        self.label_3.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
+        self.label_3.setAlignment(QtCore.Qt.AlignLeading | QtCore.Qt.AlignLeft | QtCore.Qt.AlignVCenter)
         self.label_3.setObjectName("label_3")
 
         self.textEdit = QtWidgets.QTextEdit(Form)
@@ -93,7 +94,7 @@ class ImageWindow2(object):
         font.setFamily("Times New Roman")
         font.setPointSize(12)
         self.label_4.setFont(font)
-        self.label_4.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
+        self.label_4.setAlignment(QtCore.Qt.AlignLeading | QtCore.Qt.AlignLeft | QtCore.Qt.AlignVCenter)
         self.label_4.setObjectName("label_4")
         self.comboBox_3 = QtWidgets.QComboBox(Form)
         self.comboBox_3.setGeometry(QtCore.QRect(650, 150, 111, 31))
@@ -114,7 +115,7 @@ class ImageWindow2(object):
         font.setFamily("Times New Roman")
         font.setPointSize(12)
         self.label_5.setFont(font)
-        self.label_5.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
+        self.label_5.setAlignment(QtCore.Qt.AlignLeading | QtCore.Qt.AlignLeft | QtCore.Qt.AlignVCenter)
         self.label_5.setObjectName("label_5")
         self.pushButton_7 = QtWidgets.QPushButton(Form)
         self.pushButton_7.setGeometry(QtCore.QRect(580, 400, 181, 41))
