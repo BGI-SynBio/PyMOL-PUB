@@ -138,7 +138,7 @@ class MainWindow(object):
         font.setPointSize(20)
         self.push_button1.setFont(font)
         self.push_button1.setObjectName("push_button1")
-        self.push_button1.setStyleSheet("border: 3px dashed black;")
+        self.push_button1.setStyleSheet("border: 3px dashed black; background: #B4C7E7;")
         self.button_group.addButton(self.push_button1, 0)
 
         self.label_5 = QtWidgets.QLabel(self.centralwidget)

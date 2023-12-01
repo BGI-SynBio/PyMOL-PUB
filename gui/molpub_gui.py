@@ -1,4 +1,3 @@
-import shutil
 import sys
 from collections import Counter
 from PyQt5.QtGui import QPixmap, QFont
@@ -7,6 +6,7 @@ from numpy import array, min, max, where, zeros, any
 from gui import ImageWindow1, ImageWindow2, ImageWindow3, ImageWindow4
 from gui import MainWindow, ClickSurface, SelectionWindow, ContentWindow
 from molpub import HighlightStructureImage, Figure
+from PIL import Image
 
 
 class EntryWindow(QMainWindow, MainWindow):
@@ -21,6 +21,7 @@ class EntryWindow(QMainWindow, MainWindow):
         self.detail_window = DetailWindow([1, 1], 0)
         self.current_label = ""
         self.combobox_label = ["a"]
+        self.button_state = [1]
         self.case = None
         self.progress = 0.0
         self.draw_number = 0
@@ -206,6 +207,7 @@ class EntryWindow(QMainWindow, MainWindow):
                     coordinate = [x, y, x + panel_width, y + panel_hight]
                     panel_list.append(coordinate)
             panel_array = array(panel_list)
+
             if panel_array != []:
                 image_dict[label] = [min(panel_array[:, 0]), min(panel_array[:, 1]),
                                      max(panel_array[:, 2]) - min(panel_array[:, 0]),
@@ -331,7 +333,7 @@ class StatisticalWindow(QMainWindow, ContentWindow):
         self.pushButton_4.clicked.connect(self.set_redo)
 
     def add_statistical(self):
-        figure_name, _ = QFileDialog.getOpenFileName(self, 'Open file', '.', "Figure (*.png *.jpg *.svg *.pdf)")
+        figure_name, _ = QFileDialog.getOpenFileName(self, 'Open file', '.', "Figure (*.png *.jpg *.bmp)")
         self.textBrowser.append(figure_name)
 
     def show_statistical(self):
@@ -358,11 +360,33 @@ class StatisticalWindow(QMainWindow, ContentWindow):
 
         self.draw_number += 1
 
-    def save_image(self, label_text):
+    def save_image(self, label_text, manuscript_format):
         global statistical_list
         if len(statistical_list) > 0:
-            newfile_path = "./temp/panel_" + label_text + ".png"
-            shutil.copyfile(statistical_list[-1], newfile_path)
+            image_data = Image.open(fp=statistical_list[-1])
+
+            if manuscript_format == "PNAS" or manuscript_format == "ACS":
+                minimum_dpi = 600
+            elif manuscript_format == "Oxford":
+                minimum_dpi = 350
+            else:
+                minimum_dpi = 300
+
+            if image_data.info["dpi"][0] < minimum_dpi:
+                reply = QMessageBox.question(self, "Ask",
+                                             "The image you selected does not meet the minimum dpi requirement of the "
+                                             "current journal.\nDo you agree to increase the dpi of this image?\n(If "
+                                             "you select \"no\" or \"cancel\", the image will not be exported "
+                                             "successfully.)",
+                                             QMessageBox.Yes | QMessageBox.No | QMessageBox.Cancel, QMessageBox.No)
+                if reply == QMessageBox.Yes:
+                    image_data.info["dpi"] = (minimum_dpi + 50, minimum_dpi + 50)
+
+            if image_data.info["dpi"][0] < minimum_dpi:
+                statistical_list = []
+            else:
+                newfile_path = "./temp/panel_" + label_text + ".png"
+                image_data.save(fp=newfile_path, quality=95, dpi=(minimum_dpi + 50, minimum_dpi + 50))
 
     def set_undo(self):
         global statistical_list
@@ -1060,7 +1084,8 @@ if __name__ == '__main__':
     statistical_window.pushButton_6.clicked.connect(entry_window.show)
     statistical_window.pushButton_6.clicked.connect(statistical_window.hide)
     statistical_window.pushButton_6.clicked.connect(
-        lambda: statistical_window.save_image(entry_window.comboBox_4.currentText()))
+        lambda: statistical_window.save_image(entry_window.comboBox_4.currentText(),
+                                              entry_window.comboBox.currentText()))
     statistical_window.pushButton_6.clicked.connect(entry_window.image_set)
     statistical_window.pushButton_6.clicked.connect(statistical_window.window_clear)
 
