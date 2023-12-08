@@ -10,1558 +10,11 @@ from PIL import Image
 
 from molpub.layouts import HighlightStructureImage, Figure
 
-
 root_path = path.dirname(path.abspath(__file__)).replace("\\", "/")
 
-
-class ImageWindow1(object):
-
-    def __init__(self):
-        self.graphicsView = None
-
-    def setupUi(self, Form):
-        Form.setObjectName("Form")
-        Form.resize(800, 600)
-        icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap(root_path + "/icons/logo.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        Form.setWindowIcon(icon)
-        self.graphicsView = QtWidgets.QGraphicsView(Form)
-        self.graphicsView.setGeometry(QtCore.QRect(40, 90, 491, 481))
-        self.graphicsView.setObjectName("graphicsView")
-        self.scene = QtWidgets.QGraphicsScene()
-        self.label_3 = QtWidgets.QLabel(Form)
-        self.label_3.setGeometry(QtCore.QRect(570, 110, 71, 31))
-        font = QtGui.QFont()
-        font.setFamily("Arial")
-        font.setPointSize(12)
-        self.label_3.setFont(font)
-        self.label_3.setAlignment(QtCore.Qt.AlignCenter)
-        self.label_3.setObjectName("label_3")
-
-        self.textEdit = QtWidgets.QTextEdit(Form)
-        self.textEdit.setGeometry(QtCore.QRect(650, 110, 111, 31))
-        font = QtGui.QFont()
-        font.setFamily("Arial")
-        font.setPointSize(11)
-        self.textEdit.setFont(font)
-        self.textEdit.setObjectName("textEdit")
-
-        self.pushButton_4 = QtWidgets.QPushButton(Form)
-        self.pushButton_4.setGeometry(QtCore.QRect(680, 460, 81, 41))
-        font = QtGui.QFont()
-        font.setFamily("Arial")
-        font.setPointSize(12)
-        self.pushButton_4.setFont(font)
-        self.pushButton_4.setObjectName("pushButton_4")
-        self.pushButton_3 = QtWidgets.QPushButton(Form)
-        self.pushButton_3.setGeometry(QtCore.QRect(580, 460, 81, 41))
-        font = QtGui.QFont()
-        font.setFamily("Arial")
-        font.setPointSize(12)
-        self.pushButton_3.setFont(font)
-        self.pushButton_3.setObjectName("pushButton_3")
-
-        self.pushButton_5 = QtWidgets.QPushButton(Form)
-        self.pushButton_5.setGeometry(QtCore.QRect(580, 520, 81, 41))
-        font = QtGui.QFont()
-        font.setFamily("Arial")
-        font.setPointSize(12)
-        self.pushButton_5.setFont(font)
-        self.pushButton_5.setObjectName("pushButton_5")
-
-        self.pushButton_6 = QtWidgets.QPushButton(Form)
-        self.pushButton_6.setGeometry(QtCore.QRect(680, 520, 81, 41))
-        font = QtGui.QFont()
-        font.setFamily("Arial")
-        font.setPointSize(12)
-        self.pushButton_6.setFont(font)
-        self.pushButton_6.setObjectName("pushButton_6")
-
-        self.pushButton_7 = QtWidgets.QPushButton(Form)
-        self.pushButton_7.setGeometry(QtCore.QRect(580, 400, 181, 41))
-        font = QtGui.QFont()
-        font.setFamily("Arial")
-        font.setPointSize(12)
-        self.pushButton_7.setFont(font)
-        # icon1 = QtGui.QIcon()
-        # icon1.addPixmap(QtGui.QPixmap(root_path + "/icons/refresh.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        # self.pushButton_7.setIcon(icon1)
-        # self.pushButton_7.setIconSize(QtCore.QSize(20, 20))
-        self.pushButton_7.setText("refresh")
-        self.pushButton_7.setObjectName("pushButton_7")
-        self.pushButton_7.setLayoutDirection(QtCore.Qt.RightToLeft)
-        self.label = QtWidgets.QLabel(Form)
-        self.label.setGeometry(QtCore.QRect(30, 30, 61, 41))
-        font = QtGui.QFont()
-        font.setFamily("Arial")
-        font.setPointSize(12)
-        self.label.setFont(font)
-        self.label.setAlignment(QtCore.Qt.AlignCenter)
-        self.label.setObjectName("label")
-
-        self.pushButton_8 = QtWidgets.QPushButton(Form)
-        self.pushButton_8.setGeometry(QtCore.QRect(570, 30, 40, 40))
-        font = QtGui.QFont()
-        font.setFamily("Arial")
-        font.setPointSize(12)
-        self.pushButton_8.setFont(font)
-        self.pushButton_8.setText("")
-        icon2 = QtGui.QIcon()
-        icon2.addPixmap(QtGui.QPixmap(root_path + "/icons/folder.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.pushButton_8.setIcon(icon2)
-        self.pushButton_8.setIconSize(QtCore.QSize(30, 30))
-        self.pushButton_8.setObjectName("pushButton_8")
-
-        self.textBrowser = QtWidgets.QTextBrowser(Form)
-        self.textBrowser.setGeometry(QtCore.QRect(90, 30, 481, 41))
-        self.textBrowser.setObjectName("textBrowser")
-
-        self.retranslateUi(Form)
-        QtCore.QMetaObject.connectSlotsByName(Form)
-
-    def retranslateUi(self, Form):
-        _translate = QtCore.QCoreApplication.translate
-        Form.setWindowTitle(_translate("Form", "PyMOL-PUB surface"))
-        self.label_3.setText(_translate("Form", "remove"))
-        self.pushButton_4.setText(_translate("Form", "redo"))
-        self.pushButton_3.setText(_translate("Form", "undo"))
-        self.pushButton_5.setText(_translate("Form", "back"))
-        self.pushButton_6.setText(_translate("Form", "next"))
-        self.label.setText(_translate("Form", "path"))
-
-
-class ImageWindow2(object):
-    def setupUi(self, Form):
-        Form.setObjectName("Form")
-        Form.resize(800, 600)
-        icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap(root_path + "/icons/logo.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        Form.setWindowIcon(icon)
-        self.graphicsView = QtWidgets.QGraphicsView(Form)
-        self.graphicsView.setGeometry(QtCore.QRect(40, 90, 491, 481))
-        self.graphicsView.setObjectName("graphicsView")
-        self.scene = QtWidgets.QGraphicsScene()
-        self.label_3 = QtWidgets.QLabel(Form)
-        self.label_3.setGeometry(QtCore.QRect(580, 200, 71, 31))
-        font = QtGui.QFont()
-        font.setFamily("Arial")
-        font.setPointSize(12)
-        self.label_3.setFont(font)
-        self.label_3.setAlignment(QtCore.Qt.AlignLeading | QtCore.Qt.AlignLeft | QtCore.Qt.AlignVCenter)
-        self.label_3.setObjectName("label_3")
-
-        self.textEdit = QtWidgets.QTextEdit(Form)
-        self.textEdit.setGeometry(QtCore.QRect(650, 200, 111, 31))
-        font = QtGui.QFont()
-        font.setFamily("Arial")
-        font.setPointSize(11)
-        self.textEdit.setFont(font)
-        self.textEdit.setObjectName("textEdit")
-
-        self.pushButton_4 = QtWidgets.QPushButton(Form)
-        self.pushButton_4.setGeometry(QtCore.QRect(680, 460, 81, 41))
-        font = QtGui.QFont()
-        font.setFamily("Arial")
-        font.setPointSize(12)
-        self.pushButton_4.setFont(font)
-        self.pushButton_4.setObjectName("pushButton_4")
-        self.pushButton_3 = QtWidgets.QPushButton(Form)
-        self.pushButton_3.setGeometry(QtCore.QRect(580, 460, 81, 41))
-        font = QtGui.QFont()
-        font.setFamily("Arial")
-        font.setPointSize(12)
-        self.pushButton_3.setFont(font)
-        self.pushButton_3.setObjectName("pushButton_3")
-        self.pushButton_5 = QtWidgets.QPushButton(Form)
-        self.pushButton_5.setGeometry(QtCore.QRect(580, 520, 81, 41))
-        font = QtGui.QFont()
-        font.setFamily("Arial")
-        font.setPointSize(12)
-        self.pushButton_5.setFont(font)
-        self.pushButton_5.setObjectName("pushButton_5")
-
-        self.pushButton_6 = QtWidgets.QPushButton(Form)
-        self.pushButton_6.setGeometry(QtCore.QRect(680, 520, 81, 41))
-        font = QtGui.QFont()
-        font.setFamily("Arial")
-        font.setPointSize(12)
-        self.pushButton_6.setFont(font)
-        self.pushButton_6.setObjectName("pushButton_6")
-
-        self.comboBox_2 = QtWidgets.QComboBox(Form)
-        self.comboBox_2.setGeometry(QtCore.QRect(650, 100, 111, 31))
-        font = QtGui.QFont()
-        font.setFamily("Arial")
-        font.setPointSize(11)
-        self.comboBox_2.setFont(font)
-        self.comboBox_2.setObjectName("comboBox_2")
-        self.comboBox_2.addItem("")
-        self.comboBox_2.addItem("")
-        self.comboBox_2.addItem("")
-        self.comboBox_2.addItem("")
-        self.comboBox_2.addItem("")
-        self.comboBox_2.addItem("")
-        self.comboBox_2.addItem("")
-        self.comboBox_2.addItem("")
-        self.comboBox_2.addItem("")
-        self.comboBox_2.addItem("")
-        self.comboBox_2.addItem("")
-        self.comboBox_2.addItem("")
-        self.label_4 = QtWidgets.QLabel(Form)
-        self.label_4.setGeometry(QtCore.QRect(580, 100, 71, 31))
-        font = QtGui.QFont()
-        font.setFamily("Arial")
-        font.setPointSize(12)
-        self.label_4.setFont(font)
-        self.label_4.setAlignment(QtCore.Qt.AlignLeading | QtCore.Qt.AlignLeft | QtCore.Qt.AlignVCenter)
-        self.label_4.setObjectName("label_4")
-        self.comboBox_3 = QtWidgets.QComboBox(Form)
-        self.comboBox_3.setGeometry(QtCore.QRect(650, 150, 111, 31))
-        font = QtGui.QFont()
-        font.setFamily("Arial")
-        font.setPointSize(11)
-        self.comboBox_3.setFont(font)
-        self.comboBox_3.setObjectName("comboBox_3")
-        self.comboBox_3.addItem("")
-        self.comboBox_3.addItem("")
-        self.comboBox_3.addItem("")
-        self.comboBox_3.addItem("")
-        self.comboBox_3.addItem("")
-        self.comboBox_3.addItem("")
-        self.label_5 = QtWidgets.QLabel(Form)
-        self.label_5.setGeometry(QtCore.QRect(580, 150, 71, 31))
-        font = QtGui.QFont()
-        font.setFamily("Arial")
-        font.setPointSize(12)
-        self.label_5.setFont(font)
-        self.label_5.setAlignment(QtCore.Qt.AlignLeading | QtCore.Qt.AlignLeft | QtCore.Qt.AlignVCenter)
-        self.label_5.setObjectName("label_5")
-        self.pushButton_7 = QtWidgets.QPushButton(Form)
-        self.pushButton_7.setGeometry(QtCore.QRect(580, 400, 181, 41))
-        font = QtGui.QFont()
-        font.setFamily("Arial")
-        font.setPointSize(12)
-        self.pushButton_7.setFont(font)
-        # icon1 = QtGui.QIcon()
-        # icon1.addPixmap(QtGui.QPixmap(root_path + "/icons/refresh.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        # self.pushButton_7.setIcon(icon1)
-        # self.pushButton_7.setIconSize(QtCore.QSize(20, 20))
-        self.pushButton_7.setText("refresh")
-        self.pushButton_7.setObjectName("pushButton_7")
-        self.pushButton_7.setLayoutDirection(QtCore.Qt.RightToLeft)
-
-        self.retranslateUi(Form)
-        QtCore.QMetaObject.connectSlotsByName(Form)
-
-    def retranslateUi(self, Form):
-        _translate = QtCore.QCoreApplication.translate
-        Form.setWindowTitle(_translate("Form", "PyMOL-PUB surface"))
-        self.label_3.setText(_translate("Form", "range"))
-        self.pushButton_4.setText(_translate("Form", "redo"))
-        self.pushButton_3.setText(_translate("Form", "undo"))
-        self.pushButton_5.setText(_translate("Form", "back"))
-        self.pushButton_6.setText(_translate("Form", "next"))
-        self.comboBox_2.setItemText(0, _translate("Form", "cartoon"))
-        self.comboBox_2.setItemText(1, _translate("Form", "cell"))
-        self.comboBox_2.setItemText(2, _translate("Form", "dots"))
-        self.comboBox_2.setItemText(3, _translate("Form", "label"))
-        self.comboBox_2.setItemText(4, _translate("Form", "lines"))
-        self.comboBox_2.setItemText(5, _translate("Form", "mesh"))
-        self.comboBox_2.setItemText(6, _translate("Form", "nb_spheres"))
-        self.comboBox_2.setItemText(7, _translate("Form", "ribbon"))
-        self.comboBox_2.setItemText(8, _translate("Form", "slice"))
-        self.comboBox_2.setItemText(9, _translate("Form", "spheres"))
-        self.comboBox_2.setItemText(10, _translate("Form", "sticks"))
-        self.comboBox_2.setItemText(11, _translate("Form", "surface"))
-        self.label_4.setText(_translate("Form", "style"))
-        self.comboBox_3.setItemText(0, _translate("Form", "chain"))
-        self.comboBox_3.setItemText(1, _translate("Form", "model"))
-        self.comboBox_3.setItemText(2, _translate("Form", "position"))
-        self.comboBox_3.setItemText(3, _translate("Form", "range"))
-        self.comboBox_3.setItemText(4, _translate("Form", "residue"))
-        self.comboBox_3.setItemText(5, _translate("Form", "segment"))
-        self.label_5.setText(_translate("Form", "class"))
-
-
-class ImageWindow3(object):
-    def setupUi(self, Form):
-        Form.setObjectName("Form")
-        Form.resize(800, 600)
-        icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap(".././icons/logo.pnsvgg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        Form.setWindowIcon(icon)
-        self.graphicsView = QtWidgets.QGraphicsView(Form)
-        self.graphicsView.setGeometry(QtCore.QRect(40, 90, 491, 481))
-        self.graphicsView.setObjectName("graphicsView")
-        self.scene = QtWidgets.QGraphicsScene()
-        self.label_3 = QtWidgets.QLabel(Form)
-        self.label_3.setGeometry(QtCore.QRect(580, 180, 71, 31))
-        font = QtGui.QFont()
-        font.setFamily("Arial")
-        font.setPointSize(12)
-        self.label_3.setFont(font)
-        self.label_3.setObjectName("label_3")
-
-        self.textEdit = QtWidgets.QTextEdit(Form)
-        self.textEdit.setGeometry(QtCore.QRect(650, 180, 111, 31))
-        font = QtGui.QFont()
-        font.setFamily("Arial")
-        font.setPointSize(11)
-        self.textEdit.setFont(font)
-        self.textEdit.setObjectName("textEdit")
-
-        self.pushButton_4 = QtWidgets.QPushButton(Form)
-        self.pushButton_4.setGeometry(QtCore.QRect(680, 460, 81, 41))
-        font = QtGui.QFont()
-        font.setFamily("Arial")
-        font.setPointSize(12)
-        self.pushButton_4.setFont(font)
-        self.pushButton_4.setObjectName("pushButton_4")
-        self.pushButton_3 = QtWidgets.QPushButton(Form)
-        self.pushButton_3.setGeometry(QtCore.QRect(580, 460, 81, 41))
-        font = QtGui.QFont()
-        font.setFamily("Arial")
-        font.setPointSize(12)
-        self.pushButton_3.setFont(font)
-        self.pushButton_3.setObjectName("pushButton_3")
-        self.pushButton_5 = QtWidgets.QPushButton(Form)
-        self.pushButton_5.setGeometry(QtCore.QRect(580, 520, 81, 41))
-        font = QtGui.QFont()
-        font.setFamily("Arial")
-        font.setPointSize(12)
-        self.pushButton_5.setFont(font)
-        self.pushButton_5.setObjectName("pushButton_5")
-        self.pushButton_6 = QtWidgets.QPushButton(Form)
-        self.pushButton_6.setGeometry(QtCore.QRect(680, 520, 81, 41))
-        font = QtGui.QFont()
-        font.setFamily("Arial")
-        font.setPointSize(12)
-        self.pushButton_6.setFont(font)
-        self.pushButton_6.setObjectName("pushButton_6")
-
-        self.label_4 = QtWidgets.QLabel(Form)
-        self.label_4.setGeometry(QtCore.QRect(580, 135, 71, 31))
-        font = QtGui.QFont()
-        font.setFamily("Arial")
-        font.setPointSize(12)
-        self.label_4.setFont(font)
-        self.label_4.setObjectName("label_4")
-        self.textEdit_1 = QtWidgets.QTextEdit(Form)
-        self.textEdit_1.setGeometry(QtCore.QRect(650, 135, 111, 31))
-        font = QtGui.QFont()
-        font.setFamily("Arial")
-        font.setPointSize(11)
-        self.textEdit_1.setFont(font)
-        self.textEdit_1.setObjectName("textEdit_1")
-
-        self.label_5 = QtWidgets.QLabel(Form)
-        self.label_5.setGeometry(QtCore.QRect(580, 90, 71, 31))
-        font = QtGui.QFont()
-        font.setFamily("Arial")
-        font.setPointSize(12)
-        self.label_5.setFont(font)
-        self.label_5.setObjectName("label_5")
-        self.textEdit_2 = QtWidgets.QTextEdit(Form)
-        self.textEdit_2.setGeometry(QtCore.QRect(650, 90, 111, 31))
-        font = QtGui.QFont()
-        font.setFamily("Arial")
-        font.setPointSize(11)
-        self.textEdit_2.setFont(font)
-        self.textEdit_2.setObjectName("textEdit_2")
-
-        self.label_6 = QtWidgets.QLabel(Form)
-        self.label_6.setGeometry(QtCore.QRect(580, 240, 71, 31))
-        font = QtGui.QFont()
-        font.setFamily("Arial")
-        font.setPointSize(12)
-        self.label_6.setFont(font)
-        self.label_6.setObjectName("label_6")
-        self.textEdit_3 = QtWidgets.QTextEdit(Form)
-        self.textEdit_3.setGeometry(QtCore.QRect(650, 240, 111, 31))
-        font = QtGui.QFont()
-        font.setFamily("Arial")
-        font.setPointSize(11)
-        self.textEdit_3.setFont(font)
-        self.textEdit_3.setObjectName("textEdit_3")
-
-        self.label_7 = QtWidgets.QLabel(Form)
-        self.label_7.setGeometry(QtCore.QRect(580, 285, 71, 31))
-        font = QtGui.QFont()
-        font.setFamily("Arial")
-        font.setPointSize(12)
-        self.label_7.setFont(font)
-        self.label_7.setObjectName("label_7")
-        self.textEdit_4 = QtWidgets.QTextEdit(Form)
-        self.textEdit_4.setGeometry(QtCore.QRect(650, 285, 111, 31))
-        font = QtGui.QFont()
-        font.setFamily("Arial")
-        font.setPointSize(11)
-        self.textEdit_4.setFont(font)
-        self.textEdit_4.setObjectName("textEdit_4")
-
-        self.label_8 = QtWidgets.QLabel(Form)
-        self.label_8.setGeometry(QtCore.QRect(580, 330, 71, 31))
-        font = QtGui.QFont()
-        font.setFamily("Arial")
-        font.setPointSize(12)
-        self.label_8.setFont(font)
-        self.label_8.setObjectName("label_8")
-        self.textEdit_5 = QtWidgets.QTextEdit(Form)
-        self.textEdit_5.setGeometry(QtCore.QRect(650, 330, 111, 31))
-        font = QtGui.QFont()
-        font.setFamily("Arial")
-        font.setPointSize(11)
-        self.textEdit_5.setFont(font)
-        self.textEdit_5.setObjectName("textEdit_5")
-
-        self.pushButton_7 = QtWidgets.QPushButton(Form)
-        self.pushButton_7.setGeometry(QtCore.QRect(580, 400, 181, 41))
-        font = QtGui.QFont()
-        font.setFamily("Arial")
-        font.setPointSize(12)
-        self.pushButton_7.setFont(font)
-        # icon1 = QtGui.QIcon()
-        # icon1.addPixmap(QtGui.QPixmap(root_path + "/icons/refresh.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        # self.pushButton_7.setIcon(icon1)
-        # self.pushButton_7.setIconSize(QtCore.QSize(20, 20))
-        self.pushButton_7.setText("refresh")
-        self.pushButton_7.setObjectName("pushButton_7")
-        self.pushButton_7.setLayoutDirection(QtCore.Qt.RightToLeft)
-
-        self.retranslateUi(Form)
-        QtCore.QMetaObject.connectSlotsByName(Form)
-
-    def retranslateUi(self, Form):
-        _translate = QtCore.QCoreApplication.translate
-        Form.setWindowTitle(_translate("Form", "PyMOL-PUB surface"))
-        self.label_3.setText(_translate("Form", "rotate z"))
-        self.pushButton_4.setText(_translate("Form", "redo"))
-        self.pushButton_3.setText(_translate("Form", "undo"))
-        self.pushButton_5.setText(_translate("Form", "back"))
-        self.pushButton_6.setText(_translate("Form", "next"))
-        self.label_4.setText(_translate("Form", "rotate y"))
-        self.label_5.setText(_translate("Form", "rotate x"))
-        self.label_6.setText(_translate("Form", "move x"))
-        self.label_7.setText(_translate("Form", "move y"))
-        self.label_8.setText(_translate("Form", "move z"))
-
-
-class ImageWindow4(object):
-    def setupUi(self, Form):
-        Form.setObjectName("Form")
-        Form.resize(800, 600)
-        icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap(root_path + "/icons/logo.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        Form.setWindowIcon(icon)
-        self.graphicsView = QtWidgets.QGraphicsView(Form)
-        self.graphicsView.setGeometry(QtCore.QRect(40, 90, 491, 481))
-        self.graphicsView.setObjectName("graphicsView")
-        self.scene = QtWidgets.QGraphicsScene()
-        self.label_3 = QtWidgets.QLabel(Form)
-        self.label_3.setGeometry(QtCore.QRect(580, 200, 71, 31))
-        font = QtGui.QFont()
-        font.setFamily("Arial")
-        font.setPointSize(12)
-        self.label_3.setFont(font)
-        self.label_3.setObjectName("label_3")
-        self.textEdit = QtWidgets.QTextEdit(Form)
-        self.textEdit.setGeometry(QtCore.QRect(650, 200, 111, 31))
-        font = QtGui.QFont()
-        font.setFamily("Arial")
-        font.setPointSize(11)
-        self.textEdit.setFont(font)
-        self.textEdit.setObjectName("textEdit")
-        self.pushButton_4 = QtWidgets.QPushButton(Form)
-        self.pushButton_4.setGeometry(QtCore.QRect(680, 460, 81, 41))
-        font = QtGui.QFont()
-        font.setFamily("Arial")
-        font.setPointSize(12)
-        self.pushButton_4.setFont(font)
-        self.pushButton_4.setObjectName("pushButton_4")
-        self.pushButton_3 = QtWidgets.QPushButton(Form)
-        self.pushButton_3.setGeometry(QtCore.QRect(580, 460, 81, 41))
-        font = QtGui.QFont()
-        font.setFamily("Arial")
-        font.setPointSize(12)
-        self.pushButton_3.setFont(font)
-        self.pushButton_3.setObjectName("pushButton_3")
-        self.pushButton_5 = QtWidgets.QPushButton(Form)
-        self.pushButton_5.setGeometry(QtCore.QRect(580, 520, 81, 41))
-        font = QtGui.QFont()
-        font.setFamily("Arial")
-        font.setPointSize(12)
-        self.pushButton_5.setFont(font)
-        self.pushButton_5.setObjectName("pushButton_5")
-        self.pushButton_6 = QtWidgets.QPushButton(Form)
-        self.pushButton_6.setGeometry(QtCore.QRect(680, 520, 81, 41))
-        font = QtGui.QFont()
-        font.setFamily("Arial")
-        font.setPointSize(12)
-        self.pushButton_6.setFont(font)
-        self.pushButton_6.setObjectName("pushButton_6")
-        self.comboBox_3 = QtWidgets.QComboBox(Form)
-        self.comboBox_3.setGeometry(QtCore.QRect(650, 150, 111, 31))
-        font = QtGui.QFont()
-        font.setFamily("Arial")
-        font.setPointSize(11)
-        self.comboBox_3.setFont(font)
-        self.comboBox_3.setObjectName("comboBox_3")
-        self.comboBox_3.addItem("")
-        self.comboBox_3.addItem("")
-        self.comboBox_3.addItem("")
-        self.comboBox_3.addItem("")
-        self.comboBox_3.addItem("")
-        self.comboBox_3.addItem("")
-        self.label_5 = QtWidgets.QLabel(Form)
-        self.label_5.setGeometry(QtCore.QRect(580, 150, 71, 31))
-        font = QtGui.QFont()
-        font.setFamily("Arial")
-        font.setPointSize(12)
-        self.label_5.setFont(font)
-        self.label_5.setObjectName("label_5")
-        self.textEdit_1 = QtWidgets.QTextEdit(Form)
-        self.textEdit_1.setGeometry(QtCore.QRect(650, 100, 111, 31))
-        font = QtGui.QFont()
-        font.setFamily("Arial")
-        font.setPointSize(11)
-        self.textEdit_1.setFont(font)
-        self.textEdit_1.setObjectName("textEdit_1")
-
-        self.label_4 = QtWidgets.QLabel(Form)
-        self.label_4.setGeometry(QtCore.QRect(580, 100, 71, 31))
-        font = QtGui.QFont()
-        font.setFamily("Arial")
-        font.setPointSize(12)
-        self.label_4.setFont(font)
-        self.label_4.setObjectName("label_4")
-        self.pushButton_7 = QtWidgets.QPushButton(Form)
-        self.pushButton_7.setGeometry(QtCore.QRect(580, 400, 181, 41))
-        font = QtGui.QFont()
-        font.setFamily("Arial")
-        font.setPointSize(12)
-        self.pushButton_7.setFont(font)
-        # icon1 = QtGui.QIcon()
-        # icon1.addPixmap(QtGui.QPixmap(root_path + "/icons/refresh.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        # self.pushButton_7.setIcon(icon1)
-        # self.pushButton_7.setIconSize(QtCore.QSize(20, 20))
-        self.pushButton_7.setText("refresh")
-        self.pushButton_7.setObjectName("pushButton_7")
-        self.pushButton_7.setLayoutDirection(QtCore.Qt.RightToLeft)
-
-        self.retranslateUi(Form)
-        QtCore.QMetaObject.connectSlotsByName(Form)
-
-    def retranslateUi(self, Form):
-        _translate = QtCore.QCoreApplication.translate
-        Form.setWindowTitle(_translate("Form", "PyMOL-PUB surface"))
-        self.label_3.setText(_translate("Form", "range"))
-        self.pushButton_4.setText(_translate("Form", "redo"))
-        self.pushButton_3.setText(_translate("Form", "undo"))
-        self.pushButton_5.setText(_translate("Form", "back"))
-        self.pushButton_6.setText(_translate("Form", "next"))
-        self.comboBox_3.setItemText(0, _translate("Form", "chain"))
-        self.comboBox_3.setItemText(1, _translate("Form", "model"))
-        self.comboBox_3.setItemText(2, _translate("Form", "position"))
-        self.comboBox_3.setItemText(3, _translate("Form", "range"))
-        self.comboBox_3.setItemText(4, _translate("Form", "residue"))
-        self.comboBox_3.setItemText(5, _translate("Form", "segment"))
-        self.label_5.setText(_translate("Form", "class"))
-        self.label_4.setText(_translate("Form", "color"))
-
-
-class StructureImage1(QMainWindow, ImageWindow1):
-
-    # noinspection PyGlobalUndefined
-    def __init__(self):
-        super(StructureImage1, self).__init__()
-        self.setupUi(self)
-        global image_list
-        global structure
-        image_list = []
-        structure = None
-        self.draw_number = 0
-        self.folder_text = []
-        self.remove_text = []
-
-        # noinspection PyUnresolvedReferences
-        self.pushButton_8.clicked.connect(self.load_structures)
-        # noinspection PyUnresolvedReferences
-        self.pushButton_7.clicked.connect(self.draw_structure)
-        # noinspection PyUnresolvedReferences
-        self.pushButton_3.clicked.connect(self.set_undo)
-        # noinspection PyUnresolvedReferences
-        self.pushButton_4.clicked.connect(self.set_redo)
-
-    def load_structures(self):
-        structure_names, _ = QFileDialog.getOpenFileNames(self, 'Open file', '.', "Structure (*.pdb *.cif)")
-        for structure_name in structure_names:
-            self.textBrowser.append(structure_name)
-
-    def draw_structure(self):
-        global image_list
-        global structure
-
-        structure_paths = [file for file in self.textBrowser.toPlainText().split("\n")]
-        if self.draw_number == 0:
-            structure = HighlightStructureImage(structure_paths=structure_paths)
-
-        if self.textEdit.toPlainText() != "":
-            structure.set_cache(cache_contents=[self.textEdit.toPlainText()])
-
-        structure.save(save_path="./temp/image" + str(self.draw_number) + ".png")
-        structure.save_pymol(save_path="./temp/image" + str(self.draw_number) + ".pse")
-
-        if self.draw_number < len(image_list):
-            image_list = image_list[:self.draw_number + 1]
-        else:
-            image_list.append("./temp/image" + str(self.draw_number) + ".png")
-
-        if self.draw_number < len(self.folder_text):
-            self.folder_text = self.folder_text[:self.draw_number + 1]
-            self.folder_text[self.draw_number] = self.textBrowser.toPlainText()
-        else:
-            self.folder_text.append(self.textBrowser.toPlainText())
-
-        if self.draw_number < len(self.remove_text):
-            self.remove_text = self.remove_text[:self.draw_number + 1]
-            self.remove_text[self.draw_number] = self.textEdit.toPlainText()
-        else:
-            self.remove_text.append(self.textEdit.toPlainText())
-
-        figure = QPixmap("./temp/image" + str(self.draw_number) + ".png")
-        self.scene.clear()
-        self.scene.addPixmap(figure)
-        self.graphicsView.setScene(self.scene)
-
-        self.draw_number += 1
-
-    def set_undo(self):
-        global image_list
-        global structure
-
-        if self.draw_number > 1:
-            self.scene.clear()
-            figure = QPixmap(image_list[self.draw_number - 2])
-            self.scene.addPixmap(figure)
-            structure.load_pymol(load_path="./temp/image" + str(self.draw_number - 2) + ".pse")
-            self.graphicsView.setScene(self.scene)
-            self.textBrowser.setText(self.folder_text[self.draw_number - 2])
-            self.textEdit.setText(self.remove_text[self.draw_number - 2])
-            self.draw_number -= 1
-        else:
-            self.scene.clear()
-            structure.clear()
-            self.graphicsView.setScene(self.scene)
-            self.textBrowser.setText("")
-            self.textEdit.setText("")
-            self.draw_number = 0
-
-    def set_redo(self):
-        global image_list
-        global structure
-
-        if self.draw_number < len(image_list):
-            self.scene.clear()
-            figure = QPixmap(image_list[self.draw_number])
-            self.scene.addPixmap(figure)
-            structure.load_pymol(load_path="./temp/image" + str(self.draw_number) + ".pse")
-            self.graphicsView.setScene(self.scene)
-            self.textBrowser.setText(self.folder_text[self.draw_number])
-            self.textEdit.setText(self.remove_text[self.draw_number])
-            self.draw_number += 1
-        else:
-            self.scene.clear()
-            figure = QPixmap(image_list[-1])
-            self.scene.addPixmap(figure)
-            self.graphicsView.setScene(self.scene)
-            self.textBrowser.setText(self.folder_text[-1])
-            self.textEdit.setText(self.remove_text[-1])
-
-    def window_clear(self):
-        global image_list
-        global structure
-
-        image_list = []
-        if structure is not None:
-            structure.close()
-        self.draw_number = 0
-        self.folder_text = []
-        self.remove_text = []
-
-        self.textBrowser.clear()
-        self.textEdit.clear()
-        self.scene.clear()
-        self.graphicsView.setScene(self.scene)
-
-
-class StructureImage2(QMainWindow, ImageWindow2):
-
-    # noinspection PyGlobalUndefined
-    def __init__(self):
-        super(StructureImage2, self).__init__()
-        self.setupUi(self)
-        global image_list
-        global structure
-        self.draw_number = 0
-        self.start_number = 0
-        self.style_text = []
-        self.class_text = []
-        self.range_text = []
-
-        # noinspection PyUnresolvedReferences
-        self.pushButton_7.clicked.connect(self.draw_structure)
-        # noinspection PyUnresolvedReferences
-        self.pushButton_3.clicked.connect(self.set_undo)
-        # noinspection PyUnresolvedReferences
-        self.pushButton_4.clicked.connect(self.set_redo)
-
-    def start_image(self):
-        if len(image_list) > 0:
-            self.scene.addPixmap(QPixmap(image_list[-1]))
-            self.graphicsView.setScene(self.scene)
-            self.start_number = len(image_list)
-
-    # noinspection PyGlobalUndefined
-    def draw_structure(self):
-        global structure
-        global image_list
-
-        representation = self.comboBox_2.currentText()
-        shading_type = self.comboBox_3.currentText()
-        content = self.textEdit.toPlainText()
-
-        structure.set_shape(representation_plan=[(shading_type + ":" + content, representation)],
-                            initial_representation=None, independent_color=True, closed_surface=True)
-        structure.save(save_path="./temp/image" + str(self.start_number + self.draw_number) + ".png")
-        structure.save_pymol(save_path="./temp/image" + str(self.start_number + self.draw_number) + ".pse")
-
-        if self.start_number + self.draw_number < len(image_list):
-            image_list = image_list[:self.start_number + self.draw_number + 1]
-        else:
-            image_list.append("./temp/image" + str(self.start_number + self.draw_number) + ".png")
-
-        if self.draw_number < len(self.style_text):
-            self.style_text = self.style_text[:self.draw_number + 1]
-            self.style_text[self.draw_number] = representation
-        else:
-            self.style_text.append(representation)
-
-        if self.draw_number < len(self.class_text):
-            self.class_text = self.class_text[:self.draw_number + 1]
-            self.class_text[self.draw_number] = shading_type
-        else:
-            self.class_text.append(shading_type)
-
-        if self.draw_number < len(self.range_text):
-            self.range_text = self.range_text[:self.draw_number + 1]
-            self.range_text[self.draw_number] = content
-        else:
-            self.range_text.append(content)
-
-        figure = QPixmap("./temp/image" + str(self.start_number + self.draw_number) + ".png")
-        self.scene.clear()
-        self.scene.addPixmap(figure)
-        self.graphicsView.setScene(self.scene)
-
-        self.draw_number += 1
-
-    def set_undo(self):
-        global image_list
-        global structure
-
-        if self.draw_number > 1:
-            self.scene.clear()
-            figure = QPixmap(image_list[self.start_number + self.draw_number - 2])
-            self.scene.addPixmap(figure)
-            structure.load_pymol(load_path="./temp/image" + str(self.start_number + self.draw_number - 2) + ".pse")
-            self.graphicsView.setScene(self.scene)
-            self.comboBox_2.setCurrentText(self.style_text[self.draw_number - 2])
-            self.comboBox_3.setCurrentText(self.class_text[self.draw_number - 2])
-            self.textEdit.setText(self.range_text[self.draw_number - 2])
-            self.draw_number -= 1
-        else:
-            self.scene.clear()
-            figure = QPixmap(image_list[self.start_number - 1])
-            self.scene.addPixmap(figure)
-            structure.load_pymol(load_path="./temp/image" + str(self.start_number - 1) + ".pse")
-            self.graphicsView.setScene(self.scene)
-            self.comboBox_2.setCurrentIndex(0)
-            self.comboBox_3.setCurrentIndex(0)
-            self.textEdit.setText("")
-            self.draw_number = 0
-
-    def set_redo(self):
-        global image_list
-        global structure
-
-        if self.start_number + self.draw_number < len(image_list):
-            self.scene.clear()
-            figure = QPixmap(image_list[self.start_number + self.draw_number])
-            self.scene.addPixmap(figure)
-            structure.load_pymol(load_path="./temp/image" + str(self.start_number + self.draw_number) + ".pse")
-            self.graphicsView.setScene(self.scene)
-            self.comboBox_2.setCurrentText(self.style_text[self.draw_number])
-            self.comboBox_3.setCurrentText(self.class_text[self.draw_number])
-            self.textEdit.setText(self.range_text[self.draw_number])
-            self.draw_number += 1
-        else:
-            self.scene.clear()
-            figure = QPixmap(image_list[-1])
-            self.scene.addPixmap(figure)
-            self.graphicsView.setScene(self.scene)
-            structure.load_pymol(load_path="./temp/image" + str(self.start_number + self.draw_number - 1) + ".pse")
-            self.comboBox_2.setCurrentText(self.style_text[-1])
-            self.comboBox_3.setCurrentText(self.class_text[-1])
-            self.textEdit.setText(self.range_text[-1])
-
-    def window_clear(self):
-        self.draw_number = 0
-        self.start_number = 0
-        self.style_text = []
-        self.class_text = []
-        self.range_text = []
-
-        self.textEdit.clear()
-        self.scene.clear()
-        self.graphicsView.setScene(self.scene)
-
-    # noinspection PyGlobalUndefined
-    def window_initialization(self):
-        global structure
-        global image_list
-
-        if len(image_list) > 0:
-            self.draw_number = 0
-            self.style_text = []
-            self.class_text = []
-            self.range_text = []
-            image_list = image_list[:self.start_number]
-
-            self.textEdit.clear()
-            self.scene.clear()
-            self.scene.addPixmap(QPixmap(image_list[self.start_number - 1]))
-            self.graphicsView.setScene(self.scene)
-            structure.load_pymol(load_path="./temp/image" + str(self.start_number - 1) + ".pse")
-
-
-class StructureImage3(QMainWindow, ImageWindow3):
-
-    # noinspection PyGlobalUndefined
-    def __init__(self):
-        super(StructureImage3, self).__init__()
-        self.setupUi(self)
-        global image_list
-        global structure
-        self.draw_number = 0
-        self.start_number = 0
-        self.rotatex_text = []
-        self.rotatey_text = []
-        self.rotatez_text = []
-        self.movex_text = []
-        self.movey_text = []
-        self.movez_text = []
-
-        # noinspection PyUnresolvedReferences
-        self.pushButton_7.clicked.connect(self.draw_structure)
-        # noinspection PyUnresolvedReferences
-        self.pushButton_3.clicked.connect(self.set_undo)
-        # noinspection PyUnresolvedReferences
-        self.pushButton_4.clicked.connect(self.set_redo)
-
-    def start_image(self):
-        if len(image_list) > 0:
-            self.scene.addPixmap(QPixmap(image_list[-1]))
-            self.graphicsView.setScene(self.scene)
-            self.start_number = len(image_list)
-
-    # noinspection PyGlobalUndefined
-    def draw_structure(self):
-        global structure
-        global image_list
-
-        rotate_x = int(self.textEdit_2.toPlainText()) if self.textEdit_2.toPlainText() != "" else 0
-        rotate_y = int(self.textEdit_1.toPlainText()) if self.textEdit_1.toPlainText() != "" else 0
-        rotate_z = int(self.textEdit.toPlainText()) if self.textEdit.toPlainText() != "" else 0
-        move_x = int(self.textEdit_3.toPlainText()) if self.textEdit_3.toPlainText() != "" else 0
-        move_y = int(self.textEdit_4.toPlainText()) if self.textEdit_4.toPlainText() != "" else 0
-        move_z = int(self.textEdit_5.toPlainText()) if self.textEdit_5.toPlainText() != "" else 0
-        rotate = [rotate_x, rotate_y, rotate_z]
-
-        if move_x == 0 and move_y == 0 and move_z == 0:
-            if self.draw_number > 0:
-                structure.set_state(rotate=rotate, only_rotate=True)
-            else:
-                structure.set_state(rotate=rotate)
-        else:
-            translate = [move_x, move_y, move_z]
-            structure.set_state(rotate=rotate, translate=translate)
-
-        structure.save(save_path="./temp/image" + str(self.start_number + self.draw_number) + ".png")
-        structure.save_pymol(save_path="./temp/image" + str(self.start_number + self.draw_number) + ".pse")
-
-        if self.start_number + self.draw_number < len(image_list):
-            image_list = image_list[:self.start_number + self.draw_number + 1]
-        else:
-            image_list.append("./temp/image" + str(self.start_number + self.draw_number) + ".png")
-
-        if self.draw_number < len(self.rotatex_text):
-            self.rotatex_text = self.rotatex_text[:self.draw_number + 1]
-            self.rotatex_text[self.draw_number] = self.textEdit_2.toPlainText()
-        else:
-            self.rotatex_text.append(self.textEdit_2.toPlainText())
-
-        if self.draw_number < len(self.rotatey_text):
-            self.rotatey_text = self.rotatey_text[:self.draw_number + 1]
-            self.rotatey_text[self.draw_number] = self.textEdit_1.toPlainText()
-        else:
-            self.rotatey_text.append(self.textEdit_1.toPlainText())
-
-        if self.draw_number < len(self.rotatez_text):
-            self.rotatez_text = self.rotatez_text[:self.draw_number + 1]
-            self.rotatez_text[self.draw_number] = self.textEdit.toPlainText()
-        else:
-            self.rotatez_text.append(self.textEdit.toPlainText())
-
-        if self.draw_number < len(self.movex_text):
-            self.movex_text = self.movex_text[:self.draw_number + 1]
-            self.movex_text[self.draw_number] = self.textEdit_3.toPlainText()
-        else:
-            self.movex_text.append(self.textEdit_3.toPlainText())
-
-        if self.draw_number < len(self.movey_text):
-            self.movey_text = self.movey_text[:self.draw_number + 1]
-            self.movey_text[self.draw_number] = self.textEdit_4.toPlainText()
-        else:
-            self.movey_text.append(self.textEdit_4.toPlainText())
-
-        if self.draw_number < len(self.movez_text):
-            self.movez_text = self.movez_text[:self.draw_number + 1]
-            self.movez_text[self.draw_number] = self.textEdit_5.toPlainText()
-        else:
-            self.movez_text.append(self.textEdit_5.toPlainText())
-
-        figure = QPixmap("./temp/image" + str(self.start_number + self.draw_number) + ".png")
-        self.scene.clear()
-        self.scene.addPixmap(figure)
-        self.graphicsView.setScene(self.scene)
-
-        self.draw_number += 1
-
-    def set_undo(self):
-        global image_list
-        global structure
-
-        if self.draw_number > 1:
-            self.scene.clear()
-            figure = QPixmap(image_list[self.start_number + self.draw_number - 2])
-            self.scene.addPixmap(figure)
-            structure.load_pymol(load_path="./temp/image" + str(self.start_number + self.draw_number - 2) + ".pse")
-            self.graphicsView.setScene(self.scene)
-
-            self.textEdit_2.setText(self.rotatex_text[self.draw_number - 2])
-            self.textEdit_1.setText(self.rotatey_text[self.draw_number - 2])
-            self.textEdit.setText(self.rotatez_text[self.draw_number - 2])
-            self.textEdit_3.setText(self.movex_text[self.draw_number - 2])
-            self.textEdit_4.setText(self.movey_text[self.draw_number - 2])
-            self.textEdit_5.setText(self.movez_text[self.draw_number - 2])
-            self.draw_number -= 1
-        else:
-            self.scene.clear()
-            figure = QPixmap(image_list[self.start_number - 1])
-            self.scene.addPixmap(figure)
-            structure.load_pymol(load_path="./temp/image" + str(self.start_number - 1) + ".pse")
-            self.graphicsView.setScene(self.scene)
-
-            self.textEdit.setText("")
-            self.textEdit_1.setText("")
-            self.textEdit_2.setText("")
-            self.textEdit_3.setText("")
-            self.textEdit_4.setText("")
-            self.textEdit_5.setText("")
-            self.draw_number = 0
-
-    def set_redo(self):
-        global image_list
-        global structure
-
-        if self.start_number + self.draw_number < len(image_list):
-            self.scene.clear()
-            figure = QPixmap(image_list[self.start_number + self.draw_number])
-            self.scene.addPixmap(figure)
-            structure.load_pymol(load_path="./temp/image" + str(self.start_number + self.draw_number) + ".pse")
-            self.graphicsView.setScene(self.scene)
-
-            self.textEdit_2.setText(self.rotatex_text[self.draw_number])
-            self.textEdit_1.setText(self.rotatey_text[self.draw_number])
-            self.textEdit.setText(self.rotatez_text[self.draw_number])
-            self.textEdit_3.setText(self.movex_text[self.draw_number])
-            self.textEdit_4.setText(self.movey_text[self.draw_number])
-            self.textEdit_5.setText(self.movez_text[self.draw_number])
-            self.draw_number += 1
-        else:
-            self.scene.clear()
-            figure = QPixmap(image_list[-1])
-            self.scene.addPixmap(figure)
-            self.graphicsView.setScene(self.scene)
-            structure.load_pymol(load_path="./temp/image" + str(self.start_number + self.draw_number - 1) + ".pse")
-
-            self.textEdit_2.setText(self.rotatex_text[-1])
-            self.textEdit_1.setText(self.rotatey_text[-1])
-            self.textEdit.setText(self.rotatez_text[-1])
-            self.textEdit_3.setText(self.movex_text[-1])
-            self.textEdit_4.setText(self.movey_text[-1])
-            self.textEdit_5.setText(self.movez_text[-1])
-
-    def window_clear(self):
-        self.draw_number = 0
-        self.start_number = 0
-        self.rotatex_text = []
-        self.rotatey_text = []
-        self.rotatez_text = []
-        self.movex_text = []
-        self.movey_text = []
-        self.movez_text = []
-
-        self.textEdit.clear()
-        self.textEdit_1.clear()
-        self.textEdit_2.clear()
-        self.textEdit_3.clear()
-        self.textEdit_4.clear()
-        self.textEdit_5.clear()
-        self.scene.clear()
-        self.graphicsView.setScene(self.scene)
-
-    def window_initialization(self):
-        global structure
-        global image_list
-        if len(image_list) > 0:
-            self.draw_number = 0
-            self.rotatex_text = []
-            self.rotatey_text = []
-            self.rotatez_text = []
-            self.movex_text = []
-            self.movey_text = []
-            self.movez_text = []
-            image_list = image_list[:self.start_number]
-
-            self.textEdit.clear()
-            self.textEdit_1.clear()
-            self.textEdit_2.clear()
-            self.textEdit_3.clear()
-            self.textEdit_4.clear()
-            self.textEdit_5.clear()
-            self.scene.clear()
-            self.scene.addPixmap(QPixmap(image_list[self.start_number - 1]))
-            self.graphicsView.setScene(self.scene)
-            structure.load_pymol(load_path="./temp/image" + str(self.start_number - 1) + ".pse")
-
-
-class StructureImage4(QMainWindow, ImageWindow4):
-
-    # noinspection PyGlobalUndefined
-    def __init__(self):
-        super(StructureImage4, self).__init__()
-        self.setupUi(self)
-        global image_list
-        global structure
-        self.draw_number = 0
-        self.start_number = 0
-        self.color_text = []
-        self.class_text = []
-        self.range_text = []
-
-        # noinspection PyUnresolvedReferences
-        self.pushButton_7.clicked.connect(self.draw_structure)
-        # noinspection PyUnresolvedReferences
-        self.pushButton_3.clicked.connect(self.set_undo)
-        # noinspection PyUnresolvedReferences
-        self.pushButton_4.clicked.connect(self.set_redo)
-
-    def start_image(self):
-        if len(image_list) > 0:
-            self.scene.addPixmap(QPixmap(image_list[-1]))
-            self.graphicsView.setScene(self.scene)
-            self.start_number = len(image_list)
-
-    def draw_structure(self):
-        global structure
-        global image_list
-
-        color = self.textEdit_1.toPlainText()
-        shading_type = self.comboBox_3.currentText()
-        range = self.textEdit.toPlainText()
-
-        structure.set_color(coloring_plan=[(shading_type + ":" + range, color)], initial_color=None)
-        structure.save(save_path="./temp/image" + str(self.start_number + self.draw_number) + ".png")
-        structure.save_pymol(save_path="./temp/image" + str(self.start_number + self.draw_number) + ".pse")
-
-        if self.start_number + self.draw_number < len(image_list):
-            image_list = image_list[:self.start_number + self.draw_number + 1]
-        else:
-            image_list.append("./temp/image" + str(self.start_number + self.draw_number) + ".png")
-
-        if self.draw_number < len(self.color_text):
-            self.color_text = self.color_text[:self.draw_number + 1]
-            self.color_text[self.draw_number] = color
-        else:
-            self.color_text.append(color)
-
-        if self.draw_number < len(self.class_text):
-            self.class_text = self.class_text[:self.draw_number + 1]
-            self.class_text[self.draw_number] = shading_type
-        else:
-            self.class_text.append(shading_type)
-
-        if self.draw_number < len(self.range_text):
-            self.range_text = self.range_text[:self.draw_number + 1]
-            self.range_text[self.draw_number] = range
-        else:
-            self.range_text.append(range)
-
-        figure = QPixmap("./temp/image" + str(self.start_number + self.draw_number) + ".png")
-        self.scene.clear()
-        self.scene.addPixmap(figure)
-        self.graphicsView.setScene(self.scene)
-
-        self.draw_number += 1
-
-    def save_image(self, label_text, ratio):
-        global structure
-        global image_list
-        if len(image_list) > 0:
-            structure.save(save_path="./temp/panel_" + label_text + ".png", ratio=ratio)
-
-    def set_undo(self):
-        global image_list
-        global structure
-
-        if self.draw_number > 1:
-            self.scene.clear()
-            figure = QPixmap(image_list[self.start_number + self.draw_number - 2])
-            self.scene.addPixmap(figure)
-            structure.load_pymol(load_path="./temp/image" + str(self.start_number + self.draw_number - 2) + ".pse")
-            self.graphicsView.setScene(self.scene)
-
-            self.textEdit_1.setText(self.color_text[self.draw_number - 2])
-            self.comboBox_3.setCurrentText(self.class_text[self.draw_number - 2])
-            self.textEdit.setText(self.range_text[self.draw_number - 2])
-            self.draw_number -= 1
-        else:
-            self.scene.clear()
-            figure = QPixmap(image_list[self.start_number - 1])
-            self.scene.addPixmap(figure)
-            structure.load_pymol(load_path="./temp/image" + str(self.start_number - 1) + ".pse")
-            self.graphicsView.setScene(self.scene)
-
-            self.textEdit_1.setText("")
-            self.comboBox_3.setCurrentIndex(0)
-            self.textEdit.setText("")
-            self.draw_number = 0
-
-    def set_redo(self):
-        global image_list
-        global structure
-
-        if self.start_number + self.draw_number < len(image_list):
-            self.scene.clear()
-            figure = QPixmap(image_list[self.start_number + self.draw_number])
-            self.scene.addPixmap(figure)
-            structure.load_pymol(load_path="./temp/image" + str(self.start_number + self.draw_number) + ".pse")
-            self.graphicsView.setScene(self.scene)
-
-            self.textEdit_1.setText(self.color_text[self.draw_number])
-            self.comboBox_3.setCurrentText(self.class_text[self.draw_number])
-            self.textEdit.setText(self.range_text[self.draw_number])
-            self.draw_number += 1
-        else:
-            self.scene.clear()
-            figure = QPixmap(image_list[-1])
-            self.scene.addPixmap(figure)
-            self.graphicsView.setScene(self.scene)
-            structure.load_pymol(load_path="./temp/image" + str(self.start_number + self.draw_number - 1) + ".pse")
-
-            self.textEdit_1.setText(self.color_text[-1])
-            self.comboBox_3.setCurrentText(self.class_text[-1])
-            self.textEdit.setText(self.range_text[-1])
-
-    def window_clear(self):
-        self.draw_number = 0
-        self.start_number = 0
-        self.color_text = []
-        self.class_text = []
-        self.range_text = []
-
-        self.textEdit.clear()
-        self.textEdit_1.clear()
-        self.scene.clear()
-        self.graphicsView.setScene(self.scene)
-
-    def window_initialization(self):
-        global structure
-        global image_list
-
-        if len(image_list) > 0:
-            self.draw_number = 0
-            self.color_text = []
-            self.class_text = []
-            self.range_text = []
-            image_list = image_list[:self.start_number]
-
-            self.textEdit.clear()
-            self.textEdit_1.clear()
-            self.scene.clear()
-            self.scene.addPixmap(QPixmap(image_list[self.start_number - 1]))
-            self.graphicsView.setScene(self.scene)
-            structure.load_pymol(load_path="./temp/image" + str(self.start_number - 1) + ".pse")
-
-
-class ClickSurface(object):
-
-    # noinspection PyPep8Naming
-    def setupUi(self, Form):
-        Form.setObjectName("Form")
-        Form.resize(400, 300)
-        icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap(root_path + "/icons/logo.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        Form.setWindowIcon(icon)
-        self.label_3 = QtWidgets.QLabel(Form)
-        self.label_3.setGeometry(QtCore.QRect(10, 20, 71, 41))
-        font = QtGui.QFont()
-        font.setFamily("Arial")
-        font.setPointSize(12)
-        self.label_3.setFont(font)
-        # noinspection PyUnresolvedReferences
-        self.label_3.setAlignment(QtCore.Qt.AlignCenter)
-        self.label_3.setObjectName("label_3")
-
-        self.textEdit = QtWidgets.QTextEdit(Form)
-        self.textEdit.setGeometry(QtCore.QRect(80, 25, 91, 31))
-        font = QtGui.QFont()
-        font.setFamily("Arial")
-        font.setPointSize(11)
-        self.textEdit.setFont(font)
-        self.textEdit.setObjectName("textEdit")
-
-        self.pushButton = QtWidgets.QPushButton(Form)
-        self.pushButton.setGeometry(QtCore.QRect(260, 20, 101, 41))
-        font = QtGui.QFont()
-        font.setFamily("Arial")
-        font.setPointSize(12)
-        self.pushButton.setFont(font)
-        self.pushButton.setObjectName("pushButton")
-        self.graphicsView = QtWidgets.QGraphicsView(Form)
-        self.graphicsView.setGeometry(QtCore.QRect(10, 80, 381, 201))
-        self.graphicsView.setObjectName("graphicsView")
-
-        self.button_group = QtWidgets.QButtonGroup()
-
-        self.retranslateUi(Form)
-        QtCore.QMetaObject.connectSlotsByName(Form)
-
-    # noinspection PyPep8Naming
-    def retranslateUi(self, Form):
-        _translate = QtCore.QCoreApplication.translate
-        Form.setWindowTitle(_translate("Form", "PyMOL-PUB surface"))
-        self.label_3.setText(_translate("Form", "label"))
-        self.pushButton.setText(_translate("Form", "complete"))
-
-
-class ContentWindow(object):
-
-    # noinspection PyPep8Naming
-    def setupUi(self, Form):
-        Form.setObjectName("Form")
-        Form.resize(800, 600)
-        icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap(root_path + "/icons/logo.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        Form.setWindowIcon(icon)
-        self.label = QtWidgets.QLabel(Form)
-        self.label.setGeometry(QtCore.QRect(30, 30, 61, 41))
-        font = QtGui.QFont()
-        font.setFamily("Arial")
-        font.setPointSize(12)
-        self.label.setFont(font)
-        self.label.setAlignment(QtCore.Qt.AlignCenter)
-        self.label.setObjectName("label")
-        self.textBrowser = QtWidgets.QTextBrowser(Form)
-        self.textBrowser.setGeometry(QtCore.QRect(90, 30, 481, 41))
-        self.textBrowser.setObjectName("textBrowser")
-
-        self.graphicsView = QtWidgets.QGraphicsView(Form)
-        self.graphicsView.setGeometry(QtCore.QRect(40, 90, 491, 481))
-        self.graphicsView.setObjectName("graphicsView")
-        self.scene = QtWidgets.QGraphicsScene()
-
-        self.pushButton_4 = QtWidgets.QPushButton(Form)
-        self.pushButton_4.setGeometry(QtCore.QRect(680, 460, 81, 41))
-        font = QtGui.QFont()
-        font.setFamily("Arial")
-        font.setPointSize(12)
-        self.pushButton_4.setFont(font)
-        self.pushButton_4.setObjectName("pushButton_4")
-        self.pushButton_3 = QtWidgets.QPushButton(Form)
-        self.pushButton_3.setGeometry(QtCore.QRect(580, 460, 81, 41))
-        font = QtGui.QFont()
-        font.setFamily("Arial")
-        font.setPointSize(12)
-        self.pushButton_3.setFont(font)
-        self.pushButton_3.setObjectName("pushButton_3")
-
-        self.pushButton_5 = QtWidgets.QPushButton(Form)
-        self.pushButton_5.setGeometry(QtCore.QRect(580, 520, 81, 41))
-        font = QtGui.QFont()
-        font.setFamily("Arial")
-        font.setPointSize(12)
-        self.pushButton_5.setFont(font)
-        self.pushButton_5.setObjectName("pushButton_5")
-
-        self.pushButton_6 = QtWidgets.QPushButton(Form)
-        self.pushButton_6.setGeometry(QtCore.QRect(680, 520, 81, 41))
-        font = QtGui.QFont()
-        font.setFamily("Arial")
-        font.setPointSize(12)
-        self.pushButton_6.setFont(font)
-        self.pushButton_6.setObjectName("pushButton_6")
-
-        self.pushButton_7 = QtWidgets.QPushButton(Form)
-        self.pushButton_7.setGeometry(QtCore.QRect(570, 30, 41, 41))
-        font = QtGui.QFont()
-        font.setFamily("Arial")
-        font.setPointSize(12)
-        self.pushButton_7.setFont(font)
-        self.pushButton_7.setText("")
-        icon1 = QtGui.QIcon()
-        icon1.addPixmap(QtGui.QPixmap(root_path + "/icons/folder.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.pushButton_7.setIcon(icon1)
-        self.pushButton_7.setIconSize(QtCore.QSize(30, 30))
-        self.pushButton_7.setObjectName("pushButton_7")
-
-        self.pushButton_8 = QtWidgets.QPushButton(Form)
-        self.pushButton_8.setGeometry(QtCore.QRect(580, 400, 181, 41))
-        font = QtGui.QFont()
-        font.setFamily("Arial")
-        font.setPointSize(12)
-        self.pushButton_8.setFont(font)
-        # icon2 = QtGui.QIcon()
-        # icon2.addPixmap(QtGui.QPixmap(root_path + "/icons/refresh.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        # self.pushButton_8.setIcon(icon2)
-        # self.pushButton_8.setIconSize(QtCore.QSize(20, 20))
-        self.pushButton_8.setText("refresh")
-        self.pushButton_8.setObjectName("pushButton_8")
-        self.pushButton_8.setLayoutDirection(QtCore.Qt.RightToLeft)
-
-        self.retranslateUi(Form)
-        QtCore.QMetaObject.connectSlotsByName(Form)
-
-    def retranslateUi(self, Form):
-        _translate = QtCore.QCoreApplication.translate
-        Form.setWindowTitle(_translate("Form", "PyMOL-PUB surface"))
-        self.label.setText(_translate("Form", "path"))
-        self.pushButton_4.setText(_translate("Form", "redo"))
-        self.pushButton_3.setText(_translate("Form", "undo"))
-        self.pushButton_5.setText(_translate("Form", "back"))
-        self.pushButton_6.setText(_translate("Form", "next"))
-
-
-class SelectionWindow(object):
-    def setupUi(self, Form):
-        Form.setObjectName("Form")
-        Form.resize(800, 600)
-        icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap(root_path + "/icons/logo.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        Form.setWindowIcon(icon)
-        self.pushButton = QtWidgets.QPushButton(Form)
-        self.pushButton.setGeometry(QtCore.QRect(70, 80, 300, 300))
-        font = QtGui.QFont()
-        font.setFamily("Arial")
-        font.setPointSize(12)
-        self.pushButton.setFont(font)
-        self.pushButton.setObjectName("pushButton")
-
-        self.pushButton_2 = QtWidgets.QPushButton(Form)
-        self.pushButton_2.setGeometry(QtCore.QRect(430, 80, 300, 300))
-        font = QtGui.QFont()
-        font.setFamily("Arial")
-        font.setPointSize(12)
-        self.pushButton_2.setFont(font)
-        self.pushButton_2.setObjectName("pushButton_2")
-
-        self.pushButton_3 = QtWidgets.QPushButton(Form)
-        self.pushButton_3.setGeometry(QtCore.QRect(660, 490, 81, 41))
-        font = QtGui.QFont()
-        font.setFamily("Arial")
-        font.setPointSize(12)
-        self.pushButton_3.setFont(font)
-        self.pushButton_3.setObjectName("pushButton_3")
-
-        self.retranslateUi(Form)
-        QtCore.QMetaObject.connectSlotsByName(Form)
-
-    def retranslateUi(self, Form):
-        _translate = QtCore.QCoreApplication.translate
-        Form.setWindowTitle(_translate("Form", "PyMOL-PUB surface"))
-        self.pushButton.setText(_translate("Form", "structure\n""image"))
-        self.pushButton_2.setText(_translate("Form", "statistical\n""content"))
-        self.pushButton_3.setText(_translate("Form", "back"))
-
-
-class DetailWindow(QWidget, ClickSurface):
-    def __init__(self, layout, order):
-        super(DetailWindow, self).__init__()
-        self.detail_button_list = None
-        self.setupUi(self)
-        self.draw_layout(layout, order)
-
-    def draw_layout(self, layout, order):
-        width = 370 / layout[1]
-        height = 190 / layout[0]
-        self.detail_button_list = []
-
-        for i in range(layout[0] * layout[1]):
-            button = QPushButton(self)
-            self.detail_button_list.append(button)
-            self.detail_button_list[i].resize(int(width), int(height))
-            self.detail_button_list[i].move(int(12 + i % layout[1] * (375.0 / layout[1])),
-                                            int(82 + i // layout[1] * (195.0 / layout[0])))
-            font = QFont()
-            font.setFamily("Arial")
-            font.setPointSize(16)
-            self.detail_button_list[i].setFont(font)
-            self.detail_button_list[i].setObjectName("push_button" + str(i))
-            if i == order:
-                self.detail_button_list[i].setStyleSheet("border: 3px dashed black; background: #FFE699;")
-                self.detail_button_list[i].setText("select")
-            else:
-                self.detail_button_list[i].setStyleSheet("border: 3px dashed black;")
-            self.button_group.addButton(self.detail_button_list[i], i)
-            self.detail_button_list[i].show()
-
-
-class SelectWindow(QMainWindow, SelectionWindow):
-    def __init__(self):
-        super(SelectWindow, self).__init__()
-        self.setupUi(self)
-
-
-class StatisticalWindow(QMainWindow, ContentWindow):
-
-    # noinspection PyGlobalUndefined
-    def __init__(self):
-        global statistical_list
-        super(StatisticalWindow, self).__init__()
-        self.setupUi(self)
-        statistical_list = []
-        self.draw_number = 0
-        self.folder_text = []
-
-        # noinspection PyUnresolvedReferences
-        self.pushButton_7.clicked.connect(self.add_statistical)
-        # noinspection PyUnresolvedReferences
-        self.pushButton_8.clicked.connect(self.show_statistical)
-        # noinspection PyUnresolvedReferences
-        self.pushButton_3.clicked.connect(self.set_undo)
-        # noinspection PyUnresolvedReferences
-        self.pushButton_4.clicked.connect(self.set_redo)
-
-    def add_statistical(self):
-        figure_name, _ = QFileDialog.getOpenFileName(self, 'Open file', '.', "Figure (*.png *.jpg *.bmp)")
-        self.textBrowser.append(figure_name)
-
-    def show_statistical(self):
-        global statistical_list
-
-        statistical_path = self.textBrowser.toPlainText().strip("\n")
-
-        if self.draw_number < len(statistical_list):
-            statistical_list = statistical_list[:self.draw_number + 1]
-            statistical_list[self.draw_number] = statistical_path
-        else:
-            statistical_list.append(statistical_path)
-
-        if self.draw_number < len(self.folder_text):
-            self.folder_text = self.folder_text[:self.draw_number + 1]
-            self.folder_text[self.draw_number] = self.textBrowser.toPlainText()
-        else:
-            self.folder_text.append(self.textBrowser.toPlainText())
-
-        figure = QPixmap(statistical_path)
-        self.scene.clear()
-        self.scene.addPixmap(figure)
-        self.graphicsView.setScene(self.scene)
-
-        self.draw_number += 1
-
-    def save_image(self, label_text, manuscript_format):
-        global statistical_list
-        if len(statistical_list) > 0:
-            image_data = Image.open(fp=statistical_list[-1])
-
-            if manuscript_format == "PNAS" or manuscript_format == "ACS":
-                minimum_dpi = 600
-            elif manuscript_format == "Oxford":
-                minimum_dpi = 350
-            else:
-                minimum_dpi = 300
-
-            if image_data.info["dpi"][0] < minimum_dpi:
-                reply = QMessageBox.question(self, "Ask",
-                                             "The image you selected does not meet the minimum dpi requirement of the "
-                                             "current journal.\nDo you agree to increase the dpi of this image?\n(If "
-                                             "you select \"no\" or \"cancel\", the image will not be exported "
-                                             "successfully.)",
-                                             QMessageBox.Yes | QMessageBox.No | QMessageBox.Cancel, QMessageBox.No)
-                if reply == QMessageBox.Yes:
-                    image_data.info["dpi"] = (minimum_dpi + 50, minimum_dpi + 50)
-
-            if image_data.info["dpi"][0] < minimum_dpi:
-                statistical_list = []
-            else:
-                newfile_path = "./temp/panel_" + label_text + ".png"
-                image_data.save(fp=newfile_path, quality=95, dpi=(minimum_dpi + 50, minimum_dpi + 50))
-
-    def set_undo(self):
-        global statistical_list
-
-        if self.draw_number > 1:
-            self.scene.clear()
-            figure = QPixmap(statistical_list[self.draw_number - 2])
-            self.scene.addPixmap(figure)
-            self.graphicsView.setScene(self.scene)
-            self.textBrowser.setText(self.folder_text[self.draw_number - 2])
-            self.draw_number -= 1
-        else:
-            self.scene.clear()
-            self.graphicsView.setScene(self.scene)
-            self.textBrowser.setText("")
-            self.draw_number = 0
-
-    def set_redo(self):
-        global statistical_list
-
-        if self.draw_number < len(statistical_list):
-            self.scene.clear()
-            figure = QPixmap(statistical_list[self.draw_number])
-            self.scene.addPixmap(figure)
-            self.graphicsView.setScene(self.scene)
-            self.textBrowser.setText(self.folder_text[self.draw_number])
-            self.draw_number += 1
-        else:
-            self.scene.clear()
-            figure = QPixmap(statistical_list[-1])
-            self.scene.addPixmap(figure)
-            self.graphicsView.setScene(self.scene)
-            self.textBrowser.setText(self.folder_text[-1])
-
-    def window_clear(self):
-        global statistical_list
-
-        statistical_list = []
-        self.draw_number = 0
-        self.folder_text = []
-
-        self.textBrowser.clear()
-        self.scene.clear()
-        self.graphicsView.setScene(self.scene)
+global image_list
+global statistical_list
+global structure
 
 
 class MainWindow(object):
@@ -1604,7 +57,7 @@ class MainWindow(object):
         self.history_browser = QtWidgets.QTextBrowser(self.central_widget)
         self.history_browser.setGeometry(QtCore.QRect(80, 20, 650, 40))
         self.history_browser.setFont(font)
-        self.history_browser.setObjectName("textBrowser")
+        self.history_browser.setObjectName("history_browser")
 
         self.history_button = QtWidgets.QPushButton(self.central_widget)
         self.history_button.setGeometry(QtCore.QRect(740, 20, 40, 40))
@@ -1614,7 +67,7 @@ class MainWindow(object):
         icon.addPixmap(QtGui.QPixmap(root_path + "/icons/folder.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.history_button.setIcon(icon)
         self.history_button.setIconSize(QtCore.QSize(30, 30))
-        self.history_button.setObjectName("pushButton")
+        self.history_button.setObjectName("history_button")
 
         self.targets_label = QtWidgets.QLabel(self.central_widget)
         self.targets_label.setGeometry(QtCore.QRect(20, 70, 60, 40))
@@ -1629,7 +82,7 @@ class MainWindow(object):
         new_font.setItalic(True)
         new_font.setWeight(50)
         self.targets_combo_box.setFont(new_font)
-        self.targets_combo_box.setObjectName("comboBox")
+        self.targets_combo_box.setObjectName("targets_combo_box")
         self.targets_combo_box.addItems(["" for _ in range(8)])
 
         self.radio_label = QtWidgets.QLabel(self.central_widget)
@@ -1640,7 +93,7 @@ class MainWindow(object):
         self.radio_text_edit = QtWidgets.QTextEdit(self.central_widget)
         self.radio_text_edit.setGeometry(QtCore.QRect(350, 70, 50, 40))
         self.radio_text_edit.setFont(font)
-        self.radio_text_edit.setObjectName("textEdit_1")
+        self.radio_text_edit.setObjectName("radio_text_edit")
         PyMOL.setCentralWidget(self.central_widget)
 
         self.occupied_label = QtWidgets.QLabel(self.central_widget)
@@ -1651,7 +104,7 @@ class MainWindow(object):
         self.occupied_text_edit = QtWidgets.QTextEdit(self.central_widget)
         self.occupied_text_edit.setGeometry(QtCore.QRect(560, 70, 50, 40))
         self.occupied_text_edit.setFont(font)
-        self.occupied_text_edit.setObjectName("textEdit")
+        self.occupied_text_edit.setObjectName("occupied_text_edit")
         PyMOL.setCentralWidget(self.central_widget)
 
         self.total_column_label = QtWidgets.QLabel(self.central_widget)
@@ -1661,7 +114,7 @@ class MainWindow(object):
         self.total_column_combo_box = QtWidgets.QComboBox(self.central_widget)
         self.total_column_combo_box.setGeometry(QtCore.QRect(740, 70, 40, 40))
         self.total_column_combo_box.setFont(font)
-        self.total_column_combo_box.setObjectName("comboBox_2")
+        self.total_column_combo_box.setObjectName("total_column_combo_box")
         self.total_column_combo_box.addItems(["" for _ in range(2)])
         self.total_column_combo_box.setEnabled(False)
 
@@ -1685,7 +138,7 @@ class MainWindow(object):
         self.layout_combo_box = QtWidgets.QComboBox(self.central_widget)
         self.layout_combo_box.setGeometry(QtCore.QRect(80, 470, 180, 40))
         self.layout_combo_box.setFont(font)
-        self.layout_combo_box.setObjectName("comboBox_3")
+        self.layout_combo_box.setObjectName("layout_combo_box")
         self.layout_combo_box.addItems(["" for _ in range(4)])
 
         self.implement_label = QtWidgets.QLabel(self.central_widget)
@@ -1695,7 +148,7 @@ class MainWindow(object):
         self.implement_combo_box = QtWidgets.QComboBox(self.central_widget)
         self.implement_combo_box.setGeometry(QtCore.QRect(375, 470, 55, 40))
         self.implement_combo_box.setFont(font)
-        self.implement_combo_box.setObjectName("comboBox_4")
+        self.implement_combo_box.setObjectName("implement_combo_box")
         self.implement_combo_box.addItem("")
 
         line = QtWidgets.QFrame(self.central_widget)
@@ -1706,12 +159,12 @@ class MainWindow(object):
         self.undo_button = QtWidgets.QPushButton(self.central_widget)
         self.undo_button.setGeometry(QtCore.QRect(480, 470, 80, 40))
         self.undo_button.setFont(font)
-        self.undo_button.setObjectName("pushButton_3")
+        self.undo_button.setObjectName("undo_button")
 
         self.redo_button = QtWidgets.QPushButton(self.central_widget)
         self.redo_button.setGeometry(QtCore.QRect(580, 470, 80, 40))
         self.redo_button.setFont(font)
-        self.redo_button.setObjectName("pushButton_4")
+        self.redo_button.setObjectName("redo_button")
 
         line = QtWidgets.QFrame(self.central_widget)
         line.setGeometry(QtCore.QRect(675, 470, 10, 40))
@@ -1721,7 +174,7 @@ class MainWindow(object):
         self.output_button = QtWidgets.QPushButton(self.central_widget)
         self.output_button.setGeometry(QtCore.QRect(700, 470, 80, 40))
         self.output_button.setFont(font)
-        self.output_button.setObjectName("pushButton_2")
+        self.output_button.setObjectName("output_button")
 
         line = QtWidgets.QFrame(self.central_widget)
         line.setGeometry(QtCore.QRect(20, 515, 760, 10))
@@ -1800,6 +253,8 @@ class EntryWindow(QMainWindow, MainWindow):
         self.format_text = []
 
         # noinspection PyUnresolvedReferences
+        self.targets_combo_box.activated.connect(self.column_set)
+        # noinspection PyUnresolvedReferences
         self.layout_combo_box.activated.connect(lambda: self.change_layout(self.layout_combo_box.currentIndex()))
         # noinspection PyUnresolvedReferences
         self.output_button.clicked.connect(self.figure_output)
@@ -1811,6 +266,12 @@ class EntryWindow(QMainWindow, MainWindow):
     def add_history(self):
         figure_name, _ = QFileDialog.getOpenFileName(self, 'Open file', '.', "Figure (*.png *.pdf)")
         self.history_browser.append(figure_name)
+
+    def column_set(self):
+        if self.targets_combo_box.currentText() == "Cell":
+            self.total_column_combo_box.setEnabled(True)
+        else:
+            self.total_column_combo_box.setEnabled(False)
 
     def change_layout(self, index):
         self.implement_combo_box.clear()
@@ -1860,13 +321,13 @@ class EntryWindow(QMainWindow, MainWindow):
             self.button_state.append(0)
             self.new_button_list[i].show()
 
-    def check_surface(self, new_index):
+    def check_surface(self):
         matrix = []
         for order, button in enumerate(self.new_button_list):
             matrix.append(button.text())
-        matrix[new_index] = self.current_label
         matrix = array(matrix).reshape(self.layout)
 
+        check = True
         values = []
         for row in matrix:
             for value in row:
@@ -1882,11 +343,15 @@ class EntryWindow(QMainWindow, MainWindow):
         if order[0] == -1:
             order = order[1:]
         if order[0] != 0:
-            return "The label should start from a!"
+            check = False
+            QMessageBox.warning(self, "Illegal Label", "The label should start from a!",
+                                QMessageBox.Yes | QMessageBox.No, QMessageBox.Yes)
         if len(order) > 1:
             for former_index, latter_index in zip(order[:-1], order[1:]):
                 if latter_index - former_index != 1:
-                    return "The labels should be consecutive!"
+                    check = False
+                    QMessageBox.warning(self, "Illegal Label", "The labels should be consecutive!",
+                                        QMessageBox.Yes | QMessageBox.No, QMessageBox.Yes)
 
         for index in order:
             xs, ys = where(indices == index)
@@ -1895,9 +360,13 @@ class EntryWindow(QMainWindow, MainWindow):
             for x, y in zip(xs, ys):
                 chuck_matrix[x - ranges["x"][0], y - ranges["y"][0]] = 1
             if any(chuck_matrix != 1):
-                return "The area covered by this label should be rectangular!"
+                check = False
+                QMessageBox.warning(self, "Illegal Label",
+                                    "The area covered by label " + chr(index + 97) + " should be rectangular!",
+                                    QMessageBox.Yes | QMessageBox.No, QMessageBox.Yes)
 
-        return True
+        if check:
+            start_select()
 
     def show_detail(self):
         # noinspection PyTypeChecker
@@ -1907,29 +376,26 @@ class EntryWindow(QMainWindow, MainWindow):
         self.hide()
 
         # noinspection PyUnresolvedReferences
-        self.detail_window.pushButton.clicked.connect(self.detail_window.hide)
+        self.detail_window.complete_button.clicked.connect(self.detail_window.hide)
         # noinspection PyUnresolvedReferences
-        self.detail_window.pushButton.clicked.connect(self.show)
+        self.detail_window.complete_button.clicked.connect(self.show)
         # noinspection PyUnresolvedReferences
-        self.detail_window.pushButton.clicked.connect(lambda: self.label_set(order))
+        self.detail_window.complete_button.clicked.connect(lambda: self.label_set(order))
 
     def label_set(self, order):
-        self.current_label = self.detail_window.textEdit.toPlainText()
-        warning_text = self.check_surface(order)
+        self.current_label = self.detail_window.label_text_edit.toPlainText()
 
-        if warning_text is True:
-            if self.current_label == '':
-                self.new_button_list[order].setText(self.current_label)
-                self.new_button_list[order].setStyleSheet("border: 1px dashed black; background: #FFFFFF;")
-            else:
-                self.new_button_list[order].setText(self.current_label)
-                self.new_button_list[order].setStyleSheet("border: 1px dashed black; background: #B4C7E7;")
-                self.button_state[order] = 1
-                if self.current_label not in self.combobox_label:
-                    self.combobox_label.append(self.current_label)
-                    self.implement_combo_box.addItem(self.current_label)
+        if self.current_label == '':
+            self.new_button_list[order].setText(self.current_label)
+            self.new_button_list[order].setStyleSheet("border: 1px dashed black; background: #FFFFFF;")
+            self.button_state[order] = 0
         else:
-            QMessageBox.warning(self, "Illegal Label", warning_text, QMessageBox.Yes | QMessageBox.No, QMessageBox.Yes)
+            self.new_button_list[order].setText(self.current_label)
+            self.new_button_list[order].setStyleSheet("border: 1px dashed black; background: #B4C7E7;")
+            self.button_state[order] = 1
+            if self.current_label not in self.combobox_label:
+                self.combobox_label.append(self.current_label)
+                self.implement_combo_box.addItem(self.current_label)
 
     # noinspection PyGlobalUndefined
     def image_set(self):
@@ -2068,6 +534,1488 @@ class EntryWindow(QMainWindow, MainWindow):
             self.total_column_combo_box.setCurrentText(self.format_text[-1])
 
 
+class ClickSurface(object):
+    def __init__(self):
+        self.label = None
+        self.label_text_edit = None
+        self.complete_button = None
+        self.graphics_view = None
+        self.button_group = None
+
+    # noinspection PyPep8Naming
+    def setupUi(self, Form):
+        Form.setObjectName("Form")
+        Form.resize(400, 300)
+
+        logo_icon = QtGui.QIcon()
+        logo_icon.addPixmap(QtGui.QPixmap(root_path + "/icons/logo.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        Form.setWindowIcon(logo_icon)
+
+        self.label = QtWidgets.QLabel(Form)
+        self.label.setGeometry(QtCore.QRect(10, 20, 40, 40))
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(12)
+        self.label.setFont(font)
+        # noinspection PyUnresolvedReferences
+        self.label.setObjectName("label")
+
+        self.label_text_edit = QtWidgets.QTextEdit(Form)
+        self.label_text_edit.setGeometry(QtCore.QRect(50, 20, 90, 40))
+        self.label_text_edit.setFont(font)
+        self.label_text_edit.setObjectName("label_text_edit")
+
+        self.complete_button = QtWidgets.QPushButton(Form)
+        self.complete_button.setGeometry(QtCore.QRect(290, 20, 100, 40))
+        self.complete_button.setFont(font)
+        self.complete_button.setObjectName("complete_button")
+
+        self.graphics_view = QtWidgets.QGraphicsView(Form)
+        self.graphics_view.setGeometry(QtCore.QRect(10, 80, 380, 200))
+        self.graphics_view.setObjectName("graphics_view")
+
+        self.button_group = QtWidgets.QButtonGroup()
+
+        self.retranslateUi(Form)
+        QtCore.QMetaObject.connectSlotsByName(Form)
+
+    # noinspection PyPep8Naming
+    def retranslateUi(self, Form):
+        _translate = QtCore.QCoreApplication.translate
+        Form.setWindowTitle(_translate("Form", "PyMOL-PUB surface"))
+        self.label.setText(_translate("Form", "label"))
+        self.complete_button.setText(_translate("Form", "complete"))
+
+
+class DetailWindow(QWidget, ClickSurface):
+    def __init__(self, layout, order):
+        super(DetailWindow, self).__init__()
+        self.detail_button_list = None
+        self.setupUi(self)
+        self.draw_layout(layout, order)
+
+    def draw_layout(self, layout, order):
+        width = 370 / layout[1]
+        height = 190 / layout[0]
+        self.detail_button_list = []
+
+        for i in range(layout[0] * layout[1]):
+            button = QPushButton(self)
+            self.detail_button_list.append(button)
+            self.detail_button_list[i].resize(int(width), int(height))
+            self.detail_button_list[i].move(int(15 + i % layout[1] * (375.0 / layout[1])),
+                                            int(85 + i // layout[1] * (195.0 / layout[0])))
+            font = QFont()
+            font.setFamily("Arial")
+            font.setPointSize(12)
+            self.detail_button_list[i].setFont(font)
+            self.detail_button_list[i].setObjectName("push_button" + str(i))
+            if i == order:
+                self.detail_button_list[i].setStyleSheet("border: 1px dashed black; background: #FFE699;")
+                self.detail_button_list[i].setText("select")
+            else:
+                self.detail_button_list[i].setStyleSheet("border: 1px dashed black;")
+            self.button_group.addButton(self.detail_button_list[i], i)
+            self.detail_button_list[i].show()
+
+
+class SelectionWindow(object):
+    def __init__(self):
+        self.structure_image_button = None
+        self.statistical_content_button = None
+        self.back_button = None
+
+    # noinspection PyPep8Naming
+    def setupUi(self, Form):
+        Form.setObjectName("Form")
+        Form.resize(800, 600)
+        logo_icon = QtGui.QIcon()
+        logo_icon.addPixmap(QtGui.QPixmap(root_path + "/icons/logo.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        Form.setWindowIcon(logo_icon)
+
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(12)
+
+        self.structure_image_button = QtWidgets.QPushButton(Form)
+        self.structure_image_button.setGeometry(QtCore.QRect(70, 80, 300, 300))
+        self.structure_image_button.setFont(font)
+        self.structure_image_button.setObjectName("structure_image_button")
+
+        self.statistical_content_button = QtWidgets.QPushButton(Form)
+        self.statistical_content_button.setGeometry(QtCore.QRect(430, 80, 300, 300))
+        self.statistical_content_button.setFont(font)
+        self.statistical_content_button.setObjectName("statistical_content_button")
+
+        self.back_button = QtWidgets.QPushButton(Form)
+        self.back_button.setGeometry(QtCore.QRect(650, 490, 80, 40))
+        self.back_button.setFont(font)
+        self.back_button.setObjectName("back_button")
+
+        self.retranslateUi(Form)
+        QtCore.QMetaObject.connectSlotsByName(Form)
+
+    # noinspection PyPep8Naming
+    def retranslateUi(self, Form):
+        _translate = QtCore.QCoreApplication.translate
+        Form.setWindowTitle(_translate("Form", "PyMOL-PUB surface"))
+        self.structure_image_button.setText(_translate("Form", "structure\n""image"))
+        self.statistical_content_button.setText(_translate("Form", "statistical\n""content"))
+        self.back_button.setText(_translate("Form", "back"))
+
+
+class SelectWindow(QMainWindow, SelectionWindow):
+    def __init__(self):
+        super(SelectWindow, self).__init__()
+        self.setupUi(self)
+
+
+class ContentWindow(object):
+    def __init__(self):
+        self.path_label = None
+        self.path_browser = None
+        self.path_button = None
+        self.graphics_view = None
+        self.scene = None
+        self.redo_button = None
+        self.undo_button = None
+        self.back_button = None
+        self.next_button = None
+        self.refresh_button = None
+
+    # noinspection PyPep8Naming
+    def setupUi(self, Form):
+        Form.setObjectName("Form")
+        Form.resize(800, 600)
+        logo_icon = QtGui.QIcon()
+        logo_icon.addPixmap(QtGui.QPixmap(root_path + "/icons/logo.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        Form.setWindowIcon(logo_icon)
+
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(12)
+
+        self.path_label = QtWidgets.QLabel(Form)
+        self.path_label.setGeometry(QtCore.QRect(50, 20, 40, 40))
+        self.path_label.setFont(font)
+        self.path_label.setObjectName("path_label")
+
+        self.path_browser = QtWidgets.QTextBrowser(Form)
+        self.path_browser.setGeometry(QtCore.QRect(90, 20, 400, 40))
+        self.path_browser.setObjectName("path_browser")
+
+        self.path_button = QtWidgets.QPushButton(Form)
+        self.path_button.setGeometry(QtCore.QRect(490, 20, 40, 40))
+        path_icon = QtGui.QIcon()
+        path_icon.addPixmap(QtGui.QPixmap(root_path + "/icons/folder.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.path_button.setIcon(path_icon)
+        self.path_button.setIconSize(QtCore.QSize(30, 30))
+        self.path_button.setObjectName("path_button")
+
+        self.graphics_view = QtWidgets.QGraphicsView(Form)
+        self.graphics_view.setGeometry(QtCore.QRect(50, 70, 480, 480))
+        self.graphics_view.setObjectName("graphics_view")
+        self.scene = QtWidgets.QGraphicsScene()
+
+        self.redo_button = QtWidgets.QPushButton(Form)
+        self.redo_button.setGeometry(QtCore.QRect(670, 450, 80, 40))
+        self.redo_button.setFont(font)
+        self.redo_button.setObjectName("redo_button")
+
+        self.undo_button = QtWidgets.QPushButton(Form)
+        self.undo_button.setGeometry(QtCore.QRect(570, 450, 80, 40))
+        self.undo_button.setFont(font)
+        self.undo_button.setObjectName("undo_button")
+
+        self.back_button = QtWidgets.QPushButton(Form)
+        self.back_button.setGeometry(QtCore.QRect(570, 510, 80, 40))
+        self.back_button.setFont(font)
+        self.back_button.setObjectName("back_button")
+
+        self.next_button = QtWidgets.QPushButton(Form)
+        self.next_button.setGeometry(QtCore.QRect(670, 510, 80, 40))
+        self.next_button.setFont(font)
+        self.next_button.setObjectName("next_button")
+
+        self.refresh_button = QtWidgets.QPushButton(Form)
+        self.refresh_button.setGeometry(QtCore.QRect(570, 390, 180, 40))
+        self.refresh_button.setFont(font)
+        self.refresh_button.setText("refresh")
+        self.refresh_button.setObjectName("refresh_button")
+        self.refresh_button.setLayoutDirection(QtCore.Qt.RightToLeft)
+
+        self.retranslateUi(Form)
+        QtCore.QMetaObject.connectSlotsByName(Form)
+
+    # noinspection PyPep8Naming
+    def retranslateUi(self, Form):
+        _translate = QtCore.QCoreApplication.translate
+        Form.setWindowTitle(_translate("Form", "PyMOL-PUB surface"))
+        self.path_label.setText(_translate("Form", "path"))
+        self.redo_button.setText(_translate("Form", "redo"))
+        self.undo_button.setText(_translate("Form", "undo"))
+        self.back_button.setText(_translate("Form", "back"))
+        self.next_button.setText(_translate("Form", "next"))
+
+
+class StatisticalWindow(QMainWindow, ContentWindow):
+
+    # noinspection PyGlobalUndefined
+    def __init__(self):
+        global statistical_list
+        super(StatisticalWindow, self).__init__()
+        self.setupUi(self)
+        statistical_list = []
+        self.draw_number = 0
+        self.folder_text = []
+
+        # noinspection PyUnresolvedReferences
+        self.path_button.clicked.connect(self.add_statistical)
+        # noinspection PyUnresolvedReferences
+        self.refresh_button.clicked.connect(self.show_statistical)
+        # noinspection PyUnresolvedReferences
+        self.undo_button.clicked.connect(self.set_undo)
+        # noinspection PyUnresolvedReferences
+        self.redo_button.clicked.connect(self.set_redo)
+
+    def add_statistical(self):
+        figure_name, _ = QFileDialog.getOpenFileName(self, 'Open file', '.', "Figure (*.png *.jpg *.bmp)")
+        self.path_browser.append(figure_name)
+
+    def show_statistical(self):
+        global statistical_list
+
+        statistical_path = self.path_browser.toPlainText().strip("\n")
+
+        if self.draw_number < len(statistical_list):
+            statistical_list = statistical_list[:self.draw_number + 1]
+            statistical_list[self.draw_number] = statistical_path
+        else:
+            statistical_list.append(statistical_path)
+
+        if self.draw_number < len(self.folder_text):
+            self.folder_text = self.folder_text[:self.draw_number + 1]
+            self.folder_text[self.draw_number] = self.path_browser.toPlainText()
+        else:
+            self.folder_text.append(self.path_browser.toPlainText())
+
+        figure = QPixmap(statistical_path)
+        self.scene.clear()
+        self.scene.addPixmap(figure)
+        self.graphics_view.setScene(self.scene)
+
+        self.draw_number += 1
+
+    def save_image(self, label_text, manuscript_format):
+        global statistical_list
+        if len(statistical_list) > 0:
+            image_data = Image.open(fp=statistical_list[-1])
+
+            if manuscript_format == "PNAS" or manuscript_format == "ACS":
+                minimum_dpi = 600
+            elif manuscript_format == "Oxford":
+                minimum_dpi = 350
+            else:
+                minimum_dpi = 300
+
+            if image_data.info["dpi"][0] < minimum_dpi:
+                reply = QMessageBox.question(self, "Ask",
+                                             "The image you selected does not meet the minimum dpi requirement of the "
+                                             "current journal.\nDo you agree to increase the dpi of this image?\n(If "
+                                             "you select \"no\" or \"cancel\", the image will not be exported "
+                                             "successfully.)",
+                                             QMessageBox.Yes | QMessageBox.No | QMessageBox.Cancel, QMessageBox.No)
+                if reply == QMessageBox.Yes:
+                    image_data.info["dpi"] = (minimum_dpi + 50, minimum_dpi + 50)
+
+            if image_data.info["dpi"][0] < minimum_dpi:
+                statistical_list = []
+            else:
+                newfile_path = "./temp/panel_" + label_text + ".png"
+                image_data.save(fp=newfile_path, quality=95, dpi=(minimum_dpi + 50, minimum_dpi + 50))
+
+    def set_undo(self):
+        global statistical_list
+
+        if self.draw_number > 1:
+            self.scene.clear()
+            figure = QPixmap(statistical_list[self.draw_number - 2])
+            self.scene.addPixmap(figure)
+            self.graphics_view.setScene(self.scene)
+            self.path_browser.setText(self.folder_text[self.draw_number - 2])
+            self.draw_number -= 1
+        else:
+            self.scene.clear()
+            self.graphics_view.setScene(self.scene)
+            self.path_browser.setText("")
+            self.draw_number = 0
+
+    def set_redo(self):
+        global statistical_list
+
+        if self.draw_number < len(statistical_list):
+            self.scene.clear()
+            figure = QPixmap(statistical_list[self.draw_number])
+            self.scene.addPixmap(figure)
+            self.graphics_view.setScene(self.scene)
+            self.path_browser.setText(self.folder_text[self.draw_number])
+            self.draw_number += 1
+        else:
+            self.scene.clear()
+            figure = QPixmap(statistical_list[-1])
+            self.scene.addPixmap(figure)
+            self.graphics_view.setScene(self.scene)
+            self.path_browser.setText(self.folder_text[-1])
+
+    def window_clear(self):
+        global statistical_list
+
+        statistical_list = []
+        self.draw_number = 0
+        self.folder_text = []
+
+        self.path_browser.clear()
+        self.scene.clear()
+        self.graphics_view.setScene(self.scene)
+
+
+class ImageWindow1(object):
+
+    def __init__(self):
+        self.refresh_button = None
+        self.next_button = None
+        self.back_button = None
+        self.undo_button = None
+        self.redo_button = None
+        self.remove_text_edit = None
+        self.remove_label = None
+        self.scene = None
+        self.graphics_view = None
+        self.path_button = None
+        self.path_browser = None
+        self.path_label = None
+
+    # noinspection PyPep8Naming
+    def setupUi(self, Form):
+        Form.setObjectName("Form")
+        Form.resize(800, 600)
+        logo_icon = QtGui.QIcon()
+        logo_icon.addPixmap(QtGui.QPixmap(root_path + "/icons/logo.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        Form.setWindowIcon(logo_icon)
+
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(12)
+
+        self.path_label = QtWidgets.QLabel(Form)
+        self.path_label.setGeometry(QtCore.QRect(50, 20, 40, 40))
+        self.path_label.setFont(font)
+        self.path_label.setObjectName("path_label")
+
+        self.path_browser = QtWidgets.QTextBrowser(Form)
+        self.path_browser.setGeometry(QtCore.QRect(90, 20, 400, 40))
+        self.path_browser.setObjectName("path_browser")
+
+        self.path_button = QtWidgets.QPushButton(Form)
+        self.path_button.setGeometry(QtCore.QRect(490, 20, 40, 40))
+        path_icon = QtGui.QIcon()
+        path_icon.addPixmap(QtGui.QPixmap(root_path + "/icons/folder.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.path_button.setIcon(path_icon)
+        self.path_button.setIconSize(QtCore.QSize(30, 30))
+        self.path_button.setObjectName("path_button")
+
+        self.graphics_view = QtWidgets.QGraphicsView(Form)
+        self.graphics_view.setGeometry(QtCore.QRect(50, 70, 480, 480))
+        self.graphics_view.setObjectName("graphics_view")
+        self.scene = QtWidgets.QGraphicsScene()
+
+        self.remove_label = QtWidgets.QLabel(Form)
+        self.remove_label.setGeometry(QtCore.QRect(570, 70, 80, 40))
+        self.remove_label.setFont(font)
+        self.remove_label.setObjectName("remove_label")
+
+        self.remove_text_edit = QtWidgets.QTextEdit(Form)
+        self.remove_text_edit.setGeometry(QtCore.QRect(650, 70, 100, 40))
+        self.remove_text_edit.setFont(font)
+        self.remove_text_edit.setObjectName("remove_text_edit")
+
+        self.redo_button = QtWidgets.QPushButton(Form)
+        self.redo_button.setGeometry(QtCore.QRect(670, 450, 80, 40))
+        self.redo_button.setFont(font)
+        self.redo_button.setObjectName("redo_button")
+
+        self.undo_button = QtWidgets.QPushButton(Form)
+        self.undo_button.setGeometry(QtCore.QRect(570, 450, 80, 40))
+        self.undo_button.setFont(font)
+        self.undo_button.setObjectName("undo_button")
+
+        self.back_button = QtWidgets.QPushButton(Form)
+        self.back_button.setGeometry(QtCore.QRect(570, 510, 80, 40))
+        self.back_button.setFont(font)
+        self.back_button.setObjectName("back_button")
+
+        self.next_button = QtWidgets.QPushButton(Form)
+        self.next_button.setGeometry(QtCore.QRect(670, 510, 80, 40))
+        self.next_button.setFont(font)
+        self.next_button.setObjectName("next_button")
+
+        self.refresh_button = QtWidgets.QPushButton(Form)
+        self.refresh_button.setGeometry(QtCore.QRect(570, 390, 180, 40))
+        self.refresh_button.setFont(font)
+        self.refresh_button.setText("refresh")
+        self.refresh_button.setObjectName("refresh_button")
+        self.refresh_button.setLayoutDirection(QtCore.Qt.RightToLeft)
+
+        self.retranslateUi(Form)
+        QtCore.QMetaObject.connectSlotsByName(Form)
+
+    # noinspection PyPep8Naming
+    def retranslateUi(self, Form):
+        _translate = QtCore.QCoreApplication.translate
+        Form.setWindowTitle(_translate("Form", "PyMOL-PUB surface"))
+        self.remove_label.setText(_translate("Form", "remove"))
+        self.redo_button.setText(_translate("Form", "redo"))
+        self.undo_button.setText(_translate("Form", "undo"))
+        self.back_button.setText(_translate("Form", "back"))
+        self.next_button.setText(_translate("Form", "next"))
+        self.path_label.setText(_translate("Form", "path"))
+
+
+class StructureImage1(QMainWindow, ImageWindow1):
+
+    # noinspection PyGlobalUndefined
+    def __init__(self):
+        super(StructureImage1, self).__init__()
+        self.setupUi(self)
+        global image_list
+        global structure
+        image_list = []
+        structure = None
+        self.draw_number = 0
+        self.folder_text = []
+        self.remove_text = []
+
+        # noinspection PyUnresolvedReferences
+        self.path_button.clicked.connect(self.load_structures)
+        # noinspection PyUnresolvedReferences
+        self.refresh_button.clicked.connect(self.draw_structure)
+        # noinspection PyUnresolvedReferences
+        self.undo_button.clicked.connect(self.set_undo)
+        # noinspection PyUnresolvedReferences
+        self.redo_button.clicked.connect(self.set_redo)
+
+    def load_structures(self):
+        structure_names, _ = QFileDialog.getOpenFileNames(self, 'Open file', '.', "Structure (*.pdb *.cif)")
+        for structure_name in structure_names:
+            self.path_browser.append(structure_name)
+
+    def draw_structure(self):
+        global image_list
+        global structure
+
+        structure_paths = [file for file in self.path_browser.toPlainText().split("\n")]
+        if self.draw_number == 0:
+            structure = HighlightStructureImage(structure_paths=structure_paths)
+
+        if self.remove_text_edit.toPlainText() != "":
+            structure.set_cache(cache_contents=[self.remove_text_edit.toPlainText()])
+
+        structure.save(save_path="./temp/image" + str(self.draw_number) + ".png")
+        structure.save_pymol(save_path="./temp/image" + str(self.draw_number) + ".pse")
+
+        if self.draw_number < len(image_list):
+            image_list = image_list[:self.draw_number + 1]
+        else:
+            image_list.append("./temp/image" + str(self.draw_number) + ".png")
+
+        if self.draw_number < len(self.folder_text):
+            self.folder_text = self.folder_text[:self.draw_number + 1]
+            self.folder_text[self.draw_number] = self.path_browser.toPlainText()
+        else:
+            self.folder_text.append(self.path_browser.toPlainText())
+
+        if self.draw_number < len(self.remove_text):
+            self.remove_text = self.remove_text[:self.draw_number + 1]
+            self.remove_text[self.draw_number] = self.remove_text_edit.toPlainText()
+        else:
+            self.remove_text.append(self.remove_text_edit.toPlainText())
+
+        figure = QPixmap("./temp/image" + str(self.draw_number) + ".png")
+        self.scene.clear()
+        self.scene.addPixmap(figure)
+        self.graphics_view.setScene(self.scene)
+
+        self.draw_number += 1
+
+    def set_undo(self):
+        global image_list
+        global structure
+
+        if self.draw_number > 1:
+            self.scene.clear()
+            figure = QPixmap(image_list[self.draw_number - 2])
+            self.scene.addPixmap(figure)
+            structure.load_pymol(load_path="./temp/image" + str(self.draw_number - 2) + ".pse")
+            self.graphics_view.setScene(self.scene)
+            self.path_browser.setText(self.folder_text[self.draw_number - 2])
+            self.remove_text_edit.setText(self.remove_text[self.draw_number - 2])
+            self.draw_number -= 1
+        else:
+            self.scene.clear()
+            structure.clear()
+            self.graphics_view.setScene(self.scene)
+            self.path_browser.setText("")
+            self.remove_text_edit.setText("")
+            self.draw_number = 0
+
+    def set_redo(self):
+        global image_list
+        global structure
+
+        if self.draw_number < len(image_list):
+            self.scene.clear()
+            figure = QPixmap(image_list[self.draw_number])
+            self.scene.addPixmap(figure)
+            structure.load_pymol(load_path="./temp/image" + str(self.draw_number) + ".pse")
+            self.graphics_view.setScene(self.scene)
+            self.path_browser.setText(self.folder_text[self.draw_number])
+            self.remove_text_edit.setText(self.remove_text[self.draw_number])
+            self.draw_number += 1
+        else:
+            self.scene.clear()
+            figure = QPixmap(image_list[-1])
+            self.scene.addPixmap(figure)
+            self.graphics_view.setScene(self.scene)
+            self.path_browser.setText(self.folder_text[-1])
+            self.remove_text_edit.setText(self.remove_text[-1])
+
+    def window_clear(self):
+        global image_list
+        global structure
+
+        image_list = []
+        if structure is not None:
+            structure.close()
+        self.draw_number = 0
+        self.folder_text = []
+        self.remove_text = []
+
+        self.path_browser.clear()
+        self.remove_text_edit.clear()
+        self.scene.clear()
+        self.graphics_view.setScene(self.scene)
+
+
+class ImageWindow2(object):
+    def __init__(self):
+        self.refresh_button = None
+        self.next_button = None
+        self.back_button = None
+        self.undo_button = None
+        self.redo_button = None
+        self.range_text_edit = None
+        self.range_label = None
+        self.class_combo_box = None
+        self.class_label = None
+        self.style_combo_box = None
+        self.style_label = None
+        self.scene = None
+        self.graphics_view = None
+
+    # noinspection PyPep8Naming
+    def setupUi(self, Form):
+        Form.setObjectName("Form")
+        Form.resize(800, 600)
+        logo_icon = QtGui.QIcon()
+        logo_icon.addPixmap(QtGui.QPixmap(root_path + "/icons/logo.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        Form.setWindowIcon(logo_icon)
+
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(12)
+
+        self.graphics_view = QtWidgets.QGraphicsView(Form)
+        self.graphics_view.setGeometry(QtCore.QRect(50, 70, 480, 480))
+        self.graphics_view.setObjectName("graphics_view")
+        self.scene = QtWidgets.QGraphicsScene()
+
+        self.style_label = QtWidgets.QLabel(Form)
+        self.style_label.setGeometry(QtCore.QRect(570, 70, 80, 40))
+        self.style_label.setFont(font)
+        self.style_label.setObjectName("style_label")
+
+        self.style_combo_box = QtWidgets.QComboBox(Form)
+        self.style_combo_box.setGeometry(QtCore.QRect(650, 70, 100, 40))
+        self.style_combo_box.setFont(font)
+        self.style_combo_box.setObjectName("style_combo_box")
+        self.style_combo_box.addItems(["" for _ in range(12)])
+
+        self.class_label = QtWidgets.QLabel(Form)
+        self.class_label.setGeometry(QtCore.QRect(570, 120, 80, 40))
+        self.class_label.setFont(font)
+        self.class_label.setObjectName("class_label")
+
+        self.class_combo_box = QtWidgets.QComboBox(Form)
+        self.class_combo_box.setGeometry(QtCore.QRect(650, 120, 100, 40))
+        self.class_combo_box.setFont(font)
+        self.class_combo_box.setObjectName("class_combo_box")
+        self.class_combo_box.addItems(["" for _ in range(6)])
+
+        self.range_label = QtWidgets.QLabel(Form)
+        self.range_label.setGeometry(QtCore.QRect(570, 170, 80, 40))
+        self.range_label.setFont(font)
+        self.range_label.setObjectName("range_label")
+
+        self.range_text_edit = QtWidgets.QTextEdit(Form)
+        self.range_text_edit.setGeometry(QtCore.QRect(650, 170, 100, 40))
+        self.range_text_edit.setFont(font)
+        self.range_text_edit.setObjectName("range_text_edit")
+
+        self.redo_button = QtWidgets.QPushButton(Form)
+        self.redo_button.setGeometry(QtCore.QRect(670, 450, 80, 40))
+        self.redo_button.setFont(font)
+        self.redo_button.setObjectName("redo_button")
+
+        self.undo_button = QtWidgets.QPushButton(Form)
+        self.undo_button.setGeometry(QtCore.QRect(570, 450, 80, 40))
+        self.undo_button.setFont(font)
+        self.undo_button.setObjectName("undo_button")
+
+        self.back_button = QtWidgets.QPushButton(Form)
+        self.back_button.setGeometry(QtCore.QRect(570, 510, 80, 40))
+        self.back_button.setFont(font)
+        self.back_button.setObjectName("back_button")
+
+        self.next_button = QtWidgets.QPushButton(Form)
+        self.next_button.setGeometry(QtCore.QRect(670, 510, 80, 40))
+        self.next_button.setFont(font)
+        self.next_button.setObjectName("next_button")
+
+        self.refresh_button = QtWidgets.QPushButton(Form)
+        self.refresh_button.setGeometry(QtCore.QRect(570, 390, 180, 40))
+        self.refresh_button.setFont(font)
+        self.refresh_button.setText("refresh")
+        self.refresh_button.setObjectName("refresh_button")
+        self.refresh_button.setLayoutDirection(QtCore.Qt.RightToLeft)
+
+        self.retranslateUi(Form)
+        QtCore.QMetaObject.connectSlotsByName(Form)
+
+    # noinspection PyPep8Naming
+    def retranslateUi(self, Form):
+        _translate = QtCore.QCoreApplication.translate
+        Form.setWindowTitle(_translate("Form", "PyMOL-PUB surface"))
+        self.range_label.setText(_translate("Form", "range"))
+        self.redo_button.setText(_translate("Form", "redo"))
+        self.undo_button.setText(_translate("Form", "undo"))
+        self.back_button.setText(_translate("Form", "back"))
+        self.next_button.setText(_translate("Form", "next"))
+        self.style_combo_box.setItemText(0, _translate("Form", "cartoon"))
+        self.style_combo_box.setItemText(1, _translate("Form", "cell"))
+        self.style_combo_box.setItemText(2, _translate("Form", "dots"))
+        self.style_combo_box.setItemText(3, _translate("Form", "label"))
+        self.style_combo_box.setItemText(4, _translate("Form", "lines"))
+        self.style_combo_box.setItemText(5, _translate("Form", "mesh"))
+        self.style_combo_box.setItemText(6, _translate("Form", "nb_spheres"))
+        self.style_combo_box.setItemText(7, _translate("Form", "ribbon"))
+        self.style_combo_box.setItemText(8, _translate("Form", "slice"))
+        self.style_combo_box.setItemText(9, _translate("Form", "spheres"))
+        self.style_combo_box.setItemText(10, _translate("Form", "sticks"))
+        self.style_combo_box.setItemText(11, _translate("Form", "surface"))
+        self.style_label.setText(_translate("Form", "style"))
+        self.class_combo_box.setItemText(0, _translate("Form", "chain"))
+        self.class_combo_box.setItemText(1, _translate("Form", "model"))
+        self.class_combo_box.setItemText(2, _translate("Form", "position"))
+        self.class_combo_box.setItemText(3, _translate("Form", "range"))
+        self.class_combo_box.setItemText(4, _translate("Form", "residue"))
+        self.class_combo_box.setItemText(5, _translate("Form", "segment"))
+        self.class_label.setText(_translate("Form", "class"))
+
+
+class StructureImage2(QMainWindow, ImageWindow2):
+
+    # noinspection PyGlobalUndefined
+    def __init__(self):
+        super(StructureImage2, self).__init__()
+        self.setupUi(self)
+        global image_list
+        global structure
+        self.draw_number = 0
+        self.start_number = 0
+        self.style_text = []
+        self.class_text = []
+        self.range_text = []
+
+        # noinspection PyUnresolvedReferences
+        self.refresh_button.clicked.connect(self.draw_structure)
+        # noinspection PyUnresolvedReferences
+        self.undo_button.clicked.connect(self.set_undo)
+        # noinspection PyUnresolvedReferences
+        self.redo_button.clicked.connect(self.set_redo)
+
+    def start_image(self):
+        if len(image_list) > 0:
+            self.scene.addPixmap(QPixmap(image_list[-1]))
+            self.graphics_view.setScene(self.scene)
+            self.start_number = len(image_list)
+
+    # noinspection PyGlobalUndefined
+    def draw_structure(self):
+        global structure
+        global image_list
+
+        representation = self.style_combo_box.currentText()
+        shading_type = self.class_combo_box.currentText()
+        content = self.range_text_edit.toPlainText()
+
+        structure.set_shape(representation_plan=[(shading_type + ":" + content, representation)],
+                            initial_representation=None, independent_color=True, closed_surface=True)
+        structure.save(save_path="./temp/image" + str(self.start_number + self.draw_number) + ".png")
+        structure.save_pymol(save_path="./temp/image" + str(self.start_number + self.draw_number) + ".pse")
+
+        if self.start_number + self.draw_number < len(image_list):
+            image_list = image_list[:self.start_number + self.draw_number + 1]
+        else:
+            image_list.append("./temp/image" + str(self.start_number + self.draw_number) + ".png")
+
+        if self.draw_number < len(self.style_text):
+            self.style_text = self.style_text[:self.draw_number + 1]
+            self.style_text[self.draw_number] = representation
+        else:
+            self.style_text.append(representation)
+
+        if self.draw_number < len(self.class_text):
+            self.class_text = self.class_text[:self.draw_number + 1]
+            self.class_text[self.draw_number] = shading_type
+        else:
+            self.class_text.append(shading_type)
+
+        if self.draw_number < len(self.range_text):
+            self.range_text = self.range_text[:self.draw_number + 1]
+            self.range_text[self.draw_number] = content
+        else:
+            self.range_text.append(content)
+
+        figure = QPixmap("./temp/image" + str(self.start_number + self.draw_number) + ".png")
+        self.scene.clear()
+        self.scene.addPixmap(figure)
+        self.graphics_view.setScene(self.scene)
+
+        self.draw_number += 1
+
+    def set_undo(self):
+        global image_list
+        global structure
+
+        if self.draw_number > 1:
+            self.scene.clear()
+            figure = QPixmap(image_list[self.start_number + self.draw_number - 2])
+            self.scene.addPixmap(figure)
+            structure.load_pymol(load_path="./temp/image" + str(self.start_number + self.draw_number - 2) + ".pse")
+            self.graphics_view.setScene(self.scene)
+            self.style_combo_box.setCurrentText(self.style_text[self.draw_number - 2])
+            self.class_combo_box.setCurrentText(self.class_text[self.draw_number - 2])
+            self.range_text_edit.setText(self.range_text[self.draw_number - 2])
+            self.draw_number -= 1
+        else:
+            self.scene.clear()
+            figure = QPixmap(image_list[self.start_number - 1])
+            self.scene.addPixmap(figure)
+            structure.load_pymol(load_path="./temp/image" + str(self.start_number - 1) + ".pse")
+            self.graphics_view.setScene(self.scene)
+            self.style_combo_box.setCurrentIndex(0)
+            self.class_combo_box.setCurrentIndex(0)
+            self.range_text_edit.setText("")
+            self.draw_number = 0
+
+    def set_redo(self):
+        global image_list
+        global structure
+
+        if self.start_number + self.draw_number < len(image_list):
+            self.scene.clear()
+            figure = QPixmap(image_list[self.start_number + self.draw_number])
+            self.scene.addPixmap(figure)
+            structure.load_pymol(load_path="./temp/image" + str(self.start_number + self.draw_number) + ".pse")
+            self.graphics_view.setScene(self.scene)
+            self.style_combo_box.setCurrentText(self.style_text[self.draw_number])
+            self.class_combo_box.setCurrentText(self.class_text[self.draw_number])
+            self.range_text_edit.setText(self.range_text[self.draw_number])
+            self.draw_number += 1
+        else:
+            self.scene.clear()
+            figure = QPixmap(image_list[-1])
+            self.scene.addPixmap(figure)
+            self.graphics_view.setScene(self.scene)
+            structure.load_pymol(load_path="./temp/image" + str(self.start_number + self.draw_number - 1) + ".pse")
+            self.style_combo_box.setCurrentText(self.style_text[-1])
+            self.class_combo_box.setCurrentText(self.class_text[-1])
+            self.range_text_edit.setText(self.range_text[-1])
+
+    def window_clear(self):
+        self.draw_number = 0
+        self.start_number = 0
+        self.style_text = []
+        self.class_text = []
+        self.range_text = []
+
+        self.range_text_edit.clear()
+        self.scene.clear()
+        self.graphics_view.setScene(self.scene)
+
+    # noinspection PyGlobalUndefined
+    def window_initialization(self):
+        global structure
+        global image_list
+
+        if len(image_list) > 0:
+            self.draw_number = 0
+            self.style_text = []
+            self.class_text = []
+            self.range_text = []
+            image_list = image_list[:self.start_number]
+
+            self.range_text_edit.clear()
+            self.scene.clear()
+            self.scene.addPixmap(QPixmap(image_list[self.start_number - 1]))
+            self.graphics_view.setScene(self.scene)
+            structure.load_pymol(load_path="./temp/image" + str(self.start_number - 1) + ".pse")
+
+
+class ImageWindow3(object):
+    def __init__(self):
+        self.refresh_button = None
+        self.next_button = None
+        self.back_button = None
+        self.undo_button = None
+        self.redo_button = None
+        self.move_z_text_edit = None
+        self.move_z_label = None
+        self.move_y_text_edit = None
+        self.move_y_label = None
+        self.move_x_text_edit = None
+        self.move_x_label = None
+        self.rotate_z_text_edit = None
+        self.rotate_z_label = None
+        self.rotate_y_text_edit = None
+        self.rotate_y_label = None
+        self.rotate_x_text_edit = None
+        self.rotate_x_label = None
+        self.scene = None
+        self.graphics_view = None
+
+    # noinspection PyPep8Naming
+
+    def setupUi(self, Form):
+        Form.setObjectName("Form")
+        Form.resize(800, 600)
+        logo_icon = QtGui.QIcon()
+        logo_icon.addPixmap(QtGui.QPixmap(root_path + "/icons/logo.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        Form.setWindowIcon(logo_icon)
+
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(12)
+
+        self.graphics_view = QtWidgets.QGraphicsView(Form)
+        self.graphics_view.setGeometry(QtCore.QRect(50, 70, 480, 480))
+        self.graphics_view.setObjectName("graphics_view")
+        self.scene = QtWidgets.QGraphicsScene()
+
+        self.rotate_x_label = QtWidgets.QLabel(Form)
+        self.rotate_x_label.setGeometry(QtCore.QRect(570, 70, 80, 40))
+        self.rotate_x_label.setFont(font)
+        self.rotate_x_label.setObjectName("rotate_x_label")
+
+        self.rotate_x_text_edit = QtWidgets.QTextEdit(Form)
+        self.rotate_x_text_edit.setGeometry(QtCore.QRect(650, 70, 100, 40))
+        self.rotate_x_text_edit.setFont(font)
+        self.rotate_x_text_edit.setObjectName("rotate_x_text_edit")
+
+        self.rotate_y_label = QtWidgets.QLabel(Form)
+        self.rotate_y_label.setGeometry(QtCore.QRect(570, 120, 80, 40))
+        self.rotate_y_label.setFont(font)
+        self.rotate_y_label.setObjectName("rotate_y_label")
+
+        self.rotate_y_text_edit = QtWidgets.QTextEdit(Form)
+        self.rotate_y_text_edit.setGeometry(QtCore.QRect(650, 120, 100, 40))
+        self.rotate_y_text_edit.setFont(font)
+        self.rotate_y_text_edit.setObjectName("rotate_y_text_edit")
+
+        self.rotate_z_label = QtWidgets.QLabel(Form)
+        self.rotate_z_label.setGeometry(QtCore.QRect(570, 170, 80, 40))
+        self.rotate_z_label.setFont(font)
+        self.rotate_z_label.setObjectName("rotate_z_label")
+
+        self.rotate_z_text_edit = QtWidgets.QTextEdit(Form)
+        self.rotate_z_text_edit.setGeometry(QtCore.QRect(650, 170, 100, 40))
+        self.rotate_z_text_edit.setFont(font)
+        self.rotate_z_text_edit.setObjectName("rotate_z_text_edit")
+
+        self.move_x_label = QtWidgets.QLabel(Form)
+        self.move_x_label.setGeometry(QtCore.QRect(570, 230, 80, 40))
+        self.move_x_label.setFont(font)
+        self.move_x_label.setObjectName("move_x_label")
+
+        self.move_x_text_edit = QtWidgets.QTextEdit(Form)
+        self.move_x_text_edit.setGeometry(QtCore.QRect(650, 230, 100, 40))
+        self.move_x_text_edit.setFont(font)
+        self.move_x_text_edit.setObjectName("move_x_text_edit")
+
+        self.move_y_label = QtWidgets.QLabel(Form)
+        self.move_y_label.setGeometry(QtCore.QRect(570, 280, 80, 40))
+        self.move_y_label.setFont(font)
+        self.move_y_label.setObjectName("move_y_label")
+
+        self.move_y_text_edit = QtWidgets.QTextEdit(Form)
+        self.move_y_text_edit.setGeometry(QtCore.QRect(650, 280, 100, 40))
+        self.move_y_text_edit.setFont(font)
+        self.move_y_text_edit.setObjectName("move_y_text_edit")
+
+        self.move_z_label = QtWidgets.QLabel(Form)
+        self.move_z_label.setGeometry(QtCore.QRect(570, 330, 80, 40))
+        self.move_z_label.setFont(font)
+        self.move_z_label.setObjectName("move_z_label")
+
+        self.move_z_text_edit = QtWidgets.QTextEdit(Form)
+        self.move_z_text_edit.setGeometry(QtCore.QRect(650, 330, 100, 40))
+        self.move_z_text_edit.setFont(font)
+        self.move_z_text_edit.setObjectName("move_z_text_edit")
+
+        self.redo_button = QtWidgets.QPushButton(Form)
+        self.redo_button.setGeometry(QtCore.QRect(670, 450, 80, 40))
+        self.redo_button.setFont(font)
+        self.redo_button.setObjectName("redo_button")
+
+        self.undo_button = QtWidgets.QPushButton(Form)
+        self.undo_button.setGeometry(QtCore.QRect(570, 450, 80, 40))
+        self.undo_button.setFont(font)
+        self.undo_button.setObjectName("undo_button")
+
+        self.back_button = QtWidgets.QPushButton(Form)
+        self.back_button.setGeometry(QtCore.QRect(570, 510, 80, 40))
+        self.back_button.setFont(font)
+        self.back_button.setObjectName("back_button")
+
+        self.next_button = QtWidgets.QPushButton(Form)
+        self.next_button.setGeometry(QtCore.QRect(670, 510, 80, 40))
+        self.next_button.setFont(font)
+        self.next_button.setObjectName("next_button")
+
+        self.refresh_button = QtWidgets.QPushButton(Form)
+        self.refresh_button.setGeometry(QtCore.QRect(570, 390, 180, 40))
+        self.refresh_button.setFont(font)
+        self.refresh_button.setText("refresh")
+        self.refresh_button.setObjectName("refresh_button")
+        self.refresh_button.setLayoutDirection(QtCore.Qt.RightToLeft)
+
+        self.retranslateUi(Form)
+        QtCore.QMetaObject.connectSlotsByName(Form)
+
+    # noinspection PyPep8Naming
+    def retranslateUi(self, Form):
+        _translate = QtCore.QCoreApplication.translate
+        Form.setWindowTitle(_translate("Form", "PyMOL-PUB surface"))
+        self.redo_button.setText(_translate("Form", "redo"))
+        self.undo_button.setText(_translate("Form", "undo"))
+        self.back_button.setText(_translate("Form", "back"))
+        self.next_button.setText(_translate("Form", "next"))
+        self.rotate_x_label.setText(_translate("Form", "rotate x"))
+        self.rotate_y_label.setText(_translate("Form", "rotate y"))
+        self.rotate_z_label.setText(_translate("Form", "rotate z"))
+        self.move_x_label.setText(_translate("Form", "move x"))
+        self.move_y_label.setText(_translate("Form", "move y"))
+        self.move_z_label.setText(_translate("Form", "move z"))
+
+
+class StructureImage3(QMainWindow, ImageWindow3):
+
+    # noinspection PyGlobalUndefined
+    def __init__(self):
+        super(StructureImage3, self).__init__()
+        self.setupUi(self)
+        global image_list
+        global structure
+        self.draw_number = 0
+        self.start_number = 0
+        self.rotatex_text = []
+        self.rotatey_text = []
+        self.rotatez_text = []
+        self.movex_text = []
+        self.movey_text = []
+        self.movez_text = []
+
+        # noinspection PyUnresolvedReferences
+        self.refresh_button.clicked.connect(self.draw_structure)
+        # noinspection PyUnresolvedReferences
+        self.undo_button.clicked.connect(self.set_undo)
+        # noinspection PyUnresolvedReferences
+        self.redo_button.clicked.connect(self.set_redo)
+
+    def start_image(self):
+        if len(image_list) > 0:
+            self.scene.addPixmap(QPixmap(image_list[-1]))
+            self.graphics_view.setScene(self.scene)
+            self.start_number = len(image_list)
+
+    # noinspection PyGlobalUndefined
+    def draw_structure(self):
+        global structure
+        global image_list
+
+        rotate_x = int(self.rotate_x_text_edit.toPlainText()) if self.rotate_x_text_edit.toPlainText() != "" else 0
+        rotate_y = int(self.rotate_y_text_edit.toPlainText()) if self.rotate_y_text_edit.toPlainText() != "" else 0
+        rotate_z = int(self.rotate_z_text_edit.toPlainText()) if self.rotate_z_text_edit.toPlainText() != "" else 0
+        move_x = int(self.move_x_text_edit.toPlainText()) if self.move_x_text_edit.toPlainText() != "" else 0
+        move_y = int(self.move_y_text_edit.toPlainText()) if self.move_y_text_edit.toPlainText() != "" else 0
+        move_z = int(self.move_z_text_edit.toPlainText()) if self.move_z_text_edit.toPlainText() != "" else 0
+        rotate = [rotate_x, rotate_y, rotate_z]
+
+        if move_x == 0 and move_y == 0 and move_z == 0:
+            if self.draw_number > 0:
+                structure.set_state(rotate=rotate, only_rotate=True)
+            else:
+                structure.set_state(rotate=rotate)
+        else:
+            translate = [move_x, move_y, move_z]
+            structure.set_state(rotate=rotate, translate=translate)
+
+        structure.save(save_path="./temp/image" + str(self.start_number + self.draw_number) + ".png")
+        structure.save_pymol(save_path="./temp/image" + str(self.start_number + self.draw_number) + ".pse")
+
+        if self.start_number + self.draw_number < len(image_list):
+            image_list = image_list[:self.start_number + self.draw_number + 1]
+        else:
+            image_list.append("./temp/image" + str(self.start_number + self.draw_number) + ".png")
+
+        if self.draw_number < len(self.rotatex_text):
+            self.rotatex_text = self.rotatex_text[:self.draw_number + 1]
+            self.rotatex_text[self.draw_number] = self.rotate_x_text_edit.toPlainText()
+        else:
+            self.rotatex_text.append(self.rotate_x_text_edit.toPlainText())
+
+        if self.draw_number < len(self.rotatey_text):
+            self.rotatey_text = self.rotatey_text[:self.draw_number + 1]
+            self.rotatey_text[self.draw_number] = self.rotate_y_text_edit.toPlainText()
+        else:
+            self.rotatey_text.append(self.rotate_y_text_edit.toPlainText())
+
+        if self.draw_number < len(self.rotatez_text):
+            self.rotatez_text = self.rotatez_text[:self.draw_number + 1]
+            self.rotatez_text[self.draw_number] = self.rotate_z_text_edit.toPlainText()
+        else:
+            self.rotatez_text.append(self.rotate_z_text_edit.toPlainText())
+
+        if self.draw_number < len(self.movex_text):
+            self.movex_text = self.movex_text[:self.draw_number + 1]
+            self.movex_text[self.draw_number] = self.move_x_text_edit.toPlainText()
+        else:
+            self.movex_text.append(self.move_x_text_edit.toPlainText())
+
+        if self.draw_number < len(self.movey_text):
+            self.movey_text = self.movey_text[:self.draw_number + 1]
+            self.movey_text[self.draw_number] = self.move_y_text_edit.toPlainText()
+        else:
+            self.movey_text.append(self.move_y_text_edit.toPlainText())
+
+        if self.draw_number < len(self.movez_text):
+            self.movez_text = self.movez_text[:self.draw_number + 1]
+            self.movez_text[self.draw_number] = self.move_z_text_edit.toPlainText()
+        else:
+            self.movez_text.append(self.move_z_text_edit.toPlainText())
+
+        figure = QPixmap("./temp/image" + str(self.start_number + self.draw_number) + ".png")
+        self.scene.clear()
+        self.scene.addPixmap(figure)
+        self.graphics_view.setScene(self.scene)
+
+        self.draw_number += 1
+
+    def set_undo(self):
+        global image_list
+        global structure
+
+        if self.draw_number > 1:
+            self.scene.clear()
+            figure = QPixmap(image_list[self.start_number + self.draw_number - 2])
+            self.scene.addPixmap(figure)
+            structure.load_pymol(load_path="./temp/image" + str(self.start_number + self.draw_number - 2) + ".pse")
+            self.graphics_view.setScene(self.scene)
+
+            self.rotate_x_text_edit.setText(self.rotatex_text[self.draw_number - 2])
+            self.rotate_y_text_edit.setText(self.rotatey_text[self.draw_number - 2])
+            self.rotate_z_text_edit.setText(self.rotatez_text[self.draw_number - 2])
+            self.move_x_text_edit.setText(self.movex_text[self.draw_number - 2])
+            self.move_y_text_edit.setText(self.movey_text[self.draw_number - 2])
+            self.move_z_text_edit.setText(self.movez_text[self.draw_number - 2])
+            self.draw_number -= 1
+        else:
+            self.scene.clear()
+            figure = QPixmap(image_list[self.start_number - 1])
+            self.scene.addPixmap(figure)
+            structure.load_pymol(load_path="./temp/image" + str(self.start_number - 1) + ".pse")
+            self.graphics_view.setScene(self.scene)
+
+            self.rotate_x_text_edit.setText("")
+            self.rotate_y_text_edit.setText("")
+            self.rotate_z_text_edit.setText("")
+            self.move_x_text_edit.setText("")
+            self.move_y_text_edit.setText("")
+            self.move_z_text_edit.setText("")
+            self.draw_number = 0
+
+    def set_redo(self):
+        global image_list
+        global structure
+
+        if self.start_number + self.draw_number < len(image_list):
+            self.scene.clear()
+            figure = QPixmap(image_list[self.start_number + self.draw_number])
+            self.scene.addPixmap(figure)
+            structure.load_pymol(load_path="./temp/image" + str(self.start_number + self.draw_number) + ".pse")
+            self.graphics_view.setScene(self.scene)
+
+            self.rotate_x_text_edit.setText(self.rotatex_text[self.draw_number])
+            self.rotate_y_text_edit.setText(self.rotatey_text[self.draw_number])
+            self.rotate_z_text_edit.setText(self.rotatez_text[self.draw_number])
+            self.move_x_text_edit.setText(self.movex_text[self.draw_number])
+            self.move_y_text_edit.setText(self.movey_text[self.draw_number])
+            self.move_z_text_edit.setText(self.movez_text[self.draw_number])
+            self.draw_number += 1
+        else:
+            self.scene.clear()
+            figure = QPixmap(image_list[-1])
+            self.scene.addPixmap(figure)
+            self.graphics_view.setScene(self.scene)
+            structure.load_pymol(load_path="./temp/image" + str(self.start_number + self.draw_number - 1) + ".pse")
+
+            self.rotate_x_text_edit.setText(self.rotatex_text[-1])
+            self.rotate_y_text_edit.setText(self.rotatey_text[-1])
+            self.rotate_z_text_edit.setText(self.rotatez_text[-1])
+            self.move_x_text_edit.setText(self.movex_text[-1])
+            self.move_y_text_edit.setText(self.movey_text[-1])
+            self.move_z_text_edit.setText(self.movez_text[-1])
+
+    def window_clear(self):
+        self.draw_number = 0
+        self.start_number = 0
+        self.rotatex_text = []
+        self.rotatey_text = []
+        self.rotatez_text = []
+        self.movex_text = []
+        self.movey_text = []
+        self.movez_text = []
+
+        self.rotate_x_text_edit.clear()
+        self.rotate_y_text_edit.clear()
+        self.rotate_z_text_edit.clear()
+        self.move_x_text_edit.clear()
+        self.move_y_text_edit.clear()
+        self.move_z_text_edit.clear()
+        self.scene.clear()
+        self.graphics_view.setScene(self.scene)
+
+    def window_initialization(self):
+        global structure
+        global image_list
+        if len(image_list) > 0:
+            self.draw_number = 0
+            self.rotatex_text = []
+            self.rotatey_text = []
+            self.rotatez_text = []
+            self.movex_text = []
+            self.movey_text = []
+            self.movez_text = []
+            image_list = image_list[:self.start_number]
+
+            self.rotate_x_text_edit.clear()
+            self.rotate_y_text_edit.clear()
+            self.rotate_z_text_edit.clear()
+            self.move_x_text_edit.clear()
+            self.move_y_text_edit.clear()
+            self.move_z_text_edit.clear()
+            self.scene.clear()
+            self.scene.addPixmap(QPixmap(image_list[self.start_number - 1]))
+            self.graphics_view.setScene(self.scene)
+            structure.load_pymol(load_path="./temp/image" + str(self.start_number - 1) + ".pse")
+
+
+class ImageWindow4(object):
+    def __init__(self):
+        self.refresh_button = None
+        self.next_button = None
+        self.back_button = None
+        self.undo_button = None
+        self.redo_button = None
+        self.range_text_edit = None
+        self.range_label = None
+        self.class_combo_box = None
+        self.class_label = None
+        self.color_text_edit = None
+        self.color_label = None
+        self.scene = None
+        self.graphics_view = None
+
+    # noinspection PyPep8Naming
+    def setupUi(self, Form):
+        Form.setObjectName("Form")
+        Form.resize(800, 600)
+        logo_icon = QtGui.QIcon()
+        logo_icon.addPixmap(QtGui.QPixmap(root_path + "/icons/logo.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        Form.setWindowIcon(logo_icon)
+
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(12)
+
+        self.graphics_view = QtWidgets.QGraphicsView(Form)
+        self.graphics_view.setGeometry(QtCore.QRect(50, 70, 480, 480))
+        self.graphics_view.setObjectName("graphics_view")
+        self.scene = QtWidgets.QGraphicsScene()
+
+        self.color_label = QtWidgets.QLabel(Form)
+        self.color_label.setGeometry(QtCore.QRect(570, 70, 80, 40))
+        self.color_label.setFont(font)
+        self.color_label.setAlignment(QtCore.Qt.AlignCenter)
+        self.color_label.setObjectName("color_label")
+
+        self.color_text_edit = QtWidgets.QTextEdit(Form)
+        self.color_text_edit.setGeometry(QtCore.QRect(650, 70, 100, 40))
+        self.color_text_edit.setFont(font)
+        self.color_text_edit.setObjectName("color_text_edit")
+
+        self.class_label = QtWidgets.QLabel(Form)
+        self.class_label.setGeometry(QtCore.QRect(570, 120, 80, 40))
+        self.class_label.setFont(font)
+        self.class_label.setAlignment(QtCore.Qt.AlignCenter)
+        self.class_label.setObjectName("class_label")
+
+        self.class_combo_box = QtWidgets.QComboBox(Form)
+        self.class_combo_box.setGeometry(QtCore.QRect(650, 120, 100, 40))
+        self.class_combo_box.setFont(font)
+        self.class_combo_box.setObjectName("class_combo_box")
+        self.class_combo_box.addItems(["" for _ in range(6)])
+
+        self.range_label = QtWidgets.QLabel(Form)
+        self.range_label.setGeometry(QtCore.QRect(570, 170, 80, 40))
+        self.range_label.setFont(font)
+        self.range_label.setAlignment(QtCore.Qt.AlignCenter)
+        self.range_label.setObjectName("range_label")
+
+        self.range_text_edit = QtWidgets.QTextEdit(Form)
+        self.range_text_edit.setGeometry(QtCore.QRect(650, 170, 100, 40))
+        self.range_text_edit.setFont(font)
+        self.range_text_edit.setObjectName("range_text_edit")
+
+        self.redo_button = QtWidgets.QPushButton(Form)
+        self.redo_button.setGeometry(QtCore.QRect(670, 450, 80, 40))
+        self.redo_button.setFont(font)
+        self.redo_button.setObjectName("redo_button")
+
+        self.undo_button = QtWidgets.QPushButton(Form)
+        self.undo_button.setGeometry(QtCore.QRect(570, 450, 80, 40))
+        self.undo_button.setFont(font)
+        self.undo_button.setObjectName("undo_button")
+
+        self.back_button = QtWidgets.QPushButton(Form)
+        self.back_button.setGeometry(QtCore.QRect(570, 510, 80, 40))
+        self.back_button.setFont(font)
+        self.back_button.setObjectName("back_button")
+
+        self.next_button = QtWidgets.QPushButton(Form)
+        self.next_button.setGeometry(QtCore.QRect(670, 510, 80, 40))
+        self.next_button.setFont(font)
+        self.next_button.setObjectName("next_button")
+
+        self.refresh_button = QtWidgets.QPushButton(Form)
+        self.refresh_button.setGeometry(QtCore.QRect(570, 390, 180, 40))
+        self.refresh_button.setFont(font)
+        self.refresh_button.setText("refresh")
+        self.refresh_button.setObjectName("refresh_button")
+        self.refresh_button.setLayoutDirection(QtCore.Qt.RightToLeft)
+
+        self.retranslateUi(Form)
+        QtCore.QMetaObject.connectSlotsByName(Form)
+
+    # noinspection PyPep8Naming
+    def retranslateUi(self, Form):
+        _translate = QtCore.QCoreApplication.translate
+        Form.setWindowTitle(_translate("Form", "PyMOL-PUB surface"))
+        self.color_label.setText(_translate("Form", "color"))
+        self.class_label.setText(_translate("Form", "class"))
+        self.range_label.setText(_translate("Form", "range"))
+        self.redo_button.setText(_translate("Form", "redo"))
+        self.undo_button.setText(_translate("Form", "undo"))
+        self.back_button.setText(_translate("Form", "back"))
+        self.next_button.setText(_translate("Form", "next"))
+        self.class_combo_box.setItemText(0, _translate("Form", "chain"))
+        self.class_combo_box.setItemText(1, _translate("Form", "model"))
+        self.class_combo_box.setItemText(2, _translate("Form", "position"))
+        self.class_combo_box.setItemText(3, _translate("Form", "range"))
+        self.class_combo_box.setItemText(4, _translate("Form", "residue"))
+        self.class_combo_box.setItemText(5, _translate("Form", "segment"))
+
+
+class StructureImage4(QMainWindow, ImageWindow4):
+
+    # noinspection PyGlobalUndefined
+    def __init__(self):
+        super(StructureImage4, self).__init__()
+        self.setupUi(self)
+        global image_list
+        global structure
+        self.draw_number = 0
+        self.start_number = 0
+        self.color_text = []
+        self.class_text = []
+        self.range_text = []
+
+        # noinspection PyUnresolvedReferences
+        self.refresh_button.clicked.connect(self.draw_structure)
+        # noinspection PyUnresolvedReferences
+        self.undo_button.clicked.connect(self.set_undo)
+        # noinspection PyUnresolvedReferences
+        self.redo_button.clicked.connect(self.set_redo)
+
+    def start_image(self):
+        if len(image_list) > 0:
+            self.scene.addPixmap(QPixmap(image_list[-1]))
+            self.graphics_view.setScene(self.scene)
+            self.start_number = len(image_list)
+
+    def draw_structure(self):
+        global structure
+        global image_list
+
+        color = self.color_text_edit.toPlainText()
+        shading_type = self.class_combo_box.currentText()
+        range = self.range_text_edit.toPlainText()
+
+        structure.set_color(coloring_plan=[(shading_type + ":" + range, color)], initial_color=None)
+        structure.save(save_path="./temp/image" + str(self.start_number + self.draw_number) + ".png")
+        structure.save_pymol(save_path="./temp/image" + str(self.start_number + self.draw_number) + ".pse")
+
+        if self.start_number + self.draw_number < len(image_list):
+            image_list = image_list[:self.start_number + self.draw_number + 1]
+        else:
+            image_list.append("./temp/image" + str(self.start_number + self.draw_number) + ".png")
+
+        if self.draw_number < len(self.color_text):
+            self.color_text = self.color_text[:self.draw_number + 1]
+            self.color_text[self.draw_number] = color
+        else:
+            self.color_text.append(color)
+
+        if self.draw_number < len(self.class_text):
+            self.class_text = self.class_text[:self.draw_number + 1]
+            self.class_text[self.draw_number] = shading_type
+        else:
+            self.class_text.append(shading_type)
+
+        if self.draw_number < len(self.range_text):
+            self.range_text = self.range_text[:self.draw_number + 1]
+            self.range_text[self.draw_number] = range
+        else:
+            self.range_text.append(range)
+
+        figure = QPixmap("./temp/image" + str(self.start_number + self.draw_number) + ".png")
+        self.scene.clear()
+        self.scene.addPixmap(figure)
+        self.graphics_view.setScene(self.scene)
+
+        self.draw_number += 1
+
+    @staticmethod
+    def save_image(label_text, ratio):
+        global structure
+        global image_list
+        if len(image_list) > 0:
+            structure.save(save_path="./temp/panel_" + label_text + ".png", ratio=ratio)
+
+    def set_undo(self):
+        global image_list
+        global structure
+
+        if self.draw_number > 1:
+            self.scene.clear()
+            figure = QPixmap(image_list[self.start_number + self.draw_number - 2])
+            self.scene.addPixmap(figure)
+            structure.load_pymol(load_path="./temp/image" + str(self.start_number + self.draw_number - 2) + ".pse")
+            self.graphics_view.setScene(self.scene)
+
+            self.color_text_edit.setText(self.color_text[self.draw_number - 2])
+            self.class_combo_box.setCurrentText(self.class_text[self.draw_number - 2])
+            self.range_text_edit.setText(self.range_text[self.draw_number - 2])
+            self.draw_number -= 1
+        else:
+            self.scene.clear()
+            figure = QPixmap(image_list[self.start_number - 1])
+            self.scene.addPixmap(figure)
+            structure.load_pymol(load_path="./temp/image" + str(self.start_number - 1) + ".pse")
+            self.graphics_view.setScene(self.scene)
+
+            self.color_text_edit.setText("")
+            self.class_combo_box.setCurrentIndex(0)
+            self.range_text_edit.setText("")
+            self.draw_number = 0
+
+    def set_redo(self):
+        global image_list
+        global structure
+
+        if self.start_number + self.draw_number < len(image_list):
+            self.scene.clear()
+            figure = QPixmap(image_list[self.start_number + self.draw_number])
+            self.scene.addPixmap(figure)
+            structure.load_pymol(load_path="./temp/image" + str(self.start_number + self.draw_number) + ".pse")
+            self.graphics_view.setScene(self.scene)
+
+            self.color_text_edit.setText(self.color_text[self.draw_number])
+            self.class_combo_box.setCurrentText(self.class_text[self.draw_number])
+            self.range_text_edit.setText(self.range_text[self.draw_number])
+            self.draw_number += 1
+        else:
+            self.scene.clear()
+            figure = QPixmap(image_list[-1])
+            self.scene.addPixmap(figure)
+            self.graphics_view.setScene(self.scene)
+            structure.load_pymol(load_path="./temp/image" + str(self.start_number + self.draw_number - 1) + ".pse")
+
+            self.color_text_edit.setText(self.color_text[-1])
+            self.class_combo_box.setCurrentText(self.class_text[-1])
+            self.range_text_edit.setText(self.range_text[-1])
+
+    def window_clear(self):
+        self.draw_number = 0
+        self.start_number = 0
+        self.color_text = []
+        self.class_text = []
+        self.range_text = []
+
+        self.color_text_edit.clear()
+        self.range_text_edit.clear()
+        self.scene.clear()
+        self.graphics_view.setScene(self.scene)
+
+    def window_initialization(self):
+        global structure
+        global image_list
+
+        if len(image_list) > 0:
+            self.draw_number = 0
+            self.color_text = []
+            self.class_text = []
+            self.range_text = []
+            image_list = image_list[:self.start_number]
+
+            self.color_text_edit.clear()
+            self.range_text_edit.clear()
+            self.scene.clear()
+            self.scene.addPixmap(QPixmap(image_list[self.start_number - 1]))
+            self.graphics_view.setScene(self.scene)
+            structure.load_pymol(load_path="./temp/image" + str(self.start_number - 1) + ".pse")
+
+
 if __name__ == '__main__':
     # noinspection PyTypeChecker
     QGuiApplication.setAttribute(Qt.HighDpiScaleFactorRoundingPolicy.PassThrough)
@@ -2085,104 +2033,110 @@ if __name__ == '__main__':
     entry_window.show()
 
     # noinspection PyUnresolvedReferences
-    entry_window.implement_combo_box.activated.connect(select_window.show)
-    # noinspection PyUnresolvedReferences
-    entry_window.implement_combo_box.activated.connect(entry_window.hide)
+    entry_window.implement_combo_box.activated.connect(entry_window.check_surface)
+
+
+    def start_select():
+        # noinspection PyUnresolvedReferences
+        entry_window.implement_combo_box.activated.connect(select_window.show)
+        # noinspection PyUnresolvedReferences
+        entry_window.implement_combo_box.activated.connect(entry_window.hide)
+
 
     # noinspection PyUnresolvedReferences
-    select_window.pushButton.clicked.connect(structure_window_1.show)
+    select_window.structure_image_button.clicked.connect(structure_window_1.show)
     # noinspection PyUnresolvedReferences
-    select_window.pushButton.clicked.connect(select_window.hide)
+    select_window.structure_image_button.clicked.connect(select_window.hide)
     # noinspection PyUnresolvedReferences
-    select_window.pushButton_2.clicked.connect(statistical_window.show)
+    select_window.statistical_content_button.clicked.connect(statistical_window.show)
     # noinspection PyUnresolvedReferences
-    select_window.pushButton_2.clicked.connect(select_window.hide)
+    select_window.statistical_content_button.clicked.connect(select_window.hide)
     # noinspection PyUnresolvedReferences
-    select_window.pushButton_3.clicked.connect(select_window.hide)
+    select_window.back_button.clicked.connect(select_window.hide)
     # noinspection PyUnresolvedReferences
-    select_window.pushButton_3.clicked.connect(entry_window.show)
+    select_window.back_button.clicked.connect(entry_window.show)
 
     # noinspection PyUnresolvedReferences
-    statistical_window.pushButton_5.clicked.connect(statistical_window.hide)
+    statistical_window.back_button.clicked.connect(statistical_window.hide)
     # noinspection PyUnresolvedReferences
-    statistical_window.pushButton_5.clicked.connect(select_window.show)
+    statistical_window.back_button.clicked.connect(select_window.show)
     # noinspection PyUnresolvedReferences
-    statistical_window.pushButton_5.clicked.connect(statistical_window.window_clear)
+    statistical_window.back_button.clicked.connect(statistical_window.window_clear)
     # noinspection PyUnresolvedReferences
-    statistical_window.pushButton_6.clicked.connect(entry_window.show)
+    statistical_window.next_button.clicked.connect(entry_window.show)
     # noinspection PyUnresolvedReferences
-    statistical_window.pushButton_6.clicked.connect(statistical_window.hide)
+    statistical_window.next_button.clicked.connect(statistical_window.hide)
     # noinspection PyUnresolvedReferences
-    statistical_window.pushButton_6.clicked.connect(
+    statistical_window.next_button.clicked.connect(
         lambda: statistical_window.save_image(entry_window.implement_combo_box.currentText(),
                                               entry_window.targets_combo_box.currentText()))
     # noinspection PyUnresolvedReferences
-    statistical_window.pushButton_6.clicked.connect(entry_window.image_set)
+    statistical_window.next_button.clicked.connect(entry_window.image_set)
     # noinspection PyUnresolvedReferences
-    statistical_window.pushButton_6.clicked.connect(statistical_window.window_clear)
+    statistical_window.next_button.clicked.connect(statistical_window.window_clear)
 
     # noinspection PyUnresolvedReferences
-    structure_window_1.pushButton_5.clicked.connect(structure_window_1.hide)
+    structure_window_1.back_button.clicked.connect(structure_window_1.hide)
     # noinspection PyUnresolvedReferences
-    structure_window_1.pushButton_5.clicked.connect(select_window.show)
+    structure_window_1.back_button.clicked.connect(select_window.show)
     # noinspection PyUnresolvedReferences
-    structure_window_1.pushButton_5.clicked.connect(structure_window_1.window_clear)
+    structure_window_1.back_button.clicked.connect(structure_window_1.window_clear)
     # noinspection PyUnresolvedReferences
-    structure_window_1.pushButton_6.clicked.connect(structure_window_2.show)
+    structure_window_1.next_button.clicked.connect(structure_window_2.show)
     # noinspection PyUnresolvedReferences
-    structure_window_1.pushButton_6.clicked.connect(structure_window_1.hide)
+    structure_window_1.next_button.clicked.connect(structure_window_1.hide)
     # noinspection PyUnresolvedReferences
-    structure_window_1.pushButton_6.clicked.connect(structure_window_2.start_image)
+    structure_window_1.next_button.clicked.connect(structure_window_2.start_image)
 
     # noinspection PyUnresolvedReferences
-    structure_window_2.pushButton_5.clicked.connect(structure_window_2.hide)
+    structure_window_2.back_button.clicked.connect(structure_window_2.hide)
     # noinspection PyUnresolvedReferences
-    structure_window_2.pushButton_5.clicked.connect(structure_window_1.show)
+    structure_window_2.back_button.clicked.connect(structure_window_1.show)
     # noinspection PyUnresolvedReferences
-    structure_window_2.pushButton_5.clicked.connect(structure_window_2.window_initialization)
+    structure_window_2.back_button.clicked.connect(structure_window_2.window_initialization)
     # noinspection PyUnresolvedReferences
-    structure_window_2.pushButton_6.clicked.connect(structure_window_3.show)
+    structure_window_2.next_button.clicked.connect(structure_window_3.show)
     # noinspection PyUnresolvedReferences
-    structure_window_2.pushButton_6.clicked.connect(structure_window_2.hide)
+    structure_window_2.next_button.clicked.connect(structure_window_2.hide)
     # noinspection PyUnresolvedReferences
-    structure_window_2.pushButton_6.clicked.connect(structure_window_3.start_image)
+    structure_window_2.next_button.clicked.connect(structure_window_3.start_image)
 
     # noinspection PyUnresolvedReferences
-    structure_window_3.pushButton_5.clicked.connect(structure_window_3.hide)
+    structure_window_3.back_button.clicked.connect(structure_window_3.hide)
     # noinspection PyUnresolvedReferences
-    structure_window_3.pushButton_5.clicked.connect(structure_window_2.show)
+    structure_window_3.back_button.clicked.connect(structure_window_2.show)
     # noinspection PyUnresolvedReferences
-    structure_window_3.pushButton_5.clicked.connect(structure_window_3.window_initialization)
+    structure_window_3.back_button.clicked.connect(structure_window_3.window_initialization)
     # noinspection PyUnresolvedReferences
-    structure_window_3.pushButton_6.clicked.connect(structure_window_4.show)
+    structure_window_3.next_button.clicked.connect(structure_window_4.show)
     # noinspection PyUnresolvedReferences
-    structure_window_3.pushButton_6.clicked.connect(structure_window_3.hide)
+    structure_window_3.next_button.clicked.connect(structure_window_3.hide)
     # noinspection PyUnresolvedReferences
-    structure_window_3.pushButton_6.clicked.connect(structure_window_4.start_image)
+    structure_window_3.next_button.clicked.connect(structure_window_4.start_image)
 
     # noinspection PyUnresolvedReferences
-    structure_window_4.pushButton_5.clicked.connect(structure_window_4.hide)
+    structure_window_4.back_button.clicked.connect(structure_window_4.hide)
     # noinspection PyUnresolvedReferences
-    structure_window_4.pushButton_5.clicked.connect(structure_window_3.show)
+    structure_window_4.back_button.clicked.connect(structure_window_3.show)
     # noinspection PyUnresolvedReferences
-    structure_window_4.pushButton_5.clicked.connect(structure_window_4.window_initialization)
+    structure_window_4.back_button.clicked.connect(structure_window_4.window_initialization)
     # noinspection PyUnresolvedReferences
-    structure_window_4.pushButton_6.clicked.connect(entry_window.show)
+    structure_window_4.next_button.clicked.connect(entry_window.show)
     # noinspection PyUnresolvedReferences
-    structure_window_4.pushButton_6.clicked.connect(structure_window_4.hide)
+    structure_window_4.next_button.clicked.connect(structure_window_4.hide)
     # noinspection PyUnresolvedReferences
-    structure_window_4.pushButton_6.clicked.connect(
+    structure_window_4.next_button.clicked.connect(
         lambda: structure_window_4.save_image(entry_window.implement_combo_box.currentText(),
                                               entry_window.calculate_image_ratio()))
     # noinspection PyUnresolvedReferences
-    structure_window_4.pushButton_6.clicked.connect(entry_window.image_set)
+    structure_window_4.next_button.clicked.connect(entry_window.image_set)
     # noinspection PyUnresolvedReferences
-    structure_window_4.pushButton_6.clicked.connect(structure_window_1.window_clear)
+    structure_window_4.next_button.clicked.connect(structure_window_1.window_clear)
     # noinspection PyUnresolvedReferences
-    structure_window_4.pushButton_6.clicked.connect(structure_window_2.window_clear)
+    structure_window_4.next_button.clicked.connect(structure_window_2.window_clear)
     # noinspection PyUnresolvedReferences
-    structure_window_4.pushButton_6.clicked.connect(structure_window_3.window_clear)
+    structure_window_4.next_button.clicked.connect(structure_window_3.window_clear)
     # noinspection PyUnresolvedReferences
-    structure_window_4.pushButton_6.clicked.connect(structure_window_4.window_clear)
+    structure_window_4.next_button.clicked.connect(structure_window_4.window_clear)
 
     exit(app.exec_())

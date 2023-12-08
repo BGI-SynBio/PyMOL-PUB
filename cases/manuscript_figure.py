@@ -131,10 +131,10 @@ def designed(file_parent_path, temp_parent_path, save_parent_path):
                   15: ("N", [0.885, 0.215, 0.01, 0.02], "#E59747")}
     for _, content in text_dict2.items():
         case.set_text(annotation=content[0], locations=content[1], font_size=10, color=content[2])
-    text_dict3 = {"a": [0.05, 0.95, 0.05, 0.05], "b": [0.05, 0.3, 0.05, 0.05],
-                  "c": [0.425, 0.915, 0.02, 0.02], "d": [0.425, 0.635, 0.02, 0.02]}
-    for annotation, content in text_dict3.items():
-        case.set_text(annotation=annotation, locations=content, weight="bold", transparent=True)
+    # text_dict3 = {"a": [0.05, 0.95, 0.05, 0.05], "b": [0.05, 0.3, 0.05, 0.05],
+    #               "c": [0.425, 0.915, 0.02, 0.02], "d": [0.425, 0.635, 0.02, 0.02]}
+    # for annotation, content in text_dict3.items():
+    #     case.set_text(annotation=annotation, locations=content, weight="bold", transparent=True)
     case.save_figure(save_parent_path + "manuscript_figure.png")
 
 

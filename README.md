@@ -17,7 +17,7 @@ Based on the original design of PyMOL and as an important supplement,
 we develop a high-level interface in order to generate figures capable of reaching the 
 publication standard.
 By using our tool, the manual operations can be greatly reduced, 
-and the desired image output can be obtained with a few lines of code or only configuration.
+and the desired image output can be obtained with a few lines of code or only gui.
 
 <p align="center">
     <img src="./docs/source/_static/overview.png"/>
