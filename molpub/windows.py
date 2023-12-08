@@ -2035,13 +2035,11 @@ if __name__ == '__main__':
     # noinspection PyUnresolvedReferences
     entry_window.implement_combo_box.activated.connect(entry_window.check_surface)
 
-
     def start_select():
         # noinspection PyUnresolvedReferences
         entry_window.implement_combo_box.activated.connect(select_window.show)
         # noinspection PyUnresolvedReferences
         entry_window.implement_combo_box.activated.connect(entry_window.hide)
-
 
     # noinspection PyUnresolvedReferences
     select_window.structure_image_button.clicked.connect(structure_window_1.show)
