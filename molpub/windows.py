@@ -86,7 +86,7 @@ class MainWindow(object):
         self.targets_combo_box.addItems(["" for _ in range(8)])
 
         self.radio_label = QtWidgets.QLabel(self.central_widget)
-        self.radio_label.setGeometry(QtCore.QRect(240, 70, 100, 40))
+        self.radio_label.setGeometry(QtCore.QRect(245, 70, 100, 40))
         self.radio_label.setFont(font)
         self.radio_label.setAlignment(QtCore.Qt.AlignVCenter)
 
@@ -210,7 +210,7 @@ class MainWindow(object):
         self.targets_combo_box.setItemText(5, _translate("PyMOL", "Oxford"))
         self.targets_combo_box.setItemText(6, _translate("PyMOL", "PLOS"))
         self.targets_combo_box.setItemText(7, _translate("PyMOL", "IEEE"))
-        self.radio_label.setText(_translate("PyMOL", "height / weight:"))
+        self.radio_label.setText(_translate("PyMOL", "height / width:"))
         self.occupied_label.setText(_translate("PyMOL", "occupied column:"))
         self.total_column_label.setText(_translate("PyMOL", "total column:"))
         self.total_column_combo_box.setItemText(0, _translate("PyMOL", "2"))
