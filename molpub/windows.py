@@ -244,13 +244,14 @@ class EntryWindow(QMainWindow, MainWindow):
         self.combobox_label = ["a"]
         self.button_state = [1]
         self.case = None
-        self.progress = 0.0
+        self.progress = {}
         self.draw_number = 0
         self.history_text = []
         self.targets_text = []
         self.occupied_text = []
         self.ratio_text = []
         self.format_text = []
+        self.check = None
 
         # noinspection PyUnresolvedReferences
         self.targets_combo_box.activated.connect(self.column_set)
@@ -321,13 +322,13 @@ class EntryWindow(QMainWindow, MainWindow):
             self.button_state.append(0)
             self.new_button_list[i].show()
 
-    def check_surface(self):
+    def check_surface(self, selectwindow):
         matrix = []
         for order, button in enumerate(self.new_button_list):
             matrix.append(button.text())
         matrix = array(matrix).reshape(self.layout)
 
-        check = True
+        self.check = True
         values = []
         for row in matrix:
             for value in row:
@@ -338,18 +339,16 @@ class EntryWindow(QMainWindow, MainWindow):
         indices = array(values).reshape(self.layout)
         counter = Counter(indices.reshape(-1))
         order = sorted(list(counter.keys()))
-        if order[0] == -1 and len(order) == 1:
-            return True
         if order[0] == -1:
             order = order[1:]
         if order[0] != 0:
-            check = False
+            self.check = False
             QMessageBox.warning(self, "Illegal Label", "The label should start from a!",
                                 QMessageBox.Yes | QMessageBox.No, QMessageBox.Yes)
         if len(order) > 1:
             for former_index, latter_index in zip(order[:-1], order[1:]):
                 if latter_index - former_index != 1:
-                    check = False
+                    self.check = False
                     QMessageBox.warning(self, "Illegal Label", "The labels should be consecutive!",
                                         QMessageBox.Yes | QMessageBox.No, QMessageBox.Yes)
 
@@ -360,13 +359,14 @@ class EntryWindow(QMainWindow, MainWindow):
             for x, y in zip(xs, ys):
                 chuck_matrix[x - ranges["x"][0], y - ranges["y"][0]] = 1
             if any(chuck_matrix != 1):
-                check = False
+                self.check = False
                 QMessageBox.warning(self, "Illegal Label",
                                     "The area covered by label " + chr(index + 97) + " should be rectangular!",
                                     QMessageBox.Yes | QMessageBox.No, QMessageBox.Yes)
 
-        if check:
-            start_select()
+        if self.check is True:
+            selectwindow.show()
+            self.hide()
 
     def show_detail(self):
         # noinspection PyTypeChecker
@@ -386,10 +386,22 @@ class EntryWindow(QMainWindow, MainWindow):
         self.current_label = self.detail_window.label_text_edit.toPlainText()
 
         if self.current_label == '':
+            delete_label = self.new_button_list[order].text()
             self.new_button_list[order].setText(self.current_label)
             self.new_button_list[order].setStyleSheet("border: 1px dashed black; background: #FFFFFF;")
             self.button_state[order] = 0
+
+            button_number = 0
+            for order, button in enumerate(self.new_button_list):
+                if button.text() == delete_label:
+                    break
+                else:
+                    button_number += 1
+            if button_number == len(self.new_button_list):
+                self.combobox_label.remove(delete_label)
+                self.implement_combo_box.removeItem(self.implement_combo_box.findText(delete_label))
         else:
+            delete_label = self.new_button_list[order].text()
             self.new_button_list[order].setText(self.current_label)
             self.new_button_list[order].setStyleSheet("border: 1px dashed black; background: #B4C7E7;")
             self.button_state[order] = 1
@@ -397,21 +409,34 @@ class EntryWindow(QMainWindow, MainWindow):
                 self.combobox_label.append(self.current_label)
                 self.implement_combo_box.addItem(self.current_label)
 
+            button_number = 0
+            for order, button in enumerate(self.new_button_list):
+                if button.text() == delete_label:
+                    break
+                else:
+                    button_number += 1
+            if button_number == len(self.new_button_list) and delete_label != '':
+                self.combobox_label.remove(delete_label)
+                self.implement_combo_box.removeItem(self.implement_combo_box.findText(delete_label))
+
     # noinspection PyGlobalUndefined
     def image_set(self):
         global image_list
         global statistical_list
 
         if len(image_list) > 0 or len(statistical_list) > 0:
-            self.progress += 1
-
             for order, button in enumerate(self.new_button_list):
                 if button.text() == self.implement_combo_box.currentText():
                     button.setStyleSheet("border: 1px dashed black; background: #F8CBAD;")
                     self.button_state[order] = 2
 
+            self.progress = {}
+            for order, button in enumerate(self.new_button_list):
+                if self.button_state[order] == 2:
+                    self.progress[button.text()] = 1
+
             label_number = self.implement_combo_box.count()
-            self.progress_bar.setValue(int(self.progress / label_number * 100))
+            self.progress_bar.setValue(int(len(self.progress) / label_number * 100))
 
     def calculate_image_ratio(self):
         panel_width = 1.0 / self.layout[1]
@@ -1094,7 +1119,7 @@ class StructureImage1(QMainWindow, ImageWindow1):
         global structure
 
         image_list = []
-        if structure is not None:
+        if structure is not None and self.draw_number > 0:
             structure.close()
         self.draw_number = 0
         self.folder_text = []
@@ -1889,9 +1914,9 @@ class StructureImage4(QMainWindow, ImageWindow4):
 
         color = self.color_text_edit.toPlainText()
         shading_type = self.class_combo_box.currentText()
-        range = self.range_text_edit.toPlainText()
+        content = self.range_text_edit.toPlainText()
 
-        structure.set_color(coloring_plan=[(shading_type + ":" + range, color)], initial_color=None)
+        structure.set_color(coloring_plan=[(shading_type + ":" + content, color)], initial_color=None)
         structure.save(save_path="./temp/image" + str(self.start_number + self.draw_number) + ".png")
         structure.save_pymol(save_path="./temp/image" + str(self.start_number + self.draw_number) + ".pse")
 
@@ -1914,9 +1939,9 @@ class StructureImage4(QMainWindow, ImageWindow4):
 
         if self.draw_number < len(self.range_text):
             self.range_text = self.range_text[:self.draw_number + 1]
-            self.range_text[self.draw_number] = range
+            self.range_text[self.draw_number] = content
         else:
-            self.range_text.append(range)
+            self.range_text.append(content)
 
         figure = QPixmap("./temp/image" + str(self.start_number + self.draw_number) + ".png")
         self.scene.clear()
@@ -2033,13 +2058,7 @@ if __name__ == '__main__':
     entry_window.show()
 
     # noinspection PyUnresolvedReferences
-    entry_window.implement_combo_box.activated.connect(entry_window.check_surface)
-
-    def start_select():
-        # noinspection PyUnresolvedReferences
-        entry_window.implement_combo_box.activated.connect(select_window.show)
-        # noinspection PyUnresolvedReferences
-        entry_window.implement_combo_box.activated.connect(entry_window.hide)
+    entry_window.implement_combo_box.activated.connect(lambda: entry_window.check_surface(select_window))
 
     # noinspection PyUnresolvedReferences
     select_window.structure_image_button.clicked.connect(structure_window_1.show)

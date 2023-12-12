@@ -3,7 +3,7 @@ from setuptools import setup
 setup(
     name="PyMOL-PUB",
     version="1.0",
-    description="PyMOL-PUB: an extension for publication-quality figure production from structure data",
+    description="PyMOL-PUB: rapid generation of high-quality structure figures for publication",
     long_description="With the rapid progress of fields like protein structure prediction, "
                      "an increasing number of researchers from different backgrounds require the use of PyMOL for "
                      "molecular visualization. To be used in publications, the default visualization output of PyMOL "
@@ -25,5 +25,5 @@ setup(
     classifiers=["License :: OSI Approved :: GNU General Public License (GPL)",
                  "Programming Language :: Python :: 3",
                  "Operating System :: OS Independent"],
-    keywords="pymol, pymol-extension, matplotlib, structure-cluster, structure-alignment, manuscript-figure",
+    keywords="pymol, pymol-pub, matplotlib, structure-cluster, structure-alignment, manuscript-figure",
 )

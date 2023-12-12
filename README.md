@@ -2,7 +2,7 @@
     <img width="100%" src="./docs/source/_static/logo.svg"/>
 </p>
 
-# PyMOL-PUB: an extension for publication-quality figure production from structure data
+# PyMOL-PUB: rapid generation of high-quality structure figures for publication
 
 With the rapid progress of fields like protein structure prediction, 
 an increasing number of researchers from different backgrounds require the use of 
@@ -92,7 +92,7 @@ You can install it using pip:
 pip install PyMOL-PUB
 ```
 
-Or you can also install it from source after installing [git](https://git-scm.com/):
+Or you can install it from source after installing [git](https://git-scm.com/):
 
 ```sh
 git clone https://github.com/BGI-SynBio/PyMOL-PUB.git
@@ -103,7 +103,7 @@ python setup.py install develop --user
 
 The tool requires 
 [Python >= 3.7.3](https://www.python.org/downloads/release/python-373/).
-As the foundation of this tool, we require version of PyMOL to be greater than or equal to 2.5.0.
+As the foundation of this tool, we require version of PyMOL equal to 2.5.0.
 Please refer to the [official website](https://pymol.org/2/#download) for installation protocol details.
  
 Moreover, some well-established libraries: 

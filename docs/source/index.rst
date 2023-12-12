@@ -11,7 +11,7 @@ The current process of creating publication-quality figures can be time-consumin
 as no useful tool is currently available for generating figures directly from structure data.
 Therefore, the integration of end-to-end visual interfaces becomes a pressing necessity.
 
-We have developed an open-source extension of PyMOL framework, named PyMOL-PUB,
+We have developed an open-source tool of PyMOL framework, named PyMOL-PUB,
 to streamline the creation of publication-quality figures from molecular structure data.
 This extension offers a range of features, including structural alignment methods,
 functional coloring schemes, conformation adjustments, and layout plotting strategies.

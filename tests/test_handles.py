@@ -120,7 +120,7 @@ class TestCluster(TestCase):
             structures = x.copy()
             for _ in range(self.structure_number - 1):
                 structures = vstack((structures, x))
-            structures = structures.reshape(self.structure_number, self.location_length, 3)
+            structures = structures.reshape((self.structure_number, self.location_length, 3))
 
             for similar_type in self.similar_types:
                 for model_type in self.model_types:
@@ -153,7 +153,7 @@ class TestAlign(TestCase):
             structures = x.copy()
             for _ in range(self.structure_number - 1):
                 structures = vstack((structures, x))
-            structures = structures.reshape(self.structure_number, self.location_length, 3)
+            structures = structures.reshape((self.structure_number, self.location_length, 3))
 
             for similar_type in self.similar_types:
                 for model_type in self.model_types:
@@ -185,7 +185,7 @@ class TestSetDifference(TestCase):
             structures = x
             for _ in range(12 * self.structure_number - 1):
                 structures = vstack((structures, x))
-            data = structures.reshape(self.structure_number, 12, 3)
+            data = structures.reshape((self.structure_number, 12, 3))
 
             for model_type in self.model_types:
                 differences = set_difference(data, model_type)

@@ -23,7 +23,7 @@ class Monitor:
         Initialize the monitor to identify the task progress.
 
         Example
-            >>> from dsw import Monitor
+            >>> from molpub.handles import Monitor
             >>> monitor = Monitor()
             >>> monitor(current_state=1, total_state=10)
             \r|███                 | 10% ( 1/10) wait 0000:00:00.
@@ -102,7 +102,7 @@ class Score:
         :param similar_type: method to calculate the similarity between two molecule structures.
         :type similar_type: str
 
-        :param model_type: model used by structures (N-CA-C-O / CA for proteins, 3SPN / C3' for DNA and RNA sequences).
+        :param model_type: model used by structures (N-CA-C-O / CA for proteins, 3SPN / C3 for DNA and RNA sequences).
         :type model_type: str
         """
         self.similar_type = similar_type
@@ -174,7 +174,7 @@ class Score:
 
                 screen = len(original_reference) - len(original_candidate) + 1
                 number = 1 if use_center else len(original_candidate)
-                scores = sum(array(scores).reshape(4, screen, number), axis=0).reshape(-1)
+                scores = sum(array(scores).reshape((4, screen, number)), axis=0).reshape(-1)
                 location = argmax(scores)
                 saved_candidate, start = zeros(shape=(len(original_candidate), 3)), None
                 for bias in range(4):
@@ -229,7 +229,7 @@ class Score:
 
                 screen = len(original_reference) - len(original_candidate) + 1
                 number = 1 if use_center else len(original_candidate)
-                scores = sum(array(scores).reshape(3, screen, number), axis=0).reshape(-1)
+                scores = sum(array(scores).reshape((3, screen, number)), axis=0).reshape(-1)
                 location = argmax(scores)
                 saved_candidate, start = zeros(shape=(len(original_candidate), 3)), None
                 for bias in range(3):
@@ -279,7 +279,7 @@ class Score:
 
                 screen = len(original_reference) - len(original_candidate) + 1
                 number = 1 if use_center else len(original_candidate)
-                scores = sum(array(scores).reshape(4, screen, number), axis=0).reshape(-1)
+                scores = sum(array(scores).reshape((4, screen, number)), axis=0).reshape(-1)
                 location = argmax(scores)
                 saved_candidate, start = zeros(shape=(len(original_candidate), 3)), None
                 for bias in range(4):
@@ -318,7 +318,7 @@ class Score:
 
                 screen = len(original_reference) - len(original_candidate) + 1
                 number = 1 if use_center else len(original_candidate)
-                scores = sum(array(scores).reshape(4, screen, number), axis=0).reshape(-1)
+                scores = sum(array(scores).reshape((4, screen, number)), axis=0).reshape(-1)
                 location = argmax(scores)
                 saved_candidate, start = zeros(shape=(len(original_candidate), 3)), None
                 for bias in range(4):
@@ -368,8 +368,8 @@ class Score:
         :param use_center: use center location.
         :type use_center: bool
 
-        :returns current index, total index, final candidate structure and reference structure.
-        :rtype int, int, numpy.ndarray, numpy.ndarray
+        :return: current index, total index, final candidate structure and reference structure.
+        :rtype: int, int, numpy.ndarray, numpy.ndarray
         """
         # Yang Zhang and Jeffrey Skolnick (2004) Proteins
         # Wolfgang Kabsch (1976) Acta Crystallogr. D.
@@ -789,7 +789,7 @@ def set_properties(structure_paths: list, molecule_type: str, property_type: str
             if molecule_type == "AA":
                 # Fang Huang and Werner M. Nau (2003) Angewandte Chemie International Edition.
                 # Tryptophan, Tyrosine, Cysteine and Methionine are themselves quenchers
-                # and they could consequently not be included in the study,
+                # ,and they could consequently not be included in the study,
                 # so their conformational flexibility scales are unknown (represented by -1).
                 if unit_values is None:
                     unit_values = {"A": 18, "C": -1, "D": 21, "E": 8.8, "F": 7.6, "G": 39, "H": 4.8, "I": 2.3, "K": 4.0,
@@ -1007,7 +1007,7 @@ def set_difference(alignment_data: ndarray, model_type: str, calculation_type: s
 
 def kmer(chain: str, structure: ndarray, sub_length: int) -> Iterator[tuple]:
     """
-    Disassemble the entire chain into sub segments of the given length.
+    Disassemble the entire chain into sub-segments of the given length.
 
     :param chain: molecule chain.
     :type chain: str
@@ -1015,11 +1015,11 @@ def kmer(chain: str, structure: ndarray, sub_length: int) -> Iterator[tuple]:
     :param structure: molecule structure.
     :type structure: numpy.ndarray
 
-    :param sub_length: length of sub segment.
+    :param sub_length: length of sub-segment.
     :type sub_length: int
 
-    :return sub chain and the corresponding sub structure.
-    :rtype str, numpy.ndarray
+    :return: sub chain and the corresponding sub structure.
+    :rtype: str, numpy.ndarray
     """
     number = len(structure) // len(chain)
     for index in range(len(chain) - sub_length + 1):
@@ -1109,7 +1109,7 @@ def save_structure_to_file(chains: list, structures: ndarray, file_path: str, mo
     :param file_path: path to save temp file.
     :type file_path: str
 
-    :param model_type: model used by structures (N-CA-C-O / CA for proteins, 3SPN / C3' for DNA and RNA sequences).
+    :param model_type: model used by structures (N-CA-C-O / CA for proteins, 3SPN / C3 for DNA and RNA sequences).
     :type model_type: str
     """
     if model_type == "N-CA-C-O":
