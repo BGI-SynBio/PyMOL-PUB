@@ -13,5 +13,4 @@ formats:
 
 python:
   install:
-   - requirements: requirements.txt
-  system_packages: true
+   - requirements: docs/requirements.txt
