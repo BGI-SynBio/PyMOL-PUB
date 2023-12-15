@@ -322,7 +322,7 @@ class EntryWindow(QMainWindow, MainWindow):
             self.button_state.append(0)
             self.new_button_list[i].show()
 
-    def check_surface(self, selectwindow):
+    def check_surface(self, selected_window):
         matrix = []
         for order, button in enumerate(self.new_button_list):
             matrix.append(button.text())
@@ -365,7 +365,7 @@ class EntryWindow(QMainWindow, MainWindow):
                                     QMessageBox.Yes | QMessageBox.No, QMessageBox.Yes)
 
         if self.check is True:
-            selectwindow.show()
+            selected_window.show()
             self.hide()
 
     def show_detail(self):
@@ -1563,12 +1563,12 @@ class StructureImage3(QMainWindow, ImageWindow3):
         global structure
         self.draw_number = 0
         self.start_number = 0
-        self.rotatex_text = []
-        self.rotatey_text = []
-        self.rotatez_text = []
-        self.movex_text = []
-        self.movey_text = []
-        self.movez_text = []
+        self.rotate_x_text = []
+        self.rotate_y_text = []
+        self.rotate_z_text = []
+        self.move_x_text = []
+        self.move_y_text = []
+        self.move_z_text = []
 
         # noinspection PyUnresolvedReferences
         self.refresh_button.clicked.connect(self.draw_structure)
@@ -1613,41 +1613,41 @@ class StructureImage3(QMainWindow, ImageWindow3):
         else:
             image_list.append("./temp/image" + str(self.start_number + self.draw_number) + ".png")
 
-        if self.draw_number < len(self.rotatex_text):
-            self.rotatex_text = self.rotatex_text[:self.draw_number + 1]
-            self.rotatex_text[self.draw_number] = self.rotate_x_text_edit.toPlainText()
+        if self.draw_number < len(self.rotate_x_text):
+            self.rotate_x_text = self.rotate_x_text[:self.draw_number + 1]
+            self.rotate_x_text[self.draw_number] = self.rotate_x_text_edit.toPlainText()
         else:
-            self.rotatex_text.append(self.rotate_x_text_edit.toPlainText())
+            self.rotate_x_text.append(self.rotate_x_text_edit.toPlainText())
 
-        if self.draw_number < len(self.rotatey_text):
-            self.rotatey_text = self.rotatey_text[:self.draw_number + 1]
-            self.rotatey_text[self.draw_number] = self.rotate_y_text_edit.toPlainText()
+        if self.draw_number < len(self.rotate_y_text):
+            self.rotate_y_text = self.rotate_y_text[:self.draw_number + 1]
+            self.rotate_y_text[self.draw_number] = self.rotate_y_text_edit.toPlainText()
         else:
-            self.rotatey_text.append(self.rotate_y_text_edit.toPlainText())
+            self.rotate_y_text.append(self.rotate_y_text_edit.toPlainText())
 
-        if self.draw_number < len(self.rotatez_text):
-            self.rotatez_text = self.rotatez_text[:self.draw_number + 1]
-            self.rotatez_text[self.draw_number] = self.rotate_z_text_edit.toPlainText()
+        if self.draw_number < len(self.rotate_z_text):
+            self.rotate_z_text = self.rotate_z_text[:self.draw_number + 1]
+            self.rotate_z_text[self.draw_number] = self.rotate_z_text_edit.toPlainText()
         else:
-            self.rotatez_text.append(self.rotate_z_text_edit.toPlainText())
+            self.rotate_z_text.append(self.rotate_z_text_edit.toPlainText())
 
-        if self.draw_number < len(self.movex_text):
-            self.movex_text = self.movex_text[:self.draw_number + 1]
-            self.movex_text[self.draw_number] = self.move_x_text_edit.toPlainText()
+        if self.draw_number < len(self.move_x_text):
+            self.move_x_text = self.move_x_text[:self.draw_number + 1]
+            self.move_x_text[self.draw_number] = self.move_x_text_edit.toPlainText()
         else:
-            self.movex_text.append(self.move_x_text_edit.toPlainText())
+            self.move_x_text.append(self.move_x_text_edit.toPlainText())
 
-        if self.draw_number < len(self.movey_text):
-            self.movey_text = self.movey_text[:self.draw_number + 1]
-            self.movey_text[self.draw_number] = self.move_y_text_edit.toPlainText()
+        if self.draw_number < len(self.move_y_text):
+            self.move_y_text = self.move_y_text[:self.draw_number + 1]
+            self.move_y_text[self.draw_number] = self.move_y_text_edit.toPlainText()
         else:
-            self.movey_text.append(self.move_y_text_edit.toPlainText())
+            self.move_y_text.append(self.move_y_text_edit.toPlainText())
 
-        if self.draw_number < len(self.movez_text):
-            self.movez_text = self.movez_text[:self.draw_number + 1]
-            self.movez_text[self.draw_number] = self.move_z_text_edit.toPlainText()
+        if self.draw_number < len(self.move_z_text):
+            self.move_z_text = self.move_z_text[:self.draw_number + 1]
+            self.move_z_text[self.draw_number] = self.move_z_text_edit.toPlainText()
         else:
-            self.movez_text.append(self.move_z_text_edit.toPlainText())
+            self.move_z_text.append(self.move_z_text_edit.toPlainText())
 
         figure = QPixmap("./temp/image" + str(self.start_number + self.draw_number) + ".png")
         self.scene.clear()
@@ -1667,12 +1667,12 @@ class StructureImage3(QMainWindow, ImageWindow3):
             structure.load_pymol(load_path="./temp/image" + str(self.start_number + self.draw_number - 2) + ".pse")
             self.graphics_view.setScene(self.scene)
 
-            self.rotate_x_text_edit.setText(self.rotatex_text[self.draw_number - 2])
-            self.rotate_y_text_edit.setText(self.rotatey_text[self.draw_number - 2])
-            self.rotate_z_text_edit.setText(self.rotatez_text[self.draw_number - 2])
-            self.move_x_text_edit.setText(self.movex_text[self.draw_number - 2])
-            self.move_y_text_edit.setText(self.movey_text[self.draw_number - 2])
-            self.move_z_text_edit.setText(self.movez_text[self.draw_number - 2])
+            self.rotate_x_text_edit.setText(self.rotate_x_text[self.draw_number - 2])
+            self.rotate_y_text_edit.setText(self.rotate_y_text[self.draw_number - 2])
+            self.rotate_z_text_edit.setText(self.rotate_z_text[self.draw_number - 2])
+            self.move_x_text_edit.setText(self.move_x_text[self.draw_number - 2])
+            self.move_y_text_edit.setText(self.move_y_text[self.draw_number - 2])
+            self.move_z_text_edit.setText(self.move_z_text[self.draw_number - 2])
             self.draw_number -= 1
         else:
             self.scene.clear()
@@ -1700,12 +1700,12 @@ class StructureImage3(QMainWindow, ImageWindow3):
             structure.load_pymol(load_path="./temp/image" + str(self.start_number + self.draw_number) + ".pse")
             self.graphics_view.setScene(self.scene)
 
-            self.rotate_x_text_edit.setText(self.rotatex_text[self.draw_number])
-            self.rotate_y_text_edit.setText(self.rotatey_text[self.draw_number])
-            self.rotate_z_text_edit.setText(self.rotatez_text[self.draw_number])
-            self.move_x_text_edit.setText(self.movex_text[self.draw_number])
-            self.move_y_text_edit.setText(self.movey_text[self.draw_number])
-            self.move_z_text_edit.setText(self.movez_text[self.draw_number])
+            self.rotate_x_text_edit.setText(self.rotate_x_text[self.draw_number])
+            self.rotate_y_text_edit.setText(self.rotate_y_text[self.draw_number])
+            self.rotate_z_text_edit.setText(self.rotate_z_text[self.draw_number])
+            self.move_x_text_edit.setText(self.move_x_text[self.draw_number])
+            self.move_y_text_edit.setText(self.move_y_text[self.draw_number])
+            self.move_z_text_edit.setText(self.move_z_text[self.draw_number])
             self.draw_number += 1
         else:
             self.scene.clear()
@@ -1714,22 +1714,22 @@ class StructureImage3(QMainWindow, ImageWindow3):
             self.graphics_view.setScene(self.scene)
             structure.load_pymol(load_path="./temp/image" + str(self.start_number + self.draw_number - 1) + ".pse")
 
-            self.rotate_x_text_edit.setText(self.rotatex_text[-1])
-            self.rotate_y_text_edit.setText(self.rotatey_text[-1])
-            self.rotate_z_text_edit.setText(self.rotatez_text[-1])
-            self.move_x_text_edit.setText(self.movex_text[-1])
-            self.move_y_text_edit.setText(self.movey_text[-1])
-            self.move_z_text_edit.setText(self.movez_text[-1])
+            self.rotate_x_text_edit.setText(self.rotate_x_text[-1])
+            self.rotate_y_text_edit.setText(self.rotate_y_text[-1])
+            self.rotate_z_text_edit.setText(self.rotate_z_text[-1])
+            self.move_x_text_edit.setText(self.move_x_text[-1])
+            self.move_y_text_edit.setText(self.move_y_text[-1])
+            self.move_z_text_edit.setText(self.move_z_text[-1])
 
     def window_clear(self):
         self.draw_number = 0
         self.start_number = 0
-        self.rotatex_text = []
-        self.rotatey_text = []
-        self.rotatez_text = []
-        self.movex_text = []
-        self.movey_text = []
-        self.movez_text = []
+        self.rotate_x_text = []
+        self.rotate_y_text = []
+        self.rotate_z_text = []
+        self.move_x_text = []
+        self.move_y_text = []
+        self.move_z_text = []
 
         self.rotate_x_text_edit.clear()
         self.rotate_y_text_edit.clear()
@@ -1745,12 +1745,12 @@ class StructureImage3(QMainWindow, ImageWindow3):
         global image_list
         if len(image_list) > 0:
             self.draw_number = 0
-            self.rotatex_text = []
-            self.rotatey_text = []
-            self.rotatez_text = []
-            self.movex_text = []
-            self.movey_text = []
-            self.movez_text = []
+            self.rotate_x_text = []
+            self.rotate_y_text = []
+            self.rotate_z_text = []
+            self.move_x_text = []
+            self.move_y_text = []
+            self.move_z_text = []
             image_list = image_list[:self.start_number]
 
             self.rotate_x_text_edit.clear()

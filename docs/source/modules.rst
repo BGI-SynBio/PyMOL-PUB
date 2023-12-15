@@ -9,7 +9,7 @@ Modules
 
 - layout module (`layouts.py <https://github.com/BGI-SynBio/PyMOL-PUB/blob/main/molpub/layouts.py>`_): is responsible for figure processing and rendering operations.
 
-- config module (`configs.py <https://github.com/BGI-SynBio/PyMOL-PUB/blob/main/molpub/configs.py>`_): will provide a simpler protocol, allowing users without programming experience to complete the production of publication-quality figures.
+- config module (`windows.py <https://github.com/BGI-SynBio/PyMOL-PUB/blob/main/molpub/windows.py>`_): provides a Graphical User Interface protocol, allowing users without programming experience to complete the production of publication-quality figures.
 
 .. toctree::
    :maxdepth: 2
