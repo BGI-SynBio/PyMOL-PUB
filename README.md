@@ -2,7 +2,7 @@
     <img width="100%" src="./docs/source/_static/logo.svg"/>
 </p>
 
-# PyMOL-PUB: rapid generation of high-quality structure figures for publication
+# Rapid generation of high-quality structure figures for publication with PyMOL-PUB
 
 With the rapid progress of fields like protein structure prediction, 
 an increasing number of researchers from different backgrounds require the use of 
@@ -17,7 +17,7 @@ Based on the original design of PyMOL and as an important supplement,
 we develop a high-level interface in order to generate figures capable of reaching the 
 publication standard.
 By using our tool, the manual operations can be greatly reduced, 
-and the desired image output can be obtained with a few lines of code or only gui.
+and the desired image output can be obtained with a few lines of code or by operations through GUI.
 
 <p align="center">
     <img src="./docs/source/_static/overview.png"/>
@@ -26,11 +26,11 @@ and the desired image output can be obtained with a few lines of code or only gu
 ## Case presentation
 Based on three structures with default visualization output 
 
-<table width="100%" align="center", table-layout:fixed>
+<table width="100%" align="center">
     <tr>
-        <td bgcolor="#FFFFFF" bgcolor="#FFFFFF" align="center">1AY7</td>
-        <td bgcolor="#FFFFFF" bgcolor="#FFFFFF" align="center">1F34</td>
-        <td bgcolor="#FFFFFF" bgcolor="#FFFFFF" align="center">1YCR</td>
+        <td bgcolor="#FFFFFF" align="center">1AY7</td>
+        <td bgcolor="#FFFFFF" align="center">1F34</td>
+        <td bgcolor="#FFFFFF" align="center">1YCR</td>
     </tr>
     <tr>
         <td bgcolor="#FFFFFF">
@@ -66,11 +66,11 @@ between the predicted and anticipated structures by
 varying the thickness and gradient color of the cartoon representation (see the following right panel).
 
 
-<table width="100%" align="center", table-layout:fixed>
+<table width="100%" align="center">
     <tr>
-        <td bgcolor="#FFFFFF" bgcolor="#FFFFFF" align="center">expected</td>
-        <td bgcolor="#FFFFFF" bgcolor="#FFFFFF" align="center">designed (equal)</td>
-        <td bgcolor="#FFFFFF" bgcolor="#FFFFFF" align="center">designed (improve)</td>
+        <td bgcolor="#FFFFFF" align="center">expected</td>
+        <td bgcolor="#FFFFFF" align="center">designed (equal)</td>
+        <td bgcolor="#FFFFFF" align="center">designed (improve)</td>
     </tr>
     <tr>
         <td bgcolor="#FFFFFF">
@@ -120,7 +120,7 @@ At the figure level, we can customize the target publication format during the
 [initialization](https://github.com/BGI-SynBio/PyMOL-PUB/blob/main/molpub/layouts.py#L493) of the figure.
 The supporting figure formats of journal, conference or publisher are:
 
-<table width="100%" align="center", table-layout:fixed>
+<table width="100%" align="center">
     <tr>
         <th bgcolor="#FFFFFF" align="center" rowspan="2">target</th>
         <th bgcolor="#FFFFFF" align="center" rowspan="2">font</th>
@@ -137,7 +137,7 @@ The supporting figure formats of journal, conference or publisher are:
     <tr>
         <td bgcolor="#FFFFFF" align="center"><a href="https://www.nature.com/nature/for-authors/formatting-guide">Nature</a></td>
         <td bgcolor="#FFFFFF" align="center">Arial</td>
-        <td bgcolor="#FFFFFF" align="center" rowspan="9">Linux Libertine<br/>&<br/>Lucida Calligraphy</th>
+        <td bgcolor="#FFFFFF" align="center" rowspan="9">Linux Libertine<br/>&<br/>Lucida Calligraphy</td>
         <td bgcolor="#FFFFFF" align="center">300</td>
         <td bgcolor="#FFFFFF" align="center">2</td>
         <td bgcolor="#FFFFFF" align="center">3.54</td>
@@ -343,19 +343,19 @@ Rotation widget icons describe the rotation of molecular structure, determined b
 
 There are two styles.
 In style 1, the widget is defined by direction and the azimuth angle.
-<table align="center", table-layout:fixed>
+<table align="center">
     <tr>
         <th rowspan="2">direction</th><th colspan="5">azimuth angle</th>
     </tr>
     <tr>
-        <td bgcolor="#FFFFFF" bgcolor="#FFFFFF" align="center">30</td>
-        <td bgcolor="#FFFFFF" bgcolor="#FFFFFF" align="center">60</td>
-        <td bgcolor="#FFFFFF" bgcolor="#FFFFFF" align="center">90</td>
-        <td bgcolor="#FFFFFF" bgcolor="#FFFFFF" align="center">120</td>
-        <td bgcolor="#FFFFFF" bgcolor="#FFFFFF" align="center">180</td>
+        <td bgcolor="#FFFFFF" align="center">30</td>
+        <td bgcolor="#FFFFFF" align="center">60</td>
+        <td bgcolor="#FFFFFF" align="center">90</td>
+        <td bgcolor="#FFFFFF" align="center">120</td>
+        <td bgcolor="#FFFFFF" align="center">180</td>
     </tr>
     <tr>
-        <td bgcolor="#FFFFFF" bgcolor="#FFFFFF" align="center">+</td>
+        <td bgcolor="#FFFFFF" align="center">+</td>
         <td bgcolor="#FFFFFF"><img src="./docs/source/_static/widgets/rotation[+.1pi6].svg"/></td>
         <td bgcolor="#FFFFFF"><img src="./docs/source/_static/widgets/rotation[+.1pi3].svg"/></td>
         <td bgcolor="#FFFFFF"><img src="./docs/source/_static/widgets/rotation[+.1pi2].svg"/></td>
@@ -363,7 +363,7 @@ In style 1, the widget is defined by direction and the azimuth angle.
         <td bgcolor="#FFFFFF"><img src="./docs/source/_static/widgets/rotation[+.1pi1].svg"/></td>
     </tr>
     <tr>
-        <td bgcolor="#FFFFFF" bgcolor="#FFFFFF" align="center">-</td>
+        <td bgcolor="#FFFFFF" align="center">-</td>
         <td bgcolor="#FFFFFF"><img src="./docs/source/_static/widgets/rotation[-.1pi6].svg"/></td>
         <td bgcolor="#FFFFFF"><img src="./docs/source/_static/widgets/rotation[-.1pi3].svg"/></td>
         <td bgcolor="#FFFFFF"><img src="./docs/source/_static/widgets/rotation[-.1pi2].svg"/></td>
@@ -383,16 +383,16 @@ obtain_widget_icon(save_path="temp path", widget_type="rotation", params={"turn"
 and you can obtain
 
 <p align="center">
-    <image width="40%" src="./docs/source/_static/widgets/rotation[-.1pi6].svg"/>
+    <image width="40%" src="./docs/source/_static/widgets/rotation[-.1pi6].svg"></image>
 </p>
 
-Here, the scope of "turn" is {"right", "left"} and that of "degree" is (0, 180\].
+Here, the scope of "turn" is {"+", "-"} and that of "degree" is (0, 180\].
 
 
 Sometimes, we need to operate the elevation angle concurrently.
 A more complex widget attribute setup is (elevation angle, azimuth angle).
 
-<table align="center" table-layout:fixed>
+<table align="center">
     <tr>
         <th rowspan="2">elevation angle</th><th colspan="11">azimuth angle</th>
     </tr>
@@ -411,157 +411,157 @@ A more complex widget attribute setup is (elevation angle, azimuth angle).
     </tr>
     <tr>
         <td bgcolor="#FFFFFF" align="center">-180</td>
-        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[-1pi1.-1pi1].svg"/></td>
-        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[-1pi1.-2pi3].svg"/></td>
-        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[-1pi1.-1pi2].svg"/></td>
-        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[-1pi1.-1pi3].svg"/></td>
-        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[-1pi1.-1pi6].svg"/></td>
-        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[-1pi1.+0pi1].svg"/></td>
-        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[-1pi1.+1pi6].svg"/></td>
-        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[-1pi1.+1pi3].svg"/></td>
-        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[-1pi1.+1pi2].svg"/></td>
-        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[-1pi1.+2pi3].svg"/></td>
-        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[-1pi1.+1pi1].svg"/></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[-1pi1.-1pi1].svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[-1pi1.-2pi3].svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[-1pi1.-1pi2].svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[-1pi1.-1pi3].svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[-1pi1.-1pi6].svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[-1pi1.+0pi1].svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[-1pi1.+1pi6].svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[-1pi1.+1pi3].svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[-1pi1.+1pi2].svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[-1pi1.+2pi3].svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[-1pi1.+1pi1].svg"></image></td>
     </tr>
     <tr>
         <td bgcolor="#FFFFFF" align="center">-120</td>
-        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[-2pi3.-1pi1].svg"/></td>
-        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[-2pi3.-2pi3].svg"/></td>
-        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[-2pi3.-1pi2].svg"/></td>
-        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[-2pi3.-1pi3].svg"/></td>
-        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[-2pi3.-1pi6].svg"/></td>
-        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[-2pi3.+0pi1].svg"/></td>
-        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[-2pi3.+1pi6].svg"/></td>
-        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[-2pi3.+1pi3].svg"/></td>
-        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[-2pi3.+1pi2].svg"/></td>
-        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[-2pi3.+2pi3].svg"/></td>
-        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[-2pi3.+1pi1].svg"/></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[-2pi3.-1pi1].svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[-2pi3.-2pi3].svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[-2pi3.-1pi2].svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[-2pi3.-1pi3].svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[-2pi3.-1pi6].svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[-2pi3.+0pi1].svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[-2pi3.+1pi6].svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[-2pi3.+1pi3].svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[-2pi3.+1pi2].svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[-2pi3.+2pi3].svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[-2pi3.+1pi1].svg"></image></td>
     </tr>
     <tr>
         <td bgcolor="#FFFFFF" align="center">-90</td>
-        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[-1pi2.-1pi1].svg"/></td>
-        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[-1pi2.-2pi3].svg"/></td>
-        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[-1pi2.-1pi2].svg"/></td>
-        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[-1pi2.-1pi3].svg"/></td>
-        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[-1pi2.-1pi6].svg"/></td>
-        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[-1pi2.+0pi1].svg"/></td>
-        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[-1pi2.+1pi6].svg"/></td>
-        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[-1pi2.+1pi3].svg"/></td>
-        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[-1pi2.+1pi2].svg"/></td>
-        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[-1pi2.+2pi3].svg"/></td>
-        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[-1pi2.+1pi1].svg"/></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[-1pi2.-1pi1].svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[-1pi2.-2pi3].svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[-1pi2.-1pi2].svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[-1pi2.-1pi3].svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[-1pi2.-1pi6].svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[-1pi2.+0pi1].svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[-1pi2.+1pi6].svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[-1pi2.+1pi3].svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[-1pi2.+1pi2].svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[-1pi2.+2pi3].svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[-1pi2.+1pi1].svg"></image></td>
     </tr>
     <tr>
         <td bgcolor="#FFFFFF" align="center">-60</td>
-        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[-1pi3.-1pi1].svg"/></td>
-        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[-1pi3.-2pi3].svg"/></td>
-        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[-1pi3.-1pi2].svg"/></td>
-        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[-1pi3.-1pi3].svg"/></td>
-        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[-1pi3.-1pi6].svg"/></td>
-        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[-1pi3.+0pi1].svg"/></td>
-        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[-1pi3.+1pi6].svg"/></td>
-        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[-1pi3.+1pi3].svg"/></td>
-        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[-1pi3.+1pi2].svg"/></td>
-        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[-1pi3.+2pi3].svg"/></td>
-        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[-1pi3.+1pi1].svg"/></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[-1pi3.-1pi1].svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[-1pi3.-2pi3].svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[-1pi3.-1pi2].svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[-1pi3.-1pi3].svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[-1pi3.-1pi6].svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[-1pi3.+0pi1].svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[-1pi3.+1pi6].svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[-1pi3.+1pi3].svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[-1pi3.+1pi2].svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[-1pi3.+2pi3].svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[-1pi3.+1pi1].svg"></image></td>
     </tr>
     <tr>
         <td bgcolor="#FFFFFF" align="center">-30</td>
-        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[-1pi6.-1pi1].svg"/></td>
-        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[-1pi6.-2pi3].svg"/></td>
-        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[-1pi6.-1pi2].svg"/></td>
-        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[-1pi6.-1pi3].svg"/></td>
-        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[-1pi6.-1pi6].svg"/></td>
-        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[-1pi6.+0pi1].svg"/></td>
-        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[-1pi6.+1pi6].svg"/></td>
-        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[-1pi6.+1pi3].svg"/></td>
-        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[-1pi6.+1pi2].svg"/></td>
-        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[-1pi6.+2pi3].svg"/></td>
-        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[-1pi6.+1pi1].svg"/></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[-1pi6.-1pi1].svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[-1pi6.-2pi3].svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[-1pi6.-1pi2].svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[-1pi6.-1pi3].svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[-1pi6.-1pi6].svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[-1pi6.+0pi1].svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[-1pi6.+1pi6].svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[-1pi6.+1pi3].svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[-1pi6.+1pi2].svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[-1pi6.+2pi3].svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[-1pi6.+1pi1].svg"></image></td>
     </tr>
     <tr>
         <td bgcolor="#FFFFFF" align="center">0</td>
-        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[+0pi1.-1pi1].svg"/></td>
-        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[+0pi1.-2pi3].svg"/></td>
-        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[+0pi1.-1pi2].svg"/></td>
-        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[+0pi1.-1pi3].svg"/></td>
-        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[+0pi1.-1pi6].svg"/></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[+0pi1.-1pi1].svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[+0pi1.-2pi3].svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[+0pi1.-1pi2].svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[+0pi1.-1pi3].svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[+0pi1.-1pi6].svg"></image></td>
         <td bgcolor="#FFFFFF" align="center">N/A</td>
-        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[+0pi1.+1pi6].svg"/></td>
-        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[+0pi1.+1pi3].svg"/></td>
-        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[+0pi1.+1pi2].svg"/></td>
-        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[+0pi1.+2pi3].svg"/></td>
-        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[+0pi1.+1pi1].svg"/></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[+0pi1.+1pi6].svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[+0pi1.+1pi3].svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[+0pi1.+1pi2].svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[+0pi1.+2pi3].svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[+0pi1.+1pi1].svg"></image></td>
     </tr>
     <tr>
         <td bgcolor="#FFFFFF" align="center">+30</td>
-        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[+1pi6.-1pi1].svg"/></td>
-        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[+1pi6.-2pi3].svg"/></td>
-        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[+1pi6.-1pi2].svg"/></td>
-        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[+1pi6.-1pi3].svg"/></td>
-        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[+1pi6.-1pi6].svg"/></td>
-        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[+1pi6.+0pi1].svg"/></td>
-        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[+1pi6.+1pi6].svg"/></td>
-        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[+1pi6.+1pi3].svg"/></td>
-        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[+1pi6.+1pi2].svg"/></td>
-        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[+1pi6.+2pi3].svg"/></td>
-        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[+1pi6.+1pi1].svg"/></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[+1pi6.-1pi1].svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[+1pi6.-2pi3].svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[+1pi6.-1pi2].svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[+1pi6.-1pi3].svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[+1pi6.-1pi6].svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[+1pi6.+0pi1].svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[+1pi6.+1pi6].svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[+1pi6.+1pi3].svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[+1pi6.+1pi2].svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[+1pi6.+2pi3].svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[+1pi6.+1pi1].svg"></image></td>
     </tr>
     <tr>
         <td bgcolor="#FFFFFF" align="center">+60</td>
-        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[+1pi3.-1pi1].svg"/></td>
-        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[+1pi3.-2pi3].svg"/></td>
-        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[+1pi3.-1pi2].svg"/></td>
-        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[+1pi3.-1pi3].svg"/></td>
-        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[+1pi3.-1pi6].svg"/></td>
-        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[+1pi3.+0pi1].svg"/></td>
-        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[+1pi3.+1pi6].svg"/></td>
-        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[+1pi3.+1pi3].svg"/></td>
-        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[+1pi3.+1pi2].svg"/></td>
-        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[+1pi3.+2pi3].svg"/></td>
-        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[+1pi3.+1pi1].svg"/></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[+1pi3.-1pi1].svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[+1pi3.-2pi3].svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[+1pi3.-1pi2].svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[+1pi3.-1pi3].svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[+1pi3.-1pi6].svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[+1pi3.+0pi1].svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[+1pi3.+1pi6].svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[+1pi3.+1pi3].svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[+1pi3.+1pi2].svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[+1pi3.+2pi3].svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[+1pi3.+1pi1].svg"></image></td>
     </tr>
     <tr>
         <td bgcolor="#FFFFFF" align="center">+90</td>
-        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[+1pi2.-1pi1].svg"/></td>
-        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[+1pi2.-2pi3].svg"/></td>
-        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[+1pi2.-1pi2].svg"/></td>
-        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[+1pi2.-1pi3].svg"/></td>
-        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[+1pi2.-1pi6].svg"/></td>
-        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[+1pi2.+0pi1].svg"/></td>
-        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[+1pi2.+1pi6].svg"/></td>
-        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[+1pi2.+1pi3].svg"/></td>
-        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[+1pi2.+1pi2].svg"/></td>
-        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[+1pi2.+2pi3].svg"/></td>
-        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[+1pi2.+1pi1].svg"/></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[+1pi2.-1pi1].svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[+1pi2.-2pi3].svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[+1pi2.-1pi2].svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[+1pi2.-1pi3].svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[+1pi2.-1pi6].svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[+1pi2.+0pi1].svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[+1pi2.+1pi6].svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[+1pi2.+1pi3].svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[+1pi2.+1pi2].svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[+1pi2.+2pi3].svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[+1pi2.+1pi1].svg"></image></td>
     </tr>
     <tr>
         <td bgcolor="#FFFFFF" align="center">+120</td>
-        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[+2pi3.-1pi1].svg"/></td>
-        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[+2pi3.-2pi3].svg"/></td>
-        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[+2pi3.-1pi2].svg"/></td>
-        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[+2pi3.-1pi3].svg"/></td>
-        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[+2pi3.-1pi6].svg"/></td>
-        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[+2pi3.+0pi1].svg"/></td>
-        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[+2pi3.+1pi6].svg"/></td>
-        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[+2pi3.+1pi3].svg"/></td>
-        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[+2pi3.+1pi2].svg"/></td>
-        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[+2pi3.+2pi3].svg"/></td>
-        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[+2pi3.+1pi1].svg"/></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[+2pi3.-1pi1].svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[+2pi3.-2pi3].svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[+2pi3.-1pi2].svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[+2pi3.-1pi3].svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[+2pi3.-1pi6].svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[+2pi3.+0pi1].svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[+2pi3.+1pi6].svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[+2pi3.+1pi3].svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[+2pi3.+1pi2].svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[+2pi3.+2pi3].svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[+2pi3.+1pi1].svg"></image></td>
     </tr>
     <tr>
         <td bgcolor="#FFFFFF" align="center">+180</td>
-        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[+1pi1.-1pi1].svg"/></td>
-        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[+1pi1.-2pi3].svg"/></td>
-        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[+1pi1.-1pi2].svg"/></td>
-        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[+1pi1.-1pi3].svg"/></td>
-        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[+1pi1.-1pi6].svg"/></td>
-        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[+1pi1.+0pi1].svg"/></td>
-        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[+1pi1.+1pi6].svg"/></td>
-        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[+1pi1.+1pi3].svg"/></td>
-        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[+1pi1.+1pi2].svg"/></td>
-        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[+1pi1.+2pi3].svg"/></td>
-        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[+1pi1.+1pi1].svg"/></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[+1pi1.-1pi1].svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[+1pi1.-2pi3].svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[+1pi1.-1pi2].svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[+1pi1.-1pi3].svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[+1pi1.-1pi6].svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[+1pi1.+0pi1].svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[+1pi1.+1pi6].svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[+1pi1.+1pi3].svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[+1pi1.+1pi2].svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[+1pi1.+2pi3].svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation[+1pi1.+1pi1].svg"></image></td>
     </tr>
 </table>
 
@@ -579,7 +579,7 @@ obtain_widget_icon(save_path="temp path", widget_type="rotation", params={"eleva
 and you can obtain
 
 <p align="center">
-    <image width="40%" src="./docs/source/_static/widgets/rotation[+1pi6.+1pi6].svg"/>
+    <image width="40%" src="./docs/source/_static/widgets/rotation[+1pi6.+1pi6].svg"></image>
 </p>
 
 Here, the scope of "elevation" and "azimuth" and \[-180, 180\].

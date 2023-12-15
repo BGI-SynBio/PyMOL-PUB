@@ -2,20 +2,22 @@ from setuptools import setup
 
 setup(
     name="PyMOL-PUB",
-    version="1.0",
-    description="PyMOL-PUB: rapid generation of high-quality structure figures for publication",
-    long_description="With the rapid progress of fields like protein structure prediction, "
-                     "an increasing number of researchers from different backgrounds require the use of PyMOL for "
-                     "molecular visualization. To be used in publications, the default visualization output of PyMOL "
-                     "typically requires the spatial adjustments, such as rotating and/or zooming the structures, "
-                     "and purposeful emphasis including highlighting important parts and hiding the unimportant parts. "
-                     "Meanwhile, the need for batch visualization has been demonstrated by recent publications "
-                     "in high-impact journals. However, these adjustments and batch protocols require the involvement "
-                     "of many skilled personnel, are expensive, and operate at human speeds, all of which make them "
-                     "worthy of automation. Based on the original design of PyMOL and as an important supplement, "
-                     "we develop a high-level interface in order to generate figures capable of reaching "
-                     "the publication standard. By using our tool, the manual operations can be greatly reduced, "
-                     "and the desired image output can be obtained with a few lines of code or only configuration.",
+    version="1.0-beta",
+    description="Rapid generation of high-quality structure figures for publication with PyMOL-PUB",
+    long_description="The advancement of structural biology has increased the requirements for researchers "
+                     "to quickly and efficiently visualize molecular structures in silico. "
+                     "Meanwhile, it is also time-consuming for structural biologists "
+                     "to create publication-standard figures, as no useful tools can directly generate figures "
+                     "from structure data. Although manual editing can ensure that figures meet the standards "
+                     "required for publication, it requires a deep understanding of software operations "
+                     "and/or program call commands. Therefore, providing interfaces based on established software "
+                     "instead of manual editing becomes a significant necessity. "
+                     "We developed PyMOL-PUB, based on the original design of PyMOL, "
+                     "to effectively create publication-quality figures from molecular structure data. "
+                     "It provides functions including structural alignment methods, functional coloring schemes, "
+                     "conformation adjustments, and layout plotting strategies. These functions allow users "
+                     "to easily generate high-quality figures, demonstrate structural differences, "
+                     "illustrate inter-molecular interactions and predict performances of biomacromolecules.",
     author="Haoling Zhang",
     author_email="zhanghaoling@genomics.cn",
     url="https://github.com/BGI-SynBio/PyMOL-PUB",
