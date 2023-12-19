@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name="PyMOL-PUB",
-    version="1.0-beta",
+    version="1.1",
     description="Rapid generation of high-quality structure figures for publication with PyMOL-PUB",
     long_description="The advancement of structural biology has increased the requirements for researchers "
                      "to quickly and efficiently visualize molecular structures in silico. "
