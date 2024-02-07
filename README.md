@@ -103,23 +103,23 @@ python setup.py install develop --user
 
 The tool requires 
 [Python >= 3.7.3](https://www.python.org/downloads/release/python-373/).
-As the foundation of this tool, we require version of PyMOL equal to 2.5.0.
+As the foundation of this tool, we require a PyMOL version equal to 2.5.0.
 Please refer to the [official website](https://pymol.org/2/#download) for installation protocol details.
  
-Moreover, some well-established libraries are required: 
+Additionally, some well-established libraries are required: 
 [biopython >= 1.78](https://pypi.org/project/biopython/1.78/), 
 [matplotlib >= 3.2.0](https://pypi.org/project/matplotlib/3.2.0/), 
 [numpy >= 1.21.2](https://pypi.org/project/numpy/1.21.2/), 
 [pillow >= 8.2.0](https://pypi.org/project/Pillow/8.2.0/), 
 [scipy >= 1.4.1](https://pypi.org/project/scipy/1.4.1/), 
 [sphinx-rtd-theme >= 0.4.3](https://pypi.org/project/sphinx-rtd-theme/0.4.3/) and 
-[PyQt5 >= 5.15.9](https://pypi.org/project/PyQt5/5.15.9/)(special dependency required by the GUI).
+[PyQt5 >= 5.15.9](https://pypi.org/project/PyQt5/5.15.9/) (a special dependency required by the GUI).
 ### Note on your PyMOL version
-PyMOL software includes Linux-distribution version and open-source version.
-The two different types of versions have different installation dependencies. 
-You need to carefully read the relevant installation instructions and choose to install the required version according to your own need.
-For example, PyMOL distribution versions will bundle specific Python environment versions to achieve richer functionality (like PyMOL 2.5.7 with Python 3.9).
-Here, we recommend that you use the [PyMOL open-source version](https://github.com/schrodinger/pymol-open-source/tree/master) to directly experience the drawing function of PyMOL-PUB.
+The PyMOL software includes a Linux-distribution version and an open-source version.
+The two different versions have different installation dependencies.
+You need to carefully read the respective installation instructions and choose the required version according to your own need.
+For example, PyMOL distribution versions bundle specific Python environment versions to achieve richer functionality (like PyMOL 2.5.7 with Python 3.9).
+Here we recommend you to choose the open-source version of PyMOL to directly experience the drawing functionality of PyMOL-PUB.
 
 ## Customizations and protocols
 ### Publication-standard figure creation
@@ -594,9 +594,9 @@ Here, the scope of "elevation" and "azimuth" and \[-180, 180\].
 ## Usage of PyMOL-PUB surface (GUI)
 Based on PyQt5, PyMOL-PUB offers a process-based plotting GUI to replace the cost of programming Python scripts.
 It enables a broader spectrum of users, notably those without Python programming experience.
-By running the [windows.py](https://github.com/BGI-SynBio/PyMOL-PUB/blob/main/molpub/windows.py), users can start their drawing jobs using the PyMOL-PUB's GUI.
-We provide a [demonstration video](https://github.com/BGI-SynBio/PyMOL-PUB/blob/main/docs/GUI-demo-video.mp4) that shows how to use the GUI to create the target figure.
-Users can follow along with the video to learn the operation of the GUI, or refer to the text instructions provided in the [PyMOL-PUB technical manual]().
+By running the [windows.py](https://github.com/BGI-SynBio/PyMOL-PUB/blob/main/molpub/windows.py), you can start your drawing jobs using the PyMOL-PUB's GUI.
+We provide a [demon video](https://github.com/BGI-SynBio/PyMOL-PUB/blob/main/docs/GUI-demo-video.mp4) that shows how to use the GUI to create the target figure.
+You can follow along with the video to learn the operation of the GUI, or refer to the text instructions provided in the [PyMOL-PUB technical manual](https://github.com/BGI-SynBio/PyMOL-PUB/blob/main/docs/PyMOL-PUB-Technical-Manual.pdf).
 
 ## Funding
 This work was supported by the National Key Research and Development Program of China (no. 2021YFF120010), 
