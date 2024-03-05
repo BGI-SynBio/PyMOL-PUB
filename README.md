@@ -595,7 +595,7 @@ Here, the scope of "elevation" and "azimuth" and \[-180, 180\].
 Based on PyQt5, PyMOL-PUB offers a process-based plotting GUI to replace the cost of programming Python scripts.
 It enables a broader spectrum of users, notably those without Python programming experience.
 By running the [windows.py](https://github.com/BGI-SynBio/PyMOL-PUB/blob/main/molpub/windows.py), you can start your drawing jobs using the PyMOL-PUB's GUI.
-We provide a [demo video](https://github.com/BGI-SynBio/PyMOL-PUB/blob/main/docs/GUI-demo-video.mp4) that shows how to use the GUI to create the target figure, which also can be found on [YouTube](https://www.youtube.com/watch?v=4kbtMWG98h4).
+We provide a demo video that shows how to use the GUI to create the target figure, which can be found on [YouTube](https://www.youtube.com/watch?v=4kbtMWG98h4).
 You can follow along with the video to learn the operation of the GUI, or refer to the text instructions provided in the [PyMOL-PUB technical manual](https://github.com/BGI-SynBio/PyMOL-PUB/blob/main/docs/PyMOL-PUB-Technical-Manual.pdf).
 
 ## Funding
