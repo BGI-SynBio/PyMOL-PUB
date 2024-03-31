@@ -596,7 +596,9 @@ Based on PyQt5, PyMOL-PUB offers a process-based plotting GUI to replace the cos
 It enables a broader spectrum of users, notably those without Python programming experience.
 By running the [windows.py](https://github.com/BGI-SynBio/PyMOL-PUB/blob/main/molpub/windows.py), you can start your drawing jobs using the PyMOL-PUB's GUI.
 We provide a demo video that shows how to use the GUI to create the target figure, which can be found on [YouTube](https://www.youtube.com/watch?v=4kbtMWG98h4).
-You can follow along with the video to learn the operation of the GUI, or refer to the text instructions provided in the [PyMOL-PUB technical manual](https://github.com/BGI-SynBio/PyMOL-PUB/blob/main/docs/PyMOL-PUB-Technical-Manual.pdf).
+You can follow along with the video to learn the operation of the GUI, 
+or refer to the text instructions provided in the 
+[PyMOL-PUB technical manual](https://academic.oup.com/bioinformatics/article-lookup/doi/10.1093/bioinformatics/btae139#supplementary-data).
 
 ## Funding
 This work was supported by the National Key Research and Development Program of China (no. 2021YFF120010), 
