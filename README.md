@@ -31,7 +31,7 @@ If you think this repo helps or being used in your research, please consider ref
 ````
 @article{chen2024rapid,
     author = {Chen, Yuting and Zhang, Haoling and Wang, Wen and Shen, Yue and Ping, Zhi},
-    title = "{Rapid generation of high-quality structure figures for publication with PyMOL-PUB}",
+    title = {Rapid generation of high-quality structure figures for publication with PyMOL-PUB},
     journal = {Bioinformatics},
     volume = {40},
     number = {3},
