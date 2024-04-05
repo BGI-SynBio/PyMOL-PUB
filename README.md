@@ -23,6 +23,27 @@ and the desired image output can be obtained with a few lines of code or by oper
     <img src="./docs/source/_static/overview.png"/>
 </p>
 
+
+## Citation
+If you think this repo helps or being used in your research, please consider refer this 
+[paper](https://academic.oup.com/bioinformatics/article/40/3/btae139/7623589):
+
+````
+@article{chen2024rapid,
+    author = {Chen, Yuting and Zhang, Haoling and Wang, Wen and Shen, Yue and Ping, Zhi},
+    title = "{Rapid generation of high-quality structure figures for publication with PyMOL-PUB}",
+    journal = {Bioinformatics},
+    volume = {40},
+    number = {3},
+    pages = {btae139},
+    year = {2024},
+    month = {03},
+    issn = {1367-4811},
+    doi = {10.1093/bioinformatics/btae139},
+    url = {https://doi.org/10.1093/bioinformatics/btae139},
+}
+````
+
 ## Case presentation
 Based on three structures with default visualization output 
 
