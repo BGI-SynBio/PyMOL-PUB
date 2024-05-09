@@ -246,8 +246,8 @@ The supporting figure formats of journal, conference or publisher are:
 The collected font format are:
 "Time New Roman", "Helvetica", "Arial", "Linux Libertine" and "Lucida Calligraphy".
 The TTF files are located in the 
-['fonts'](https://github.com/BGI-SynBio/PyMOL-advance/tree/main/molpub/fonts) folder.
-These font formats will automatically connect to matplotlib when PyMOL-advance initializes.  
+['fonts'](https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/molpub/fonts) folder.
+These font formats will automatically connect to matplotlib when PyMOL-PUB initializes.  
 
 The target figure can be set to the Science format and full width by constructing the subsequent object.
 
