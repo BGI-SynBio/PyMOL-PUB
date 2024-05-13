@@ -621,15 +621,15 @@ You can follow along with the video to learn the operation of the GUI,
 or refer to the text instructions provided in the 
 [PyMOL-PUB technical manual](https://academic.oup.com/bioinformatics/article-lookup/doi/10.1093/bioinformatics/btae139#supplementary-data).
 
-Sometimes, you might encounter an [issue](https://github.com/BGI-SynBio/PyMOL-PUB/issues/3) where PyMOL-PUB fails to launch. 
-This problem typically arises if the 'molpub' directory, which contains 'windows.py', is not included in the working directory.
+Sometimes, you might encounter an [issue](https://github.com/BGI-SynBio/PyMOL-PUB/issues/3) where GUI fails to launch. 
+It typically arises if the 'molpub' directory, which contains 'windows.py', is not included in the working directory.
 There are two simple solutions to resolve this issue:
 
 - Find the windows.py file in your system, copy it to another folder, and run the copied script through a command prompt.
 - Load the whole project into Python IDE like PyCharm, and execute the windows.py file by pressing the run button in the IDE.
 
 ## Funding
-This work was supported by the National Key Research and Development Program of China (no. 2021YFF120010), 
+This work was supported by the National Key Research and Development Program of China (no. 2021YFF1200100), 
 National Natural Science Foundation of China (no. 32101182 and 32201175) 
 and Shenzhen Science, Technology and Innovation Commission under grant no. SGDX20220530110802015.
 This work was also supported by China National GeneBank.
