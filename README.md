@@ -246,8 +246,8 @@ The supporting figure formats of journal, conference or publisher are:
 The collected font format are:
 "Time New Roman", "Helvetica", "Arial", "Linux Libertine" and "Lucida Calligraphy".
 The TTF files are located in the 
-['fonts'](https://github.com/BGI-SynBio/PyMOL-advance/tree/main/molpub/fonts) folder.
-These font formats will automatically connect to matplotlib when PyMOL-advance initializes.  
+['fonts'](https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/molpub/fonts) folder.
+These font formats will automatically connect to matplotlib when PyMOL-PUB initializes.  
 
 The target figure can be set to the Science format and full width by constructing the subsequent object.
 
@@ -621,6 +621,13 @@ You can follow along with the video to learn the operation of the GUI,
 or refer to the text instructions provided in the 
 [PyMOL-PUB technical manual](https://academic.oup.com/bioinformatics/article-lookup/doi/10.1093/bioinformatics/btae139#supplementary-data).
 
+Sometimes, you might encounter an [issue](https://github.com/BGI-SynBio/PyMOL-PUB/issues/3) where GUI fails to launch. 
+It typically arises if the 'molpub' directory, which contains 'windows.py', is not included in the working directory.
+There are two simple solutions to resolve this issue:
+
+- Find the windows.py file in your system, copy it to another folder, and run the copied script through a command prompt.
+- Load the whole project into Python IDE like PyCharm, and execute the windows.py file by pressing the run button in the IDE.
+
 ## Funding
 This work was supported by the National Key Research and Development Program of China (no. 2021YFF1200100), 
 National Natural Science Foundation of China (no. 32101182 and 32201175),
@@ -630,7 +637,7 @@ This work was also supported by China National GeneBank.
 [Yuting Chen](https://github.com/ytchen-1) and [Haoling Zhang](https://github.com/HaolingZHANG) 
 were also funded by the [Warren L. DeLano Memorial PyMOL Open-Source Fellowship](http://pymol.org/fellowship).
 Their quarterly reports have been made public 
-and can be found [here](https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/reports.
+and can be found [here](https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/reports).
 
 ## Acknowledgements
 We thank Dr. Jarrett Johnson from Schrödinger, Inc. for constructive discussions 
