@@ -622,11 +622,15 @@ or refer to the text instructions provided in the
 [PyMOL-PUB technical manual](https://academic.oup.com/bioinformatics/article-lookup/doi/10.1093/bioinformatics/btae139#supplementary-data).
 
 ## Funding
-This work was supported by the National Key Research and Development Program of China (no. 2021YFF120010), 
-National Natural Science Foundation of China (no. 32101182 and 32201175) 
+This work was supported by the National Key Research and Development Program of China (no. 2021YFF1200100), 
+National Natural Science Foundation of China (no. 32101182 and 32201175),
 and Shenzhen Science, Technology and Innovation Commission under grant no. SGDX20220530110802015.
 This work was also supported by China National GeneBank.
-Yuting Chen and Haoling Zhang were also funded by the [Warren L. DeLano Memorial PyMOL Open-Source Fellowship](http://pymol.org/fellowship).
+
+[Yuting Chen](https://github.com/ytchen-1) and [Haoling Zhang](https://github.com/HaolingZHANG) 
+were also funded by the [Warren L. DeLano Memorial PyMOL Open-Source Fellowship](http://pymol.org/fellowship).
+Their quarterly reports have been made public 
+and can be found [here](https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/reports.
 
 ## Acknowledgements
 We thank Dr. Jarrett Johnson from Schrödinger, Inc. for constructive discussions 
