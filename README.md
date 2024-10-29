@@ -384,19 +384,19 @@ In style 1, the widget is defined by direction and the azimuth angle.
     </tr>
     <tr>
         <td bgcolor="#FFFFFF" align="center">+</td>
-        <td bgcolor="#FFFFFF"><img src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation%5B%2B.1pi6%5D.svg"/></td>
-        <td bgcolor="#FFFFFF"><img src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation%5B%2B.1pi3%5D.svg"/></td>
-        <td bgcolor="#FFFFFF"><img src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation%5B%2B.1pi2%5D.svg"/></td>
-        <td bgcolor="#FFFFFF"><img src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation%5B%2B.2pi3%5D.svg"/></td>
-        <td bgcolor="#FFFFFF"><img src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation%5B%2B.1pi1%5D.svg"/></td>
+        <td bgcolor="#FFFFFF"><img src="./docs/source/_static/widgets/rotation%5B%2B.1pi6%5D.svg"/></td>
+        <td bgcolor="#FFFFFF"><img src="./docs/source/_static/widgets/rotation%5B%2B.1pi3%5D.svg"/></td>
+        <td bgcolor="#FFFFFF"><img src="./docs/source/_static/widgets/rotation%5B%2B.1pi2%5D.svg"/></td>
+        <td bgcolor="#FFFFFF"><img src="./docs/source/_static/widgets/rotation%5B%2B.2pi3%5D.svg"/></td>
+        <td bgcolor="#FFFFFF"><img src="./docs/source/_static/widgets/rotation%5B%2B.1pi1%5D.svg"/></td>
     </tr>
     <tr>
         <td bgcolor="#FFFFFF" align="center">-</td>
-        <td bgcolor="#FFFFFF"><img src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation%5B-.1pi6%5D.svg"/></td>
-        <td bgcolor="#FFFFFF"><img src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation%5B-.1pi3%5D.svg"/></td>
-        <td bgcolor="#FFFFFF"><img src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation%5B-.1pi2%5D.svg"/></td>
-        <td bgcolor="#FFFFFF"><img src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation%5B-.2pi3%5D.svg"/></td>
-        <td bgcolor="#FFFFFF"><img src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation%5B-.1pi1%5D.svg"/></td>
+        <td bgcolor="#FFFFFF"><img src="./docs/source/_static/widgets/rotation%5B-.1pi6%5D.svg"/></td>
+        <td bgcolor="#FFFFFF"><img src="./docs/source/_static/widgets/rotation%5B-.1pi3%5D.svg"/></td>
+        <td bgcolor="#FFFFFF"><img src="./docs/source/_static/widgets/rotation%5B-.1pi2%5D.svg"/></td>
+        <td bgcolor="#FFFFFF"><img src="./docs/source/_static/widgets/rotation%5B-.2pi3%5D.svg"/></td>
+        <td bgcolor="#FFFFFF"><img src="./docs/source/_static/widgets/rotation%5B-.1pi1%5D.svg"/></td>
     </tr>
 </table>
 
@@ -411,7 +411,7 @@ obtain_widget_icon(save_path="temp path", widget_type="rotation", params={"turn"
 and you can obtain
 
 <p align="center">
-    <image width="40%" src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation%5B-.1pi6%5D.svg"></image>
+    <image width="40%" src="./docs/source/_static/widgets/rotation%5B-.1pi6%5D.svg"></image>
 </p>
 
 Here, the scope of "turn" is {"+", "-"} and that of "degree" is (0, 180\%5D.
@@ -439,157 +439,157 @@ A more complex widget attribute setup is (elevation angle, azimuth angle).
     </tr>
     <tr>
         <td bgcolor="#FFFFFF" align="center">-180</td>
-        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation%5B-1pi1.-1pi1%5D.svg"></image></td>
-        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation%5B-1pi1.-2pi3%5D.svg"></image></td>
-        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation%5B-1pi1.-1pi2%5D.svg"></image></td>
-        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation%5B-1pi1.-1pi3%5D.svg"></image></td>
-        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation%5B-1pi1.-1pi6%5D.svg"></image></td>
-        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation%5B-1pi1.%2B0pi1%5D.svg"></image></td>
-        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation%5B-1pi1.%2B1pi6%5D.svg"></image></td>
-        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation%5B-1pi1.%2B1pi3%5D.svg"></image></td>
-        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation%5B-1pi1.%2B1pi2%5D.svg"></image></td>
-        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation%5B-1pi1.%2B2pi3%5D.svg"></image></td>
-        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation%5B-1pi1.%2B1pi1%5D.svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation%5B-1pi1.-1pi1%5D.svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation%5B-1pi1.-2pi3%5D.svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation%5B-1pi1.-1pi2%5D.svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation%5B-1pi1.-1pi3%5D.svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation%5B-1pi1.-1pi6%5D.svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation%5B-1pi1.%2B0pi1%5D.svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation%5B-1pi1.%2B1pi6%5D.svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation%5B-1pi1.%2B1pi3%5D.svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation%5B-1pi1.%2B1pi2%5D.svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation%5B-1pi1.%2B2pi3%5D.svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation%5B-1pi1.%2B1pi1%5D.svg"></image></td>
     </tr>
     <tr>
         <td bgcolor="#FFFFFF" align="center">-120</td>
-        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation%5B-2pi3.-1pi1%5D.svg"></image></td>
-        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation%5B-2pi3.-2pi3%5D.svg"></image></td>
-        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation%5B-2pi3.-1pi2%5D.svg"></image></td>
-        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation%5B-2pi3.-1pi3%5D.svg"></image></td>
-        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation%5B-2pi3.-1pi6%5D.svg"></image></td>
-        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation%5B-2pi3.%2B0pi1%5D.svg"></image></td>
-        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation%5B-2pi3.%2B1pi6%5D.svg"></image></td>
-        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation%5B-2pi3.%2B1pi3%5D.svg"></image></td>
-        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation%5B-2pi3.%2B1pi2%5D.svg"></image></td>
-        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation%5B-2pi3.%2B2pi3%5D.svg"></image></td>
-        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation%5B-2pi3.%2B1pi1%5D.svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation%5B-2pi3.-1pi1%5D.svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation%5B-2pi3.-2pi3%5D.svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation%5B-2pi3.-1pi2%5D.svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation%5B-2pi3.-1pi3%5D.svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation%5B-2pi3.-1pi6%5D.svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation%5B-2pi3.%2B0pi1%5D.svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation%5B-2pi3.%2B1pi6%5D.svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation%5B-2pi3.%2B1pi3%5D.svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation%5B-2pi3.%2B1pi2%5D.svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation%5B-2pi3.%2B2pi3%5D.svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation%5B-2pi3.%2B1pi1%5D.svg"></image></td>
     </tr>
     <tr>
         <td bgcolor="#FFFFFF" align="center">-90</td>
-        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation%5B-1pi2.-1pi1%5D.svg"></image></td>
-        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation%5B-1pi2.-2pi3%5D.svg"></image></td>
-        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation%5B-1pi2.-1pi2%5D.svg"></image></td>
-        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation%5B-1pi2.-1pi3%5D.svg"></image></td>
-        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation%5B-1pi2.-1pi6%5D.svg"></image></td>
-        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation%5B-1pi2.%2B0pi1%5D.svg"></image></td>
-        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation%5B-1pi2.%2B1pi6%5D.svg"></image></td>
-        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation%5B-1pi2.%2B1pi3%5D.svg"></image></td>
-        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation%5B-1pi2.%2B1pi2%5D.svg"></image></td>
-        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation%5B-1pi2.%2B2pi3%5D.svg"></image></td>
-        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation%5B-1pi2.%2B1pi1%5D.svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation%5B-1pi2.-1pi1%5D.svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation%5B-1pi2.-2pi3%5D.svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation%5B-1pi2.-1pi2%5D.svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation%5B-1pi2.-1pi3%5D.svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation%5B-1pi2.-1pi6%5D.svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation%5B-1pi2.%2B0pi1%5D.svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation%5B-1pi2.%2B1pi6%5D.svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation%5B-1pi2.%2B1pi3%5D.svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation%5B-1pi2.%2B1pi2%5D.svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation%5B-1pi2.%2B2pi3%5D.svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation%5B-1pi2.%2B1pi1%5D.svg"></image></td>
     </tr>
     <tr>
         <td bgcolor="#FFFFFF" align="center">-60</td>
-        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation%5B-1pi3.-1pi1%5D.svg"></image></td>
-        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation%5B-1pi3.-2pi3%5D.svg"></image></td>
-        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation%5B-1pi3.-1pi2%5D.svg"></image></td>
-        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation%5B-1pi3.-1pi3%5D.svg"></image></td>
-        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation%5B-1pi3.-1pi6%5D.svg"></image></td>
-        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation%5B-1pi3.%2B0pi1%5D.svg"></image></td>
-        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation%5B-1pi3.%2B1pi6%5D.svg"></image></td>
-        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation%5B-1pi3.%2B1pi3%5D.svg"></image></td>
-        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation%5B-1pi3.%2B1pi2%5D.svg"></image></td>
-        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation%5B-1pi3.%2B2pi3%5D.svg"></image></td>
-        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation%5B-1pi3.%2B1pi1%5D.svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation%5B-1pi3.-1pi1%5D.svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation%5B-1pi3.-2pi3%5D.svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation%5B-1pi3.-1pi2%5D.svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation%5B-1pi3.-1pi3%5D.svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation%5B-1pi3.-1pi6%5D.svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation%5B-1pi3.%2B0pi1%5D.svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation%5B-1pi3.%2B1pi6%5D.svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation%5B-1pi3.%2B1pi3%5D.svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation%5B-1pi3.%2B1pi2%5D.svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation%5B-1pi3.%2B2pi3%5D.svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation%5B-1pi3.%2B1pi1%5D.svg"></image></td>
     </tr>
     <tr>
         <td bgcolor="#FFFFFF" align="center">-30</td>
-        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation%5B-1pi6.-1pi1%5D.svg"></image></td>
-        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation%5B-1pi6.-2pi3%5D.svg"></image></td>
-        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation%5B-1pi6.-1pi2%5D.svg"></image></td>
-        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation%5B-1pi6.-1pi3%5D.svg"></image></td>
-        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation%5B-1pi6.-1pi6%5D.svg"></image></td>
-        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation%5B-1pi6.%2B0pi1%5D.svg"></image></td>
-        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation%5B-1pi6.%2B1pi6%5D.svg"></image></td>
-        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation%5B-1pi6.%2B1pi3%5D.svg"></image></td>
-        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation%5B-1pi6.%2B1pi2%5D.svg"></image></td>
-        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation%5B-1pi6.%2B2pi3%5D.svg"></image></td>
-        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation%5B-1pi6.%2B1pi1%5D.svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation%5B-1pi6.-1pi1%5D.svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation%5B-1pi6.-2pi3%5D.svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation%5B-1pi6.-1pi2%5D.svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation%5B-1pi6.-1pi3%5D.svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation%5B-1pi6.-1pi6%5D.svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation%5B-1pi6.%2B0pi1%5D.svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation%5B-1pi6.%2B1pi6%5D.svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation%5B-1pi6.%2B1pi3%5D.svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation%5B-1pi6.%2B1pi2%5D.svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation%5B-1pi6.%2B2pi3%5D.svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation%5B-1pi6.%2B1pi1%5D.svg"></image></td>
     </tr>
     <tr>
         <td bgcolor="#FFFFFF" align="center">0</td>
-        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation%5B+0pi1.-1pi1%5D.svg"></image></td>
-        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation%5B+0pi1.-2pi3%5D.svg"></image></td>
-        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation%5B+0pi1.-1pi2%5D.svg"></image></td>
-        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation%5B+0pi1.-1pi3%5D.svg"></image></td>
-        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation%5B+0pi1.-1pi6%5D.svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation%5B+0pi1.-1pi1%5D.svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation%5B+0pi1.-2pi3%5D.svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation%5B+0pi1.-1pi2%5D.svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation%5B+0pi1.-1pi3%5D.svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation%5B+0pi1.-1pi6%5D.svg"></image></td>
         <td bgcolor="#FFFFFF" align="center">N/A</td>
-        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation%5B+0pi1.%2B1pi6%5D.svg"></image></td>
-        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation%5B+0pi1.%2B1pi3%5D.svg"></image></td>
-        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation%5B+0pi1.%2B1pi2%5D.svg"></image></td>
-        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation%5B+0pi1.%2B2pi3%5D.svg"></image></td>
-        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation%5B+0pi1.%2B1pi1%5D.svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation%5B+0pi1.%2B1pi6%5D.svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation%5B+0pi1.%2B1pi3%5D.svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation%5B+0pi1.%2B1pi2%5D.svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation%5B+0pi1.%2B2pi3%5D.svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation%5B+0pi1.%2B1pi1%5D.svg"></image></td>
     </tr>
     <tr>
         <td bgcolor="#FFFFFF" align="center">+30</td>
-        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation%5B+1pi6.-1pi1%5D.svg"></image></td>
-        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation%5B+1pi6.-2pi3%5D.svg"></image></td>
-        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation%5B+1pi6.-1pi2%5D.svg"></image></td>
-        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation%5B+1pi6.-1pi3%5D.svg"></image></td>
-        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation%5B+1pi6.-1pi6%5D.svg"></image></td>
-        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation%5B+1pi6.%2B0pi1%5D.svg"></image></td>
-        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation%5B+1pi6.%2B1pi6%5D.svg"></image></td>
-        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation%5B+1pi6.%2B1pi3%5D.svg"></image></td>
-        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation%5B+1pi6.%2B1pi2%5D.svg"></image></td>
-        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation%5B+1pi6.%2B2pi3%5D.svg"></image></td>
-        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation%5B+1pi6.%2B1pi1%5D.svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation%5B+1pi6.-1pi1%5D.svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation%5B+1pi6.-2pi3%5D.svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation%5B+1pi6.-1pi2%5D.svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation%5B+1pi6.-1pi3%5D.svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation%5B+1pi6.-1pi6%5D.svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation%5B+1pi6.%2B0pi1%5D.svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation%5B+1pi6.%2B1pi6%5D.svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation%5B+1pi6.%2B1pi3%5D.svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation%5B+1pi6.%2B1pi2%5D.svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation%5B+1pi6.%2B2pi3%5D.svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation%5B+1pi6.%2B1pi1%5D.svg"></image></td>
     </tr>
     <tr>
         <td bgcolor="#FFFFFF" align="center">+60</td>
-        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation%5B+1pi3.-1pi1%5D.svg"></image></td>
-        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation%5B+1pi3.-2pi3%5D.svg"></image></td>
-        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation%5B+1pi3.-1pi2%5D.svg"></image></td>
-        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation%5B+1pi3.-1pi3%5D.svg"></image></td>
-        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation%5B+1pi3.-1pi6%5D.svg"></image></td>
-        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation%5B+1pi3.%2B0pi1%5D.svg"></image></td>
-        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation%5B+1pi3.%2B1pi6%5D.svg"></image></td>
-        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation%5B+1pi3.%2B1pi3%5D.svg"></image></td>
-        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation%5B+1pi3.%2B1pi2%5D.svg"></image></td>
-        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation%5B+1pi3.%2B2pi3%5D.svg"></image></td>
-        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation%5B+1pi3.%2B1pi1%5D.svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation%5B+1pi3.-1pi1%5D.svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation%5B+1pi3.-2pi3%5D.svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation%5B+1pi3.-1pi2%5D.svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation%5B+1pi3.-1pi3%5D.svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation%5B+1pi3.-1pi6%5D.svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation%5B+1pi3.%2B0pi1%5D.svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation%5B+1pi3.%2B1pi6%5D.svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation%5B+1pi3.%2B1pi3%5D.svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation%5B+1pi3.%2B1pi2%5D.svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation%5B+1pi3.%2B2pi3%5D.svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation%5B+1pi3.%2B1pi1%5D.svg"></image></td>
     </tr>
     <tr>
         <td bgcolor="#FFFFFF" align="center">+90</td>
-        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation%5B+1pi2.-1pi1%5D.svg"></image></td>
-        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation%5B+1pi2.-2pi3%5D.svg"></image></td>
-        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation%5B+1pi2.-1pi2%5D.svg"></image></td>
-        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation%5B+1pi2.-1pi3%5D.svg"></image></td>
-        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation%5B+1pi2.-1pi6%5D.svg"></image></td>
-        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation%5B+1pi2.%2B0pi1%5D.svg"></image></td>
-        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation%5B+1pi2.%2B1pi6%5D.svg"></image></td>
-        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation%5B+1pi2.%2B1pi3%5D.svg"></image></td>
-        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation%5B+1pi2.%2B1pi2%5D.svg"></image></td>
-        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation%5B+1pi2.%2B2pi3%5D.svg"></image></td>
-        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation%5B+1pi2.%2B1pi1%5D.svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation%5B+1pi2.-1pi1%5D.svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation%5B+1pi2.-2pi3%5D.svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation%5B+1pi2.-1pi2%5D.svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation%5B+1pi2.-1pi3%5D.svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation%5B+1pi2.-1pi6%5D.svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation%5B+1pi2.%2B0pi1%5D.svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation%5B+1pi2.%2B1pi6%5D.svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation%5B+1pi2.%2B1pi3%5D.svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation%5B+1pi2.%2B1pi2%5D.svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation%5B+1pi2.%2B2pi3%5D.svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation%5B+1pi2.%2B1pi1%5D.svg"></image></td>
     </tr>
     <tr>
         <td bgcolor="#FFFFFF" align="center">+120</td>
-        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation%5B+2pi3.-1pi1%5D.svg"></image></td>
-        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation%5B+2pi3.-2pi3%5D.svg"></image></td>
-        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation%5B+2pi3.-1pi2%5D.svg"></image></td>
-        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation%5B+2pi3.-1pi3%5D.svg"></image></td>
-        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation%5B+2pi3.-1pi6%5D.svg"></image></td>
-        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation%5B+2pi3.%2B0pi1%5D.svg"></image></td>
-        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation%5B+2pi3.%2B1pi6%5D.svg"></image></td>
-        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation%5B+2pi3.%2B1pi3%5D.svg"></image></td>
-        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation%5B+2pi3.%2B1pi2%5D.svg"></image></td>
-        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation%5B+2pi3.%2B2pi3%5D.svg"></image></td>
-        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation%5B+2pi3.%2B1pi1%5D.svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation%5B+2pi3.-1pi1%5D.svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation%5B+2pi3.-2pi3%5D.svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation%5B+2pi3.-1pi2%5D.svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation%5B+2pi3.-1pi3%5D.svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation%5B+2pi3.-1pi6%5D.svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation%5B+2pi3.%2B0pi1%5D.svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation%5B+2pi3.%2B1pi6%5D.svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation%5B+2pi3.%2B1pi3%5D.svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation%5B+2pi3.%2B1pi2%5D.svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation%5B+2pi3.%2B2pi3%5D.svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation%5B+2pi3.%2B1pi1%5D.svg"></image></td>
     </tr>
     <tr>
         <td bgcolor="#FFFFFF" align="center">+180</td>
-        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation%5B+1pi1.-1pi1%5D.svg"></image></td>
-        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation%5B+1pi1.-2pi3%5D.svg"></image></td>
-        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation%5B+1pi1.-1pi2%5D.svg"></image></td>
-        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation%5B+1pi1.-1pi3%5D.svg"></image></td>
-        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation%5B+1pi1.-1pi6%5D.svg"></image></td>
-        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation%5B+1pi1.%2B0pi1%5D.svg"></image></td>
-        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation%5B+1pi1.%2B1pi6%5D.svg"></image></td>
-        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation%5B+1pi1.%2B1pi3%5D.svg"></image></td>
-        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation%5B+1pi1.%2B1pi2%5D.svg"></image></td>
-        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation%5B+1pi1.%2B2pi3%5D.svg"></image></td>
-        <td bgcolor="#FFFFFF"><image src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation%5B+1pi1.%2B1pi1%5D.svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation%5B+1pi1.-1pi1%5D.svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation%5B+1pi1.-2pi3%5D.svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation%5B+1pi1.-1pi2%5D.svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation%5B+1pi1.-1pi3%5D.svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation%5B+1pi1.-1pi6%5D.svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation%5B+1pi1.%2B0pi1%5D.svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation%5B+1pi1.%2B1pi6%5D.svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation%5B+1pi1.%2B1pi3%5D.svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation%5B+1pi1.%2B1pi2%5D.svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation%5B+1pi1.%2B2pi3%5D.svg"></image></td>
+        <td bgcolor="#FFFFFF"><image src="./docs/source/_static/widgets/rotation%5B+1pi1.%2B1pi1%5D.svg"></image></td>
     </tr>
 </table>
 
@@ -607,7 +607,7 @@ obtain_widget_icon(save_path="temp path", widget_type="rotation", params={"eleva
 and you can obtain
 
 <p align="center">
-    <image width="40%" src="https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/docs/source/_static/widgets/rotation%5B+1pi6.%2B1pi6%5D.svg"></image>
+    <image width="40%" src="./docs/source/_static/widgets/rotation%5B+1pi6.%2B1pi6%5D.svg"></image>
 </p>
 
 Here, the scope of "elevation" and "azimuth" and \%5B-180, 180\%5D.
