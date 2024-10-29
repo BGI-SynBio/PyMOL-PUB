@@ -6,7 +6,7 @@
 
 With the rapid progress of fields like protein structure prediction, 
 an increasing number of researchers from different backgrounds require the use of 
-%5BPyMOL%5D(https://pymol.org/2/) for molecular visualization.
+[PyMOL](https://pymol.org/2/) for molecular visualization.
 To be used in publications, the default visualization output of PyMOL typically requires 
 the spatial adjustments, such as rotating and/or zooming the structures, and 
 purposeful emphasis including highlighting important parts and hiding the unimportant parts.
