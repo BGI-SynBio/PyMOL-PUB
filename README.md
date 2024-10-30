@@ -414,7 +414,7 @@ and you can obtain
     <image width="40%" src="./docs/source/_static/widgets/rotation%5B-.1pi6%5D.svg"></image>
 </p>
 
-Here, the scope of "turn" is {"+", "-"} and that of "degree" is (0, 180\%5D.
+Here, the scope of "turn" is {"+", "-"} and that of "degree" is (0, 180].
 
 
 Sometimes, we need to operate the elevation angle concurrently.
@@ -594,7 +594,7 @@ A more complex widget attribute setup is (elevation angle, azimuth angle).
 </table>
 
 The interface is shown in 
-%5Bobtain_widget_icon%5D(https://github.com/BGI-SynBio/PyMOL-PUB/blob/main/molpub/layouts.py#L20).
+[obtain_widget_icon](https://github.com/BGI-SynBio/PyMOL-PUB/blob/main/molpub/layouts.py#L20).
 
 To generate such icon, you can use:
 ```python
@@ -610,18 +610,18 @@ and you can obtain
     <image width="40%" src="./docs/source/_static/widgets/rotation%5B+1pi6.%2B1pi6%5D.svg"></image>
 </p>
 
-Here, the scope of "elevation" and "azimuth" and \%5B-180, 180\%5D.
+Here, the scope of "elevation" and "azimuth" and \[-180, 180\].
 
 ## Usage of PyMOL-PUB surface (GUI)
 Based on PyQt5, PyMOL-PUB offers a process-based plotting GUI to replace the cost of programming Python scripts.
 It enables a broader spectrum of users, notably those without Python programming experience.
-By running the %5Bwindows.py%5D(https://github.com/BGI-SynBio/PyMOL-PUB/blob/main/molpub/windows.py), you can start your drawing jobs using the PyMOL-PUB's GUI.
-We provide a demo video that shows how to use the GUI to create the target figure, which can be found on %5BYouTube%5D(https://www.youtube.com/watch?v=4kbtMWG98h4).
+By running the [windows.py](https://github.com/BGI-SynBio/PyMOL-PUB/blob/main/molpub/windows.py), you can start your drawing jobs using the PyMOL-PUB's GUI.
+We provide a demo video that shows how to use the GUI to create the target figure, which can be found on [YouTube](https://www.youtube.com/watch?v=4kbtMWG98h4).
 You can follow along with the video to learn the operation of the GUI, 
 or refer to the text instructions provided in the 
-%5BPyMOL-PUB technical manual%5D(https://academic.oup.com/bioinformatics/article-lookup/doi/10.1093/bioinformatics/btae139#supplementary-data).
+[PyMOL-PUB technical manual](https://academic.oup.com/bioinformatics/article-lookup/doi/10.1093/bioinformatics/btae139#supplementary-data).
 
-Sometimes, you might encounter an %5Bissue%5D(https://github.com/BGI-SynBio/PyMOL-PUB/issues/3) where GUI fails to launch. 
+Sometimes, you might encounter an [issue](https://github.com/BGI-SynBio/PyMOL-PUB/issues/3) where GUI fails to launch. 
 It typically arises if the 'molpub' directory, which contains 'windows.py', is not included in the working directory.
 There are two simple solutions to resolve this issue:
 
@@ -634,10 +634,10 @@ National Natural Science Foundation of China (no. 32101182 and 32201175),
 and Shenzhen Science, Technology and Innovation Commission under grant no. SGDX20220530110802015.
 This work was also supported by China National GeneBank.
 
-%5BYuting Chen%5D(https://github.com/ytchen-1) and %5BHaoling Zhang%5D(https://github.com/HaolingZHANG) 
-were also funded by the %5BWarren L. DeLano Memorial PyMOL Open-Source Fellowship%5D(http://pymol.org/fellowship).
+[Yuting Chen](https://github.com/ytchen-1) and [Haoling Zhang](https://github.com/HaolingZHANG) 
+were also funded by the [Warren L. DeLano Memorial PyMOL Open-Source Fellowship](http://pymol.org/fellowship).
 Their quarterly reports have been made public 
-and can be found %5Bhere%5D(https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/reports).
+and can be found [here](https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/reports).
 
 ## Acknowledgements
 We thank Dr. Jarrett Johnson from Schrödinger, Inc. for constructive discussions 
