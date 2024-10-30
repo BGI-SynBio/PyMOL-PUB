@@ -640,7 +640,7 @@ Their quarterly reports have been made public
 and can be found [here](https://github.com/BGI-SynBio/PyMOL-PUB/tree/main/reports).
 
 ## Acknowledgements
-We thank Dr. Jarrett Johnson from Schrödinger, Inc. for constructive discussions 
+We thank [Dr. Jarrett Johnson](https://www.linkedin.com/in/jarrett-johnson/) from Schrödinger, Inc. for constructive discussions 
 on functional design and implementation mode.
-We also thank Prof. Yang Zhang from University of Michigan and Dr. Chengxin Zhang from Yale University 
+We also thank [Prof. Yang Zhang](https://scholar.google.com/citations?user=MtBs-kMAAAAJ) from University of Michigan and [Dr. Chengxin Zhang](https://scholar.google.com/citations?user=Z253RbQAAAAJ) from Yale University 
 on the application scope of structure alignment methods.
